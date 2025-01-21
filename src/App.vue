@@ -1,6 +1,5 @@
 <template>
-  <div id="app">
-
+  <div id="app" class="dashboard-layout">
     <Sidebar v-if="showSidebar" />
     <router-view />
   </div>
@@ -18,7 +17,6 @@ export default {
   setup() {
     const route = useRoute();
 
-
     const showSidebar = computed(() => !route.path.startsWith("/auth"));
 
     return {
@@ -29,5 +27,16 @@ export default {
 </script>
 
 <style>
+.dashboard-layout {
+  display: flex;
+
+}
+
+#app {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 </style>
+
 
