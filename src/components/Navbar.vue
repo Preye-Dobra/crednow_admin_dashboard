@@ -13,7 +13,7 @@
         <li><a href="#"><img src="/public/cocase.png" alt="Collection case" class="nav-icon" /> Collection case</a></li>
         <li><a href="#"><img src="/public/opera.png" alt="Operation" class="nav-icon" /> Operation</a></li>
         <li><a href="#"><img src="/public/cl.png" alt="Admin" class="nav-icon" /> Admin</a></li>
-        <li><a href="#"><img src="/public/bro.png" alt="Admin" class="nav-icon" /> Admin</a></li>
+        <li><a href="#"><img src="/public/bro.png" alt="Admin" class="nav-icon" /> Broadcast</a></li>
       </ul>
     </div>
   </div>
