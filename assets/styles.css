@@ -1,0 +1,6 @@
+/* Global Reset Styles */
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
