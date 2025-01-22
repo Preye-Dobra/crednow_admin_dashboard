@@ -25,7 +25,13 @@
               v-bind="field.props"
               :id="field.name"
               v-model="formData[field.name]"
-            />
+            >
+              <!-- Add default select option -->
+              <template v-if="field.type === 'select'">
+                <option disabled value="">{{ field.props.placeholder || "--Select Option--" }}</option>
+                <option v-for="(option, idx) in field.props.options" :key="idx" :value="option">{{ option }}</option>
+              </template>
+            </component>
           </div>
         </div>
 
@@ -55,9 +61,13 @@ export default {
       fields: [
         { name: "mobile", label: "Mobile", type: "input", props: { type: "text", placeholder: "Please enter" } },
         { name: "loanNumber", label: "Loan Number", type: "input", props: { type: "text", placeholder: "Please enter" } },
-        { name: "applicationStatus", label: "Application Status", type: "select", props: { options: ["--Select Option--", "Approved", "Rejected"] } },
+        { name: "applicationStatus", label: "Application Status", type: "select", props: { options: ["--Select Option--","Approved", "Rejected"], placeholder: "--Select Application Status--" } },
         { name: "applicationTime", label: "Application Time", type: "input", props: { type: "date" } },
-        // ...other fields
+        { name: "isItRepeatedBorrowing", label: "Is it Repeated Borrowing", type: "select", props: { options: ["--Select Option--","Yes", "No"], placeholder: "--Select Repeated Borrowing--" } },
+        { name: "loanSuccessTime", label: "Loan Success Time", type: "input", props: { type: "date" } },
+        { name: "loanTimeType", label: "Loan", type: "select", props: { options: ["--Select Option--","Yes", "No"], placeholder: "--Select Loan Time Type--" } },
+                { name: "refuseReason", label: "Refuse Reason", type: "select", props: { options: ["--Select Option--","ilegible", "No"], placeholder: "--Select Loan Time Type--" } },
+                  { name: "productName", label: "Refuse Reason", type: "select", props: { options: ["--Select Option--","ilegible", "No"], placeholder: "--Select Loan Time Type--" } },
       ],
     };
   },
@@ -77,7 +87,7 @@ export default {
 
 <style scoped>
 .main-content {
- padding: 6px;
+  padding: 6px;
   background-color: #D9F7FF;
   width: 100vw;
 }
@@ -190,6 +200,7 @@ font-size: 12px;
   color: white;
 }
 </style>
+
 
 
 
