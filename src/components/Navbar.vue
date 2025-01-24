@@ -30,7 +30,6 @@ export default {
 
 .sidebar {
   width: 198px;
-  height: 1024px;
   background-color: #00ccff;
   color: white;
   font-size: 12px;
@@ -40,8 +39,15 @@ export default {
   flex-direction: column;
   justify-content: flex-start;
   padding: 20px;
-  align-items: center; 
+  align-items: center;
+
+  position: fixed; 
+  top: 0;
+  left: 0;
+  height: 100%; 
+  
 }
+
 
 .logo-box {
   width: 100px;
