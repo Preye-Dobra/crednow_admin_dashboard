@@ -3,7 +3,7 @@ import App from "./App.vue";
 import { createRouter, createWebHistory } from "vue-router"; 
 import Home from "./views/Home.vue"; 
 import Signin from "./views/Signin.vue";
-
+import Clients from "./views/allClient.vue";
 import "../assets/styles.css";
 import Main from "./views/main.vue"; 
 import EmailVerification from "./views/VerifyEmail.vue";
@@ -19,6 +19,11 @@ const routes = [
     path: "/dashboard",
     name: "Main",
     component: Main,
+  },
+  {
+    path: "/all-client",
+    name: "Clients",
+    component: Clients,
   },
   {
     path: "/auth/signin",

@@ -1,52 +1,155 @@
-https://dribbble.com/shots/20374048-Book-Your-Bus-Adventure-A-Bus-Booking-App-Concept-for-iOS
-https://dribbble.com/shots/18132146-Bus-Booking-App
-{
-  "bus_company": "XYZ Bus Company",
-  "bus_type": "Standard",
-  "capacity": 50,
-  "amenities": ["Wi-Fi", "Restrooms", "Entertainment Systems"],
-  "route": {
-    "origin": "City A",
-    "stops": ["City B", "City C"],
-    "destination": "City D"
+<template>
+  <div class="pagination-container flex items-center bg-blue-100 p-4 rounded-lg">
+    <!-- Total Count -->
+    <div class="text-gray-700  total-box">Total {{ totalItems }}</div>
+
+    <!-- Items Per Page Selector -->
+    <select
+      v-model="itemsPerPage"
+      @change="onItemsPerPageChange"
+      class="border rounded-lg px-2 py-1 mr-4"
+    >
+      <option v-for="option in itemsPerPageOptions" :key="option" :value="option">
+        {{ option }}/Page
+      </option>
+    </select>
+
+    <!-- Previous Button -->
+    <button
+      :disabled="currentPage === 1"
+      @click="goToPage(currentPage - 1)"
+      class="pagination-button"
+    >
+      &lt;
+    </button>
+
+    <!-- Page Numbers -->
+    <div v-for="page in visiblePages" :key="page" class="mx-1">
+      <button
+        @click="goToPage(page)"
+        :class="[
+          'pagination-button',
+          { 'bg-blue-500 text-white': currentPage === page }
+        ]"
+      >
+        {{ page }}
+      </button>
+    </div>
+
+    <!-- Next Button -->
+    <button
+      :disabled="currentPage === totalPages"
+      @click="goToPage(currentPage + 1)"
+      class="pagination-button"
+    >
+      &gt;
+    </button>
+
+    <!-- Go To Page -->
+    <div class="ml-4 flex items-center go-page">
+      <span class="mr-6 w-10 ">Go to</span>
+      <input
+        v-model.number="goToPageInput"
+        @keyup.enter="goToPage(goToPageInput)"
+        type="number"
+        class="border rounded-lg px-2 py-1 w-16"
+        :min="1"
+        :max="totalPages"
+      />
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  data() {
+    return {
+      totalItems: 93319, // Total items
+      itemsPerPage: 10, // Default items per page
+      itemsPerPageOptions: [10, 20, 50, 100], // Options for items per page
+      currentPage: 1, // Current page
+      goToPageInput: 1, // Input for 'Go to page'
+    };
   },
-  "schedule": {
-    "departure_time": "2024-05-01T08:00:00",
-    "arrival_time": "2024-05-01T18:00:00",
-    "duration": "10 hours"
+  computed: {
+    totalPages() {
+      return Math.ceil(this.totalItems / this.itemsPerPage);
+    },
+    visiblePages() {
+      const maxPages = 6; // Maximum number of visible pages
+      const pages = [];
+
+      const startPage = Math.max(1, this.currentPage - Math.floor(maxPages / 2));
+      const endPage = Math.min(startPage + maxPages - 1, this.totalPages);
+
+      for (let i = startPage; i <= endPage; i++) {
+        pages.push(i);
+      }
+
+      return pages;
+    },
   },
-  "pricing": {
-    "ticket_price": 30,
-    "discounts": ["Senior", "Student"]
+  methods: {
+    onItemsPerPageChange() {
+      this.currentPage = 1; // Reset to page 1 when items per page changes
+    },
+    goToPage(page) {
+      if (page >= 1 && page <= this.totalPages) {
+        this.currentPage = page;
+        this.goToPageInput = page; // Sync input field
+      }
+    },
   },
-  "booking": {
-    "reservation_system": "Online",
-    "availability": 20
-  }
+};
+</script>
+
+<style scoped>
+.pagination-container {
+  display: flex;
+  justify-content:end;
+  align-items: center;
+  width: 553px;
 }
 
-{
-  "user_id": "12345",
-  "travel_preferences": {
-    "travel_date": "2024-05-01",
-    "departure_time_preference": "Morning",
-    "amenities_preference": ["Wi-Fi", "Restrooms"],
-    "budget": 50
-  },
-  "booking_details": {
-    "number_of_tickets": 2,
-    "payment_method": "Credit Card"
-  },
-  "additional_services": {
-    "luggage": 2,
-    "special_needs": []
-  },
-  "confirmation": {
-    "confirmation_number": "ABC123",
-    "booking_status": "Confirmed"
-  },
-  "feedback": {
-    "satisfaction": 4,
-    "comments": "Enjoyed the trip, but Wi-Fi signal was weak."
-  }
+.pagination-button {
+  background: #00CCFF;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  width: 30px;
+  height: 30px;
+  padding: 8px;
+  color: #ffff;
+  cursor: pointer;
+  font-size: 0.875rem;
+  margin: 0 6px;
+  transition: all 0.2s ease-in-out;
 }
+
+.pagination-button:hover:not(:disabled) {
+  background-color: #e5e7eb;
+}
+
+.pagination-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+select{
+    width: 98px;
+    height: 33px;
+    text-align: center;
+    margin: 4px;
+    color: #004759;
+}
+.total-box{
+    width: 98px;
+    height: 33px;
+    color: #004759;
+    
+    margin-top: 20px;
+}
+.go-page{
+    width: 100px;
+    height: 50px;
+    background-color: #00CCFF;
+}
+</style>

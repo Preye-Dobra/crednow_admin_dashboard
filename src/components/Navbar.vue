@@ -7,8 +7,8 @@
 
     <div class="nav-list">
       <ul>
-        <li><a href="#"><img src="/public/all.png" alt="All applications" class="nav-icon" /> All applications</a></li>
-        <li><a href="#"><img src="/public/cl.png" alt="All client" class="nav-icon" /> All client</a></li>
+        <li><a href="/dashboard"><img src="/public/all.png" alt="All applications" class="nav-icon" /> All applications</a></li>
+        <li><a href="all-client"><img src="/public/cl.png" alt="All client" class="nav-icon" /> All client</a></li>
         <li><a href="#"><img src="/public/finance.png" alt="Financial" class="nav-icon" /> Financial</a></li>
         <li><a href="#"><img src="/public/cocase.png" alt="Collection case" class="nav-icon" /> Collection case</a></li>
         <li><a href="#"><img src="/public/opera.png" alt="Operation" class="nav-icon" /> Operation</a></li>
@@ -111,6 +111,7 @@ export default {
 /* Hover effect for list items */
 .nav-list li:hover {
   background-color: #ffff;
+  color: #004759;
 }
 
 .nav-list a:hover {

@@ -1,13 +1,13 @@
 <template>
-  <div class="pagination-container flex items-center bg-blue-100 p-4 rounded-lg">
+  <div class="pagination-container">
     <!-- Total Count -->
-    <div class="text-gray-700 mr-4">Total {{ totalItems }}</div>
+    <div class="total-box">Total {{ totalItems }}</div>
 
     <!-- Items Per Page Selector -->
     <select
       v-model="itemsPerPage"
       @change="onItemsPerPageChange"
-      class="border rounded-lg px-2 py-1 mr-4"
+      class="items-per-page-selector"
     >
       <option v-for="option in itemsPerPageOptions" :key="option" :value="option">
         {{ option }}/Page
@@ -24,12 +24,12 @@
     </button>
 
     <!-- Page Numbers -->
-    <div v-for="page in visiblePages" :key="page" class="mx-1">
+    <div v-for="page in visiblePages" :key="page" class="page-number">
       <button
         @click="goToPage(page)"
         :class="[
           'pagination-button',
-          { 'bg-blue-500 text-white': currentPage === page }
+          { 'active-page': currentPage === page }
         ]"
       >
         {{ page }}
@@ -40,19 +40,19 @@
     <button
       :disabled="currentPage === totalPages"
       @click="goToPage(currentPage + 1)"
-      class="pagination-button"
+      class="pagination-button bg-gray-100"
     >
       &gt;
     </button>
 
     <!-- Go To Page -->
-    <div class="ml-4 flex items-center">
-      <span class="mr-2">Go to</span>
+    <div class="go-page">
+      <span class="go-label">Go to:</span>
       <input
         v-model.number="goToPageInput"
         @keyup.enter="goToPage(goToPageInput)"
         type="number"
-        class="border rounded-lg px-2 py-1 w-16"
+        class="go-input"
         :min="1"
         :max="totalPages"
       />
@@ -64,11 +64,11 @@
 export default {
   data() {
     return {
-      totalItems: 93319, // Total items
-      itemsPerPage: 10, // Default items per page
-      itemsPerPageOptions: [10, 20, 50, 100], // Options for items per page
-      currentPage: 1, // Current page
-      goToPageInput: 1, // Input for 'Go to page'
+      totalItems: 93319,
+      itemsPerPage: 10,
+      itemsPerPageOptions: [10, 20, 50, 100],
+      currentPage: 1,
+      goToPageInput: 1,
     };
   },
   computed: {
@@ -76,27 +76,24 @@ export default {
       return Math.ceil(this.totalItems / this.itemsPerPage);
     },
     visiblePages() {
-      const maxPages = 6; // Maximum number of visible pages
+      const maxPages = 6;
       const pages = [];
-
       const startPage = Math.max(1, this.currentPage - Math.floor(maxPages / 2));
       const endPage = Math.min(startPage + maxPages - 1, this.totalPages);
-
       for (let i = startPage; i <= endPage; i++) {
         pages.push(i);
       }
-
       return pages;
     },
   },
   methods: {
     onItemsPerPageChange() {
-      this.currentPage = 1; // Reset to page 1 when items per page changes
+      this.currentPage = 1;
     },
     goToPage(page) {
       if (page >= 1 && page <= this.totalPages) {
         this.currentPage = page;
-        this.goToPageInput = page; // Sync input field
+        this.goToPageInput = page;
       }
     },
   },
@@ -106,27 +103,79 @@ export default {
 <style scoped>
 .pagination-container {
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content:end;
+  flex-wrap: wrap;
+  background:  #d9f7ff;
+  padding: 16px;
+  border-radius: 12px;
+  gap: 12px;
+  font-weight: 400;
+}
+
+.total-box {
+  font-weight: 400;
+  color: #004759;
+  margin-right: 12px;
+  font-size: 14px;
+}
+
+.items-per-page-selector {
+  border: 1px solid #00ccff;
+  border-radius: 8px;
+  padding: 4px;
+  color: #004759;
+  background-color: #ffffff;
+  outline: none;
 }
 
 .pagination-button {
-  background: white;
-  border: 1px solid #d1d5db;
+  border: 1px solid #fff;
   border-radius: 8px;
-  padding: 0.5rem 0.75rem;
-  color: #374151;
+  padding: 6px 12px;
+  font-size: 14px;
+  color: #004759;
+  background-color: #ffffff;
   cursor: pointer;
-  font-size: 0.875rem;
-  transition: all 0.2s ease-in-out;
+  transition: background-color 0.3s, color 0.3s;
 }
 
 .pagination-button:hover:not(:disabled) {
-  background-color: #e5e7eb;
+  background-color: #00ccff;
+  color: white;
 }
 
 .pagination-button:disabled {
   cursor: not-allowed;
   opacity: 0.6;
+}
+
+.active-page {
+  background-color: #00ccff;
+  color: white;
+}
+
+.go-page {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background:   #d9f7ff;
+  border: 1px solid   #d9f7ff;
+  border-radius: 8px;
+  padding: 6px 12px;
+}
+
+.go-label {
+  font-size: 14px;
+  color: #004759;
+}
+
+.go-input {
+  border: 1px solid   #00ccff;
+  border-radius: 4px;
+  padding: 4px 8px;
+  width: 60px;
+  text-align: center;
+  background-color: #d9f7ff;
 }
 </style>
