@@ -17,7 +17,7 @@
         </div>
 
         <div class="form-box">
-          <form action="post">
+          <form @submit.prevent="handleSubmit">
             <div class="form-group">
               <label for="email">Email:</label>
               <input
@@ -27,6 +27,7 @@
                 name="email"
                 required
                 class="input-field"
+                v-model="email"
               />
             </div>
             <div class="form-group">
@@ -39,6 +40,7 @@
                   name="password"
                   required
                   class="input-field"
+                  v-model="password"
                 />
                 <i
                   id="togglePassword"
@@ -50,6 +52,7 @@
                     font-size: 1.0em;
                     color: #555;
                   "
+                  @click="togglePasswordVisibility"
                 ></i>
               </div>
               <a href="#" class="forgot-password">Forgot Password?</a>
@@ -64,6 +67,12 @@
 
 <script>
 export default {
+  data() {
+    return {
+      email: '',
+      password: '',
+    };
+  },
   mounted() {
     const passwordInput = document.getElementById("password");
     const togglePassword = document.getElementById("togglePassword");
@@ -76,6 +85,25 @@ export default {
       togglePassword.classList.toggle("fa-eye");
       togglePassword.classList.toggle("fa-eye-slash");
     });
+  },
+  methods: {
+    togglePasswordVisibility() {
+      const passwordInput = document.getElementById("password");
+      const togglePassword = document.getElementById("togglePassword");
+      
+      const isPassword = passwordInput.type === "password";
+      passwordInput.type = isPassword ? "text" : "password";
+
+      // Toggle icons using Font Awesome classes
+      togglePassword.classList.toggle("fa-eye");
+      togglePassword.classList.toggle("fa-eye-slash");
+    },
+    handleSubmit() {
+      // Handle form submission logic here (e.g., API request)
+      
+      // Redirect to the dashboard after successful login
+      this.$router.push('/dashboard');
+    },
   },
 };
 </script>

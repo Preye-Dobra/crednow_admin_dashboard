@@ -2,17 +2,19 @@
   <div class="dashboard-container">
     <dashboard class="dashboard" />
     <dashboardTwo class="dashboard-two" />
+    <pagination class="pagination"/>
   </div>
 </template>
 
 <script>
 import dashboard from "../components/dashboard/main.vue";
 import dashboardTwo from "../components/dashboard/maintwo.vue";
-
+import pagination from "../components/modals/pagination.vue";
 export default {
   components: {
     dashboard,
     dashboardTwo,
+    pagination,
   },
 };
 </script>
@@ -29,7 +31,7 @@ export default {
   font-family: 'Fira Sans', sans-serif;
   box-sizing: border-box; /* Ensure padding does not affect width */
 }
-
+.pagination,
 .dashboard,
 .dashboard-two {
   width: 100%;

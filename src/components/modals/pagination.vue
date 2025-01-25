@@ -1,0 +1,132 @@
+<template>
+  <div class="pagination-container flex items-center bg-blue-100 p-4 rounded-lg">
+    <!-- Total Count -->
+    <div class="text-gray-700 mr-4">Total {{ totalItems }}</div>
+
+    <!-- Items Per Page Selector -->
+    <select
+      v-model="itemsPerPage"
+      @change="onItemsPerPageChange"
+      class="border rounded-lg px-2 py-1 mr-4"
+    >
+      <option v-for="option in itemsPerPageOptions" :key="option" :value="option">
+        {{ option }}/Page
+      </option>
+    </select>
+
+    <!-- Previous Button -->
+    <button
+      :disabled="currentPage === 1"
+      @click="goToPage(currentPage - 1)"
+      class="pagination-button"
+    >
+      &lt;
+    </button>
+
+    <!-- Page Numbers -->
+    <div v-for="page in visiblePages" :key="page" class="mx-1">
+      <button
+        @click="goToPage(page)"
+        :class="[
+          'pagination-button',
+          { 'bg-blue-500 text-white': currentPage === page }
+        ]"
+      >
+        {{ page }}
+      </button>
+    </div>
+
+    <!-- Next Button -->
+    <button
+      :disabled="currentPage === totalPages"
+      @click="goToPage(currentPage + 1)"
+      class="pagination-button"
+    >
+      &gt;
+    </button>
+
+    <!-- Go To Page -->
+    <div class="ml-4 flex items-center">
+      <span class="mr-2">Go to</span>
+      <input
+        v-model.number="goToPageInput"
+        @keyup.enter="goToPage(goToPageInput)"
+        type="number"
+        class="border rounded-lg px-2 py-1 w-16"
+        :min="1"
+        :max="totalPages"
+      />
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  data() {
+    return {
+      totalItems: 93319, // Total items
+      itemsPerPage: 10, // Default items per page
+      itemsPerPageOptions: [10, 20, 50, 100], // Options for items per page
+      currentPage: 1, // Current page
+      goToPageInput: 1, // Input for 'Go to page'
+    };
+  },
+  computed: {
+    totalPages() {
+      return Math.ceil(this.totalItems / this.itemsPerPage);
+    },
+    visiblePages() {
+      const maxPages = 6; // Maximum number of visible pages
+      const pages = [];
+
+      const startPage = Math.max(1, this.currentPage - Math.floor(maxPages / 2));
+      const endPage = Math.min(startPage + maxPages - 1, this.totalPages);
+
+      for (let i = startPage; i <= endPage; i++) {
+        pages.push(i);
+      }
+
+      return pages;
+    },
+  },
+  methods: {
+    onItemsPerPageChange() {
+      this.currentPage = 1; // Reset to page 1 when items per page changes
+    },
+    goToPage(page) {
+      if (page >= 1 && page <= this.totalPages) {
+        this.currentPage = page;
+        this.goToPageInput = page; // Sync input field
+      }
+    },
+  },
+};
+</script>
+
+<style scoped>
+.pagination-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.pagination-button {
+  background: white;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  padding: 0.5rem 0.75rem;
+  color: #374151;
+  cursor: pointer;
+  font-size: 0.875rem;
+  transition: all 0.2s ease-in-out;
+}
+
+.pagination-button:hover:not(:disabled) {
+  background-color: #e5e7eb;
+}
+
+.pagination-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+</style>

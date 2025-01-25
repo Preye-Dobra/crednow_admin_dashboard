@@ -371,10 +371,25 @@ export default {
   width: 3592px;
   border-collapse: collapse;
   margin:  0;
-  font-size: 0.9rem;
+  
   text-align: left;
 }
+ 
 
+tr th {
+font-size: 14px;
+line-height: 19.6px;
+text-align: center;
+color: #004759;
+font-weight: 400;
+}
+
+tr td{
+  font-size: 12px;
+  line-height: 16.8px;
+  font-weight: 400;
+  text-align: center;
+}
 .data-table th,
 .data-table td {
   padding: 0.75rem;
@@ -404,12 +419,12 @@ export default {
 
 .pass {
   color: #00CCFF;
-  font-weight: bold;
+  
 }
 
 .waiting {
   color: orange;
-  font-weight: bold;
+  
 }
 
 button-container {
