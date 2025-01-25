@@ -324,6 +324,7 @@ export default {
   margin-bottom: 20px;
   width: 1228px;
   height: 46px;
+  font-weight: 400;
 }
 
 .header-title {
