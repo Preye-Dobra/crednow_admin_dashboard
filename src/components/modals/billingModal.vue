@@ -18,7 +18,10 @@
               class="input-field"
             />
           </div>
-          <button type="submit" class="submit-btn">Submit</button>
+          <div class="button-container">
+            <button type="button" class="action-btn cancel">Cancel</button>
+            <button type="submit" class="action-btn submit">Submit</button>
+          </div>
         </form>
       </div>
     </div>
@@ -43,10 +46,10 @@ export default {
       formFields: [
         { id: "field1", label: "Loan Number", type: "text", placeholder: "Enter Loan Number", value: "" },
         { id: "field2", label: "Name", type: "text", placeholder: "Enter Name", value: "" },
-        { id: "field3", label: "Days Overdue", type: "Number", placeholder: "Enter Days Overdue", value: "" },
-        { id: "field4", label: "Total Remaining Repayment", type: "Number", placeholder: "Enter Total Remaining Repayment", value: "" },
+        { id: "field3", label: "Days Overdue", type: "number", placeholder: "Enter Days Overdue", value: "" },
+        { id: "field4", label: "Total Remaining Repayment", type: "number", placeholder: "Enter Total Remaining Repayment", value: "" },
         { id: "field5", label: "Public Transfer Amount", type: "number", placeholder: "Enter Public Transfer Amount", value: "" },
-        { id: "field6", label: "Remarks", type: "text", placeholder: "Enter Field 6", value: "" },
+        { id: "field6", label: "Remarks", type: "text", placeholder: "Enter Remarks", value: "" },
       ],
     };
   },
@@ -64,6 +67,7 @@ export default {
   },
 };
 </script>
+
 <style scoped>
 .modal-container {
   position: fixed;
@@ -77,7 +81,11 @@ export default {
   align-items: center;
   z-index: 1000;
 }
-
+.close-button{
+    width: 22px;
+    height: 22px;
+    
+}
 .modal {
   width: 563px;
   height: auto;
@@ -131,19 +139,44 @@ label {
   color: #acacb2;
 }
 
-.submit-btn {
-  background-color: #00ccff;
-  color: #fff;
+.button-container {
+  width: 208px; /* You can keep this width, or adjust it to match your design */
+  height: 40px;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 16px;
+  align-items: center;
+  /* Center the buttons in the container */
+  margin-left: auto;
+  margin-right: auto;
+}
+
+
+.action-btn {
+  width: 98px;
+  height: 100%;
+  
+  color: white;
   border: none;
-  padding: 10px;
-  font-size: 16px;
   border-radius: 5px;
   cursor: pointer;
   text-align: center;
+  font-size: 14px;
 }
 
-.submit-btn:hover {
+.action-btn:hover {
   background-color: #009fcc;
+}
+.cancel{
+border: 1px solid #009fcc;
+color: #009fcc;
+background-color: #fff;
+}
+
+.submit{
+    border: 1px solid #009fcc;
+color: #ecf1f2;
+background-color: #009fcc;
 }
 </style>
 
