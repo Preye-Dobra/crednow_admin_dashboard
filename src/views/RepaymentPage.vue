@@ -1,20 +1,20 @@
 <template>
   <div class="dashboard-container">
     <repayment class="dashboard" />
-    <!-- <dashboardTwo class="dashboard-two" />
-    <pagination class="pagination"/> -->
+    <!-- <dashboardTwo class="dashboard-two" />-->
+    <pagination class="pagination"/> 
   </div>
 </template>
 
 <script>
 import repayment from "../components/dashboard/repayment.vue";
 // import dashboardTwo from "../components/dashboard/maintwo.vue";
-// import pagination from "../components/modals/pagination.vue";
+ import pagination from "../components/modals/pagination.vue";
 export default {
   components: {
     repayment,
     // dashboardTwo,
-    // pagination,
+    pagination,
   },
 };
 </script>
@@ -37,36 +37,4 @@ export default {
   width: 100%;
 }
 
-</style>
-
-
----import prop---
-Header title="User Info" />
-  </div>
-</template>
-
-<script>
-import Header from "../modals/header.vue";
-
-export default {
-  components: {
-    Header,
-  },
-  data() {
-    return {
-      isModalOpen: false,
-    };
-  },
-  methods: {
-    toggleModal() {
-      this.isModalOpen = !this.isModalOpen;
-    },
-  },
-};
-</script>
-
-<style scoped>
-.main-content {
-  /* Main content styles (optional) */
-}
 </style>

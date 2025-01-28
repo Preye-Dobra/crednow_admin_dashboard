@@ -9,6 +9,11 @@ import Main from "./views/main.vue";
 import EmailVerification from "./views/VerifyEmail.vue";
 import PasswordReset from "./views/PasswordReset.vue";
 import SetPassword from "./views/NewPassword.vue";
+import UserInfo from "./views/User.vue";
+import RepaymentPage from "./views/RepaymentPage.vue";
+import LoanInquiry from "./views/LoanInquiry.vue";
+
+import Reconcilliation from "./views/reconcilliation.vue";
 const routes = [
   {
     path: "/",
@@ -24,6 +29,26 @@ const routes = [
     path: "/all-client",
     name: "Clients",
     component: Clients,
+  },
+  {
+    path: "/repay",
+    name: "RepaymentPage",
+    component: RepaymentPage,
+  },
+  {
+    path: "/reconcilliation",
+    name: "Reconcilliation",
+    component: Reconcilliation,
+  },
+  {
+    path: "/loan-inquiry",
+    name: "LoanInquiry",
+    component: LoanInquiry,
+  },
+  {
+    path: "/user",
+    name: "UserInfo",
+    component: UserInfo,
   },
   {
     path: "/auth/signin",

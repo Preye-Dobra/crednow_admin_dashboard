@@ -2,16 +2,14 @@
   <div class="main-content">
     <!-- Header Section -->
     <div class="header-container">
-      <h1 class="header-title">User Info</h1>
+      <h1 class="header-title">{{ title }}</h1>
+
       <div class="header-details">
         <ul class="header-list">
           <li class="header-item header-date">LT: 2025/01/01 09:44:02</li>
           <li class="header-item header-circle">LT</li>
           <li class="header-item header-name">Lincon Tife</li>
-          <li
-            class="header-item header-dropdown"
-            @click="toggleModal"
-          >
+          <li class="header-item header-dropdown" @click="toggleModal">
             <img src="/public/dropdown.png" alt="Dropdown" />
           </li>
         </ul>
@@ -19,23 +17,22 @@
     </div>
 
     <!-- Modal Component -->
-    <Modal
-      :isOpen="isModalOpen"
-      @close="toggleModal"
-    />
-    
-
-    <userDetail/>
+    <Modal :isOpen="isModalOpen" @close="toggleModal" />
   </div>
 </template>
 
 <script>
-import Modal from "../modals/logModal.vue";
-import userDetail from "./userDetail.vue";
+import Modal from "./logModal.vue";
+
 export default {
   components: {
     Modal,
-    userDetail
+  },
+  props: {
+    title: {
+      type: String,
+      required: true,
+    },
   },
   data() {
     return {
