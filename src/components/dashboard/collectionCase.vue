@@ -1,6 +1,6 @@
 <template>
   <div class="main-content">
-    <Header title="Recollection" />
+    <Header title="Collection Cases" />
     <!-- Tabs for Collection Case and Overdue Case -->
     <div class="tabs">
       <button
@@ -16,295 +16,291 @@
         Overdue Case
       </button>
     </div>
- <div class="line"></div>
+    <div class="line"></div>
+
     <!-- Collection Case Form -->
     <div v-if="activeTab === 'collection'" class="form-section">
-    
-     
       <form @submit.prevent="handleQuery">
         <div class="form-grid">
+          <!-- Mobile -->
+          <div class="form-group">
+            <label for="mobile">Mobile</label>
+            <input type="text" id="mobile" v-model="collectionForm.mobile" placeholder="Please enter" />
+          </div>
 
-  <!-- Mobile -->
-  <div class="form-group">
-    <label for="mobile">Mobile</label>
-    <input type="text" id="mobile" v-model="collectionForm.mobile" placeholder="Please enter" />
-  </div>
+          <!-- Name -->
+          <div class="form-group">
+            <label for="name">Name</label>
+            <input type="text" id="name" v-model="collectionForm.name" placeholder="Please enter" />
+          </div>
 
-  <!-- Name -->
-  <div class="form-group">
-    <label for="name">Name</label>
-    <input type="text" id="name" v-model="collectionForm.name" placeholder="Please enter" />
-  </div>
+          <!-- Loan Number -->
+          <div class="form-group">
+            <label for="loanNumber">Loan Number</label>
+            <input type="text" id="loanNumber" v-model="collectionForm.loanNumber" placeholder="Please enter" />
+          </div>
 
-  <!-- Loan Number -->
-  <div class="form-group">
-    <label for="loanNumber">Loan Number</label>
-    <input type="text" id="loanNumber" v-model="collectionForm.loanNumber" placeholder="Please enter" />
-  </div>
+          <!-- Loan Order Number -->
+          <div class="form-group">
+            <label for="loanOrderNumber">Loan Order Number</label>
+            <input type="text" id="loanOrderNumber" v-model="collectionForm.loanOrderNumber" placeholder="Please enter" />
+          </div>
 
-  <!-- Loan Order Number -->
-  <div class="form-group">
-    <label for="loanOrderNumber">Loan Order Number</label>
-    <input type="text" id="loanOrderNumber" v-model="collectionForm.loanOrderNumber" placeholder="Please enter" />
-  </div>
+          <!-- Product Name -->
+          <div class="form-group">
+            <label for="productName">Product Name</label>
+            <input type="text" id="productName" v-model="collectionForm.productName" placeholder="Please enter" />
+          </div>
 
-  <!-- Product Name -->
-  <div class="form-group">
-    <label for="productName">Product Name</label>
-    <input type="text" id="productName" v-model="collectionForm.productName" placeholder="Please enter" />
-  </div>
+          <!-- Loan Tenure -->
+          <div class="form-group">
+            <label for="loanTenure">Loan Tenure</label>
+            <input type="text" id="loanTenure" v-model="collectionForm.loanTenure" placeholder="Please enter" />
+          </div>
 
-  <!-- Loan Tenure -->
-  <div class="form-group">
-    <label for="loanTenure">Loan Tenure</label>
-    <input type="text" id="loanTenure" v-model="collectionForm.loanTenure" placeholder="Please enter" />
-  </div>
+          <!-- Loan Amount -->
+          <div class="form-group">
+            <label for="loanAmount">Loan Amount</label>
+            <input type="text" id="loanAmount" v-model="collectionForm.loanAmount" placeholder="Please enter" />
+          </div>
 
-  <!-- Loan Amount -->
-  <div class="form-group">
-    <label for="loanAmount">Loan Amount</label>
-    <input type="text" id="loanAmount" v-model="collectionForm.loanAmount" placeholder="Please enter" />
-  </div>
+          <!-- App Version -->
+          <div class="form-group">
+            <label for="appVersion">App Version</label>
+            <input type="text" id="appVersion" v-model="collectionForm.appVersion" placeholder="Please enter" />
+          </div>
 
-  <!-- App Version -->
-  <div class="form-group">
-    <label for="appVersion">App Version</label>
-    <input type="text" id="appVersion" v-model="collectionForm.appVersion" placeholder="Please enter" />
-  </div>
+          <!-- Due Date -->
+          <div class="form-group">
+            <label for="dueDate">Due Date</label>
+            <input type="date" id="dueDate" v-model="collectionForm.dueDate" />
+          </div>
 
-  <!-- Due Date -->
-  <div class="form-group">
-    <label for="dueDate">Due Date</label>
-    <input type="date" id="dueDate" v-model="collectionForm.dueDate" />
-  </div>
+          <!-- Loan Status -->
+          <div class="form-group">
+            <label for="loanStatus">Loan Status</label>
+            <input type="text" id="loanStatus" v-model="collectionForm.loanStatus" placeholder="Please enter" />
+          </div>
 
-  <!-- Loan Status -->
-  <div class="form-group">
-    <label for="loanStatus">Loan Status</label>
-    <input type="text" id="loanStatus" v-model="collectionForm.loanStatus" placeholder="Please enter" />
-  </div>
+          <!-- Tag -->
+          <div class="form-group">
+            <label for="tag">Tag</label>
+            <input type="text" id="tag" v-model="collectionForm.tag" placeholder="Please enter" />
+          </div>
 
-  <!-- Tag -->
-  <div class="form-group">
-    <label for="tag">Tag</label>
-    <input type="text" id="tag" v-model="collectionForm.tag" placeholder="Please enter" />
-  </div>
+          <!-- Is Repeated Borrowing -->
+          <div class="form-group">
+            <label for="isRepeatedBorrowing">Is Repeated Borrowing</label>
+            <select id="isRepeatedBorrowing" v-model="collectionForm.isRepeatedBorrowing">
+              <option disabled value="">Select Option</option>
+              <option value="yes">Yes</option>
+              <option value="no">No</option>
+            </select>
+          </div>
 
-  <!-- Is Repeated Borrowing -->
-  <div class="form-group">
-    <label for="isRepeatedBorrowing">Is Repeated Borrowing</label>
-    <select id="isRepeatedBorrowing" v-model="collectionForm.isRepeatedBorrowing">
-      <option disabled value="">Select Option</option>
-      <option value="yes">Yes</option>
-      <option value="no">No</option>
-    </select>
-  </div>
+          <!-- Loan Type -->
+          <div class="form-group">
+            <label for="loanType">Loan Type</label>
+            <input type="text" id="loanType" v-model="collectionForm.loanType" placeholder="Please enter" />
+          </div>
 
-  <!-- Loan Type -->
-  <div class="form-group">
-    <label for="loanType">Loan Type</label>
-    <input type="text" id="loanType" v-model="collectionForm.loanType" placeholder="Please enter" />
-  </div>
+          <!-- Collection Result -->
+          <div class="form-group">
+            <label for="collectionResult">Collection Result</label>
+            <input type="text" id="collectionResult" v-model="collectionForm.collectionResult" placeholder="Please enter" />
+          </div>
 
-  <!-- Collection Result -->
-  <div class="form-group">
-    <label for="collectionResult">Collection Result</label>
-    <input type="text" id="collectionResult" v-model="collectionForm.collectionResult" placeholder="Please enter" />
-  </div>
+          <!-- Proportion Without Penalty -->
+          <div class="form-group">
+            <label for="proportionWithoutPenalty">Proportion Without Penalty</label>
+            <input type="text" id="proportionWithoutPenalty" v-model="collectionForm.proportionWithoutPenalty" placeholder="Please enter" />
+          </div>
 
-  <!-- Proportion Without Penalty -->
-  <div class="form-group">
-    <label for="proportionWithoutPenalty">Proportion Without Penalty</label>
-    <input type="text" id="proportionWithoutPenalty" v-model="collectionForm.proportionWithoutPenalty" placeholder="Please enter" />
-  </div>
+          <!-- Follow-up On Day -->
+          <div class="form-group">
+            <label for="followUpOnDay">Follow-up On Day</label>
+            <input type="date" id="followUpOnDay" v-model="collectionForm.followUpOnDay" />
+          </div>
 
-  <!-- Follow-up On Day -->
-  <div class="form-group">
-    <label for="followUpOnDay">Follow-up On Day</label>
-    <input type="date" id="followUpOnDay" v-model="collectionForm.followUpOnDay" />
-  </div>
+          <!-- App Name -->
+          <div class="form-group">
+            <label for="appName">App Name</label>
+            <input type="text" id="appName" v-model="collectionForm.appName" placeholder="Please enter" />
+          </div>
 
-  <!-- App Name -->
-  <div class="form-group">
-    <label for="appName">App Name</label>
-    <input type="text" id="appName" v-model="collectionForm.appName" placeholder="Please enter" />
-  </div>
+          <!-- Collection Stage -->
+          <div class="form-group">
+            <label for="collectionStage">Collection Stage</label>
+            <select id="collectionStage" v-model="collectionForm.collectionStage">
+              <option disabled value="">Select Option</option>
+              <option v-for="option in stages" :key="option" :value="option">
+                {{ option }}
+              </option>
+            </select>
+          </div>
 
-  <!-- Collection Stage -->
-  <div class="form-group">
-    <label for="collectionStage">Collection Stage</label>
-    <select id="collectionStage" v-model="collectionForm.collectionStage">
-      <option disabled value="">Select Option</option>
-      <option v-for="option in stages" :key="option" :value="option">
-        {{ option }}
-      </option>
-    </select>
-  </div>
+          <!-- Collector -->
+          <div class="form-group">
+            <label for="collector">Collector</label>
+            <select id="collector" v-model="collectionForm.collector">
+              <option disabled value="">Select Option</option>
+              <option v-for="option in collectors" :key="option" :value="option">
+                {{ option }}
+              </option>
+            </select>
+          </div>
+        </div>
 
-  <!-- Collector -->
-  <div class="form-group">
-    <label for="collector">Collector</label>
-    <select id="collector" v-model="collectionForm.collector">
-      <option disabled value="">Select Option</option>
-      <option v-for="option in collectors" :key="option" :value="option">
-        {{ option }}
-      </option>
-    </select>
-  </div>
-
-  <!-- Action Buttons -->
-  <div class="form-group action-buttons">
-    <button type="submit" class="btn btn-query">Query</button>
-    <button type="button" class="btn btn-reset" @click="handleReset('collection')">Reset</button>
-  </div>
-</div>
-
+        <!-- Action Buttons -->
+        <div class="action-buttons">
+          <button type="submit" class="btn btn-query">Query</button>
+          <button type="button" class="btn btn-reset" @click="handleReset('collection')">Reset</button>
+        </div>
       </form>
-      <RepayCase/>
+      <RepayCase />
     </div>
 
     <!-- Overdue Case Form -->
     <div v-if="activeTab === 'overdue'" class="form-section">
-     
       <form @submit.prevent="handleQuery">
-       <div class="form-grid">
-  <!-- Mobile -->
-  <div class="form-group">
-    <label for="mobile">Mobile</label>
-    <input type="text" id="mobile" v-model="overdueForm.mobile" placeholder="Please enter" />
-  </div>
-  
-  <!-- Name -->
-  <div class="form-group">
-    <label for="name">Name</label>
-    <input type="text" id="name" v-model="overdueForm.name" placeholder="Please enter" />
-  </div>
-  
-  <!-- Loan Number -->
-  <div class="form-group">
-    <label for="loanNumber">Loan Number</label>
-    <input type="text" id="loanNumber" v-model="overdueForm.loanNumber" placeholder="Please enter" />
-  </div>
-  
-  <!-- Loan Order Number -->
-  <div class="form-group">
-    <label for="loanOrderNumber">Loan Order Number</label>
-    <input type="text" id="loanOrderNumber" v-model="overdueForm.loanOrderNumber" placeholder="Please enter" />
-  </div>
-  
-  <!-- Collection Stage -->
-  <div class="form-group">
-    <label for="collectionStage">Collection Stage</label>
-    <select id="collectionStage" v-model="overdueForm.collectionStage">
-      <option disabled value="">Select Option</option>
-      <option v-for="option in stages" :key="option" :value="option">{{ option }}</option>
-    </select>
-  </div>
-  
-  <!-- Collector -->
-  <div class="form-group">
-    <label for="collector">Collector</label>
-    <select id="collector" v-model="overdueForm.collector">
-      <option disabled value="">Select Option</option>
-      <option v-for="option in collectors" :key="option" :value="option">{{ option }}</option>
-    </select>
-  </div>
-  
-  <!-- Product Name -->
-  <div class="form-group">
-    <label for="productName">Product Name</label>
-    <select id="productName" v-model="overdueForm.productName">
-      <option disabled value="">Select Option</option>
-      <option v-for="option in products" :key="option" :value="option">{{ option }}</option>
-    </select>
-  </div>
-  
-  <!-- Loan Tenure -->
-  <div class="form-group">
-    <label for="loanTenure">Loan Tenure</label>
-    <input type="text" id="loanTenure" v-model="overdueForm.loanTenure" placeholder="Please enter" />
-  </div>
-  
-  <!-- Loan Amount -->
-  <div class="form-group">
-    <label for="loanAmount">Loan Amount</label>
-    <input type="text" id="loanAmount" v-model="overdueForm.loanAmount" placeholder="Please enter" />
-  </div>
-  
-  <!-- App Version -->
-  <div class="form-group">
-    <label for="appVersion">App Version</label>
-    <input type="text" id="appVersion" v-model="overdueForm.appVersion" placeholder="Please enter" />
-  </div>
-  
-  <!-- Due Date -->
-  <div class="form-group">
-    <label for="dueDate">Due Date</label>
-    <input type="date" id="dueDate" v-model="overdueForm.dueDate" />
-  </div>
-  
-  <!-- Loan Status -->
-  <div class="form-group">
-    <label for="loanStatus">Loan Status</label>
-    <select id="loanStatus" v-model="overdueForm.loanStatus">
-      <option disabled value="">Select Option</option>
-      <option v-for="option in statuses" :key="option" :value="option">{{ option }}</option>
-    </select>
-  </div>
-  
-  <!-- Tag -->
-  <div class="form-group">
-    <label for="tag">Tag</label>
-    <input type="text" id="tag" v-model="overdueForm.tag" placeholder="Please enter" />
-  </div>
-  
-  <!-- Is It Repeated Borrowing -->
-  <div class="form-group">
-    <label for="isRepeated">Is It Repeated Borrowing</label>
-    <select id="isRepeated" v-model="overdueForm.isRepeated">
-      <option value="yes">Yes</option>
-      <option value="no">No</option>
-    </select>
-  </div>
-  
-  <!-- Loan Type -->
-  <div class="form-group">
-    <label for="loanType">Loan Type</label>
-    <input type="text" id="loanType" v-model="overdueForm.loanType" placeholder="Please enter" />
-  </div>
-  
-  <!-- Collection Result -->
-  <div class="form-group">
-    <label for="collectionResult">Collection Result</label>
-    <input type="text" id="collectionResult" v-model="overdueForm.collectionResult" placeholder="Please enter" />
-  </div>
-  
-  <!-- App Name -->
-  <div class="form-group">
-    <label for="appName">App Name</label>
-    <input type="text" id="appName" v-model="overdueForm.appName" placeholder="Please enter" />
-  </div>
-  
-  <!-- The proportion of the amount to be repaid without penalty interest is less than -->
-  <div class="form-group">
-    <label for="repaymentProportion">The proportion of the amount to be repaid without penalty interest is less than</label>
-    <input type="text" id="repaymentProportion" v-model="overdueForm.repaymentProportion" placeholder="Please enter" />
-  </div>
-  
-  <!-- Did You Follow Up On The Day -->
-   <div class="form-group">
-    <label for="remarks">Remarks</label>
-    <input type="text" id="remarks" v-model="overdueForm.remarks" placeholder="Please enter" />
-  </div>
-  
-  <!-- Action Buttons -->
-  <div class="form-group action-buttons">
-    <button type="submit" class="btn btn-query">Query</button>
-    <button type="button" class="btn btn-reset" @click="handleReset('overdue')">Reset</button>
-  </div>
-</div>
+        <div class="form-grid">
+          <!-- Mobile -->
+          <div class="form-group">
+            <label for="mobile">Mobile</label>
+            <input type="text" id="mobile" v-model="overdueForm.mobile" placeholder="Please enter" />
+          </div>
+
+          <!-- Name -->
+          <div class="form-group">
+            <label for="name">Name</label>
+            <input type="text" id="name" v-model="overdueForm.name" placeholder="Please enter" />
+          </div>
+
+          <!-- Loan Number -->
+          <div class="form-group">
+            <label for="loanNumber">Loan Number</label>
+            <input type="text" id="loanNumber" v-model="overdueForm.loanNumber" placeholder="Please enter" />
+          </div>
+
+          <!-- Loan Order Number -->
+          <div class="form-group">
+            <label for="loanOrderNumber">Loan Order Number</label>
+            <input type="text" id="loanOrderNumber" v-model="overdueForm.loanOrderNumber" placeholder="Please enter" />
+          </div>
+
+          <!-- Collection Stage -->
+          <div class="form-group">
+            <label for="collectionStage">Collection Stage</label>
+            <select id="collectionStage" v-model="overdueForm.collectionStage">
+              <option disabled value="">Select Option</option>
+              <option v-for="option in stages" :key="option" :value="option">{{ option }}</option>
+            </select>
+          </div>
+
+          <!-- Collector -->
+          <div class="form-group">
+            <label for="collector">Collector</label>
+            <select id="collector" v-model="overdueForm.collector">
+              <option disabled value="">Select Option</option>
+              <option v-for="option in collectors" :key="option" :value="option">{{ option }}</option>
+            </select>
+          </div>
+
+          <!-- Product Name -->
+          <div class="form-group">
+            <label for="productName">Product Name</label>
+            <select id="productName" v-model="overdueForm.productName">
+              <option disabled value="">Select Option</option>
+              <option v-for="option in products" :key="option" :value="option">{{ option }}</option>
+            </select>
+          </div>
+
+          <!-- Loan Tenure -->
+          <div class="form-group">
+            <label for="loanTenure">Loan Tenure</label>
+            <input type="text" id="loanTenure" v-model="overdueForm.loanTenure" placeholder="Please enter" />
+          </div>
+
+          <!-- Loan Amount -->
+          <div class="form-group">
+            <label for="loanAmount">Loan Amount</label>
+            <input type="text" id="loanAmount" v-model="overdueForm.loanAmount" placeholder="Please enter" />
+          </div>
+
+          <!-- App Version -->
+          <div class="form-group">
+            <label for="appVersion">App Version</label>
+            <input type="text" id="appVersion" v-model="overdueForm.appVersion" placeholder="Please enter" />
+          </div>
+
+          <!-- Due Date -->
+          <div class="form-group">
+            <label for="dueDate">Due Date</label>
+            <input type="date" id="dueDate" v-model="overdueForm.dueDate" />
+          </div>
+
+          <!-- Loan Status -->
+          <div class="form-group">
+            <label for="loanStatus">Loan Status</label>
+            <select id="loanStatus" v-model="overdueForm.loanStatus">
+              <option disabled value="">Select Option</option>
+              <option v-for="option in statuses" :key="option" :value="option">{{ option }}</option>
+            </select>
+          </div>
+
+          <!-- Tag -->
+          <div class="form-group">
+            <label for="tag">Tag</label>
+            <input type="text" id="tag" v-model="overdueForm.tag" placeholder="Please enter" />
+          </div>
+
+          <!-- Is It Repeated Borrowing -->
+          <div class="form-group">
+            <label for="isRepeated">Is It Repeated Borrowing</label>
+            <select id="isRepeated" v-model="overdueForm.isRepeated">
+              <option value="yes">Yes</option>
+              <option value="no">No</option>
+            </select>
+          </div>
+
+          <!-- Loan Type -->
+          <div class="form-group">
+            <label for="loanType">Loan Type</label>
+            <input type="text" id="loanType" v-model="overdueForm.loanType" placeholder="Please enter" />
+          </div>
+
+          <!-- Collection Result -->
+          <div class="form-group">
+            <label for="collectionResult">Collection Result</label>
+            <input type="text" id="collectionResult" v-model="overdueForm.collectionResult" placeholder="Please enter" />
+          </div>
+
+          <!-- App Name -->
+          <div class="form-group">
+            <label for="appName">App Name</label>
+            <input type="text" id="appName" v-model="overdueForm.appName" placeholder="Please enter" />
+          </div>
+
+          <!-- The proportion of the amount to be repaid without penalty interest is less than -->
+          <div class="form-group">
+            <label for="repaymentProportion">The proportion of the amount to be repaid without penalty interest is less than</label>
+            <input type="text" id="repaymentProportion" v-model="overdueForm.repaymentProportion" placeholder="Please enter" />
+          </div>
+
+          <!-- Did You Follow Up On The Day -->
+          <div class="form-group">
+            <label for="remarks">Remarks</label>
+            <input type="text" id="remarks" v-model="overdueForm.remarks" placeholder="Please enter" />
+          </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="action-buttons">
+          <button type="submit" class="btn btn-query">Query</button>
+          <button type="button" class="btn btn-reset" @click="handleReset('overdue')">Reset</button>
+        </div>
       </form>
-      <OverdueCase/>
+      <OverdueCase />
     </div>
   </div>
 </template>
@@ -316,36 +312,35 @@ import RepayCase from "../modals/RepayCase.vue";
 
 export default {
   name: "MainContent",
-   components: {
+  components: {
     Header,
-  OverdueCase,
-RepayCase
-
+    OverdueCase,
+    RepayCase,
   },
   data() {
     return {
       activeTab: "collection", // Default active tab
       collectionForm: {
-  mobile: "",
-  name: "",
-  loanNumber: "",
-  loanOrderNumber: "", // Added
-  collectionStage: "",
-  collector: "",
-  productName: "", // Added
-  loanTenure: "", // Added
-  loanAmount: "", // Added
-  appVersion: "", // Added
-  dueDate: "", // Added
-  loanStatus: "", // Added
-  tag: "", // Added
-  isRepeatedBorrowing: "", // Added
-  loanType: "", // Added
-  collectionResult: "", // Added
-  proportionWithoutPenalty: "", // Added
-  followUpOnDay: "", // Added
-  appName: "", // Added
-},
+        mobile: "",
+        name: "",
+        loanNumber: "",
+        loanOrderNumber: "",
+        collectionStage: "",
+        collector: "",
+        productName: "",
+        loanTenure: "",
+        loanAmount: "",
+        appVersion: "",
+        dueDate: "",
+        loanStatus: "",
+        tag: "",
+        isRepeatedBorrowing: "",
+        loanType: "",
+        collectionResult: "",
+        proportionWithoutPenalty: "",
+        followUpOnDay: "",
+        appName: "",
+      },
       overdueForm: {
         mobile: "",
         name: "",
@@ -355,11 +350,23 @@ RepayCase
         collector: "",
         productName: "",
         loanTenure: "",
+        loanAmount: "",
+        appVersion: "",
+        dueDate: "",
+        loanStatus: "",
+        tag: "",
+        isRepeated: "",
+        loanType: "",
+        collectionResult: "",
+        repaymentProportion: "",
+        remarks: "",
+        appName: "",
       },
       logTypes: ["Type 1", "Type 2", "Type 3"],
       stages: ["Stage 1", "Stage 2", "Stage 3"],
       collectors: ["Collector 1", "Collector 2", "Collector 3"],
       products: ["Product 1", "Product 2", "Product 3"],
+      statuses: ["Active", "Closed", "Overdue"],
     };
   },
   methods: {
@@ -399,12 +406,11 @@ RepayCase
   cursor: pointer;
   border: solid #00CCFF;
   border-radius: 8px;
-  
 }
 
 .tab.active {
   background-color: #00CCFF;
-  border-bottom: 0 0 0  1px;
+  border-bottom: 0 0 0 1px;
   color: white;
 }
 
@@ -443,9 +449,8 @@ RepayCase
 .action-buttons {
   display: flex;
   gap: 10px;
-  justify-content: end;
-  align-items: center;
-  margin-top: 60px;
+  justify-content: flex-end;
+  margin-top: 20px;
 }
 
 .btn {

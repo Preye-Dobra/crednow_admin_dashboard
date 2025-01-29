@@ -5,138 +5,107 @@
         <thead>
           <tr>
             <th>Loan Number</th>
-            <th>Product Name</th>
-            <th>Master Loan</th>
             <th>Mobile</th>
             <th>Name</th>
-            <th>Days Overdue</th>
-            <th>Repayment Date</th>
-            <th>Already Flattened Amount</th>
-            <th>Flatting Amount</th>
-            <th>Total Remaining Repayment</th>
-            <th>Pending Principal</th>
-            <th>Reduce Principal</th>
-            <th>Pending Interest</th>
-            <th>Pending Service Fee</th>
-            <th>Pending Default Interest</th>
-            <th>Operation</th>
+            <th>Loan Order Number</th>
+            <th>Product Name</th>
+            <th>Loan Tenure</th>
+            <th>Loan Amount</th>
+            <th>App Version</th>
+            <th>Due Date</th>
+            <th>Loan Status</th>
+            <th>Tag</th>
+            <th>Is Repeated Borrowing</th>
+            <th>Loan Type</th>
+            <th>Collection Result</th>
+            <th>Proportion Without Penalty</th>
+            <th>Remarks</th>
+            <th>App Name</th>
+            <th>Collection Stage</th>
+            <th>Collector</th>
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(item, index) in tableData" :key="index">
-            <td>{{ item.loanNumber }}</td>
-            <td>{{ item.productName }}</td>
-            <td>{{ item.masterLoan }}</td>
-            <td>{{ item.mobile }}</td>
-            <td>{{ item.name }}</td>
-            <td>{{ item.daysOverdue }}</td>
-            <td>{{ item.repaymentDate }}</td>
-            <td>{{ item.alreadyFlattenedAmount }}</td>
-            <td>{{ item.flattingAmount }}</td>
-            <td>{{ item.totalRemainingRepayment }}</td>
-            <td>{{ item.pendingPrincipal }}</td>
-            <td>{{ item.reducePrincipal }}</td>
-            <td>{{ item.pendingInterest }}</td>
-            <td>{{ item.pendingServiceFee }}</td>
-            <td>{{ item.pendingDefaultInterest }}</td>
-            <td>
-              <div class="button-container">
-                <button class="operation-button" @click="openBillingModal(item.loanNumber)">Billing</button>
-                <button class="operation-button" @click="openIncreaseModal(item.loanNumber)">Increase</button>
-                <button class="operation-button" @click="openReductionModal(item.loanNumber)">Reduction</button>
-              </div>
-            </td>
+          <tr>
+            <td style="color: #00CCFF;">{{ overdueForm.loanNumber }}</td>
+            <td>{{ overdueForm.mobile }}</td>
+            <td>{{ overdueForm.name }}</td>
+            <td>{{ overdueForm.loanOrderNumber }}</td>
+            <td>{{ overdueForm.productName }}</td>
+            <td>{{ overdueForm.loanTenure }}</td>
+            <td>{{ overdueForm.loanAmount }}</td>
+            <td>{{ overdueForm.appVersion }}</td>
+            <td>{{ overdueForm.dueDate }}</td>
+            <td>{{ overdueForm.loanStatus }}</td>
+            <td>{{ overdueForm.tag }}</td>
+            <td>{{ overdueForm.isRepeated }}</td>
+            <td>{{ overdueForm.loanType }}</td>
+            <td>{{ overdueForm.collectionResult }}</td>
+            <td>{{ overdueForm.repaymentProportion }}</td>
+            <td>{{ overdueForm.remarks }}</td>
+            <td>{{ overdueForm.appName }}</td>
+            <td>{{ overdueForm.collectionStage }}</td>
+            <td>{{ overdueForm.collector }}</td>
           </tr>
         </tbody>
       </table>
     </div>
-
-    <!-- Modal Components -->
-    <BillingModal
-      :visible="showModal.billing"
-      :title="`Billing Information for Loan ${selectedLoan}`"
-      @close="closeModal('billing')"
-    >
-      <p>Provide necessary billing details here.</p>
-    </BillingModal>
-
-    <IncreaseModal
-      :visible="showModal.increase"
-      :title="`Increase Amount for Loan ${selectedLoan}`"
-      @close="closeModal('increase')"
-    >
-      <p>Provide necessary increase details here.</p>
-    </IncreaseModal>
-
-    <ReductionModal
-      :visible="showModal.reduction"
-      :title="`Reduction Amount for Loan ${selectedLoan}`"
-      @close="closeModal('reduction')"
-    >
-      <p>Provide necessary reduction details here.</p>
-    </ReductionModal>
   </div>
 </template>
 
 <script>
-import BillingModal from "../modals/billingModal.vue";
-import IncreaseModal from "../modals/IncreaseModal.vue";
-import ReductionModal from "../modals/ReductionModal.vue";
-
 export default {
-  components: {
-    BillingModal,
-    IncreaseModal,
-    ReductionModal,
-  },
   data() {
     return {
-      tableData: [
-        {
-          loanNumber: "211024",
-          productName: "Crednow",
-          masterLoan: "MasterLoan1",
-          mobile: "9098989898",
-          name: "Isaac Emmanuel",
-          daysOverdue: 5,
-          repaymentDate: "2023-11-01",
-          alreadyFlattenedAmount: 3000,
-          flattingAmount: 2000,
-          totalRemainingRepayment: 2000,
-          pendingPrincipal: 1500,
-          reducePrincipal: 500,
-          pendingInterest: 300,
-          pendingServiceFee: 200,
-          pendingDefaultInterest: 100,
-        },
-      ],
-      showModal: {
-        billing: false,
-        increase: false,
-        reduction: false,
-      },
-      selectedLoan: null,
+      overdueForm:
+      [ {
+      mobile: "9876543210",
+      name: "John Doe",
+      loanNumber: "LN-202401",
+      loanOrderNumber: "ORD-5678",
+      collectionStage: "Stage 3",
+      collector: "Jane Smith",
+      productName: "FastLoan",
+      loanTenure: "24 months",
+      loanAmount: "10,000",
+      appVersion: "2.1.0",
+      dueDate: "2024-02-15",
+      loanStatus: "Overdue",
+      tag: "High Priority",
+      isRepeated: "Yes",
+      loanType: "Personal Loan",
+      collectionResult: "Pending",
+      appName: "LoanMaster",
+      repaymentProportion: "75%",
+      remarks: "Customer promised to pay next week",
+    },{
+      mobile: "9876543210",
+      name: "John Doe",
+      loanNumber: "LN-202401",
+      loanOrderNumber: "ORD-5678",
+      collectionStage: "Stage 3",
+      collector: "Jane Smith",
+      productName: "FastLoan",
+      loanTenure: "24 months",
+      loanAmount: "10,000",
+      appVersion: "2.1.0",
+      dueDate: "2024-02-15",
+      loanStatus: "Overdue",
+      tag: "High Priority",
+      isRepeated: "Yes",
+      loanType: "Personal Loan",
+      collectionResult: "Pending",
+      appName: "LoanMaster",
+      repaymentProportion: "75%",
+      remarks: "Customer promised to pay next week",
+    },
+    ]
+    
     };
-  },
-  methods: {
-    openBillingModal(loanNumber) {
-      this.selectedLoan = loanNumber;
-      this.showModal.billing = true;
-    },
-    openIncreaseModal(loanNumber) {
-      this.selectedLoan = loanNumber;
-      this.showModal.increase = true;
-    },
-    openReductionModal(loanNumber) {
-      this.selectedLoan = loanNumber;
-      this.showModal.reduction = true;
-    },
-    closeModal(modalType) {
-      this.showModal[modalType] = false;
-    },
   },
 };
 </script>
+
 
 
 <style scoped>
@@ -149,7 +118,6 @@ export default {
   border: 1px solid #ddd;
   border-radius: 10px;
   margin-top: 22px;
-
 }
 
 .data-table {
@@ -176,7 +144,7 @@ tr td {
 
 .data-table th,
 .data-table td {
-  
+  padding: 0.75rem;
   
 }
 
