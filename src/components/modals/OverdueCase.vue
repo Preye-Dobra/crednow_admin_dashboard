@@ -58,27 +58,7 @@ export default {
   data() {
     return {
       overdueForm:
-      [ {
-      mobile: "9876543210",
-      name: "John Doe",
-      loanNumber: "LN-202401",
-      loanOrderNumber: "ORD-5678",
-      collectionStage: "Stage 3",
-      collector: "Jane Smith",
-      productName: "FastLoan",
-      loanTenure: "24 months",
-      loanAmount: "10,000",
-      appVersion: "2.1.0",
-      dueDate: "2024-02-15",
-      loanStatus: "Overdue",
-      tag: "High Priority",
-      isRepeated: "Yes",
-      loanType: "Personal Loan",
-      collectionResult: "Pending",
-      appName: "LoanMaster",
-      repaymentProportion: "75%",
-      remarks: "Customer promised to pay next week",
-    },{
+       {
       mobile: "9876543210",
       name: "John Doe",
       loanNumber: "LN-202401",
@@ -99,7 +79,6 @@ export default {
       repaymentProportion: "75%",
       remarks: "Customer promised to pay next week",
     },
-    ]
     
     };
   },
