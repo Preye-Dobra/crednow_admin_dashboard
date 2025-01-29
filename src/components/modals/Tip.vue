@@ -37,7 +37,8 @@ export default {
       this.$emit("close");
     },
     confirmAction() {
-      this.$emit("confirm");
+      this.$emit("confirm"); // Emit event to open the next modal
+      this.closeModal(); // Close current modal
     },
   },
 };
@@ -67,27 +68,36 @@ export default {
 
 .modal-header {
   display: flex;
-  justify-content: space-between;
+  justify-content: center; /* Center title */
   align-items: center;
-  background-color: #00ccff;
+  margin-bottom: 20px;
+  background-color: #00CCFF;
   height: 46px;
+  width: 100%;
   border-radius: 8px 8px 0 0;
   font-size: 24px;
-  font-weight: bold;
   padding: 0 16px;
+  position: relative; /* Required for absolute positioning */
 }
 
 .text {
   color: #ffffff;
+  font-weight: 400;
+  font-size: 22px;
+  flex-grow: 1; /* Allows centering while pushing close button */
+  text-align: center;
 }
 
 .close-button {
+  position: absolute;
+  right: 16px; /* Keep close button aligned to the right */
   background: none;
   border: none;
   font-size: 20px;
   cursor: pointer;
   color: #fff;
 }
+
 
 .modal-content {
   text-align: center;

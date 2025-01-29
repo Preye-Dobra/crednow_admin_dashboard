@@ -2,14 +2,18 @@
   <div v-if="visible" class="modal-container">
     <div class="modal">
       <div class="modal-title">
-        <h2 class="text">{{ tittle  }}</h2> <!-- Adding fallback -->
+        <h2 class="text">{{ tittlee }}</h2>
         <button class="close-button" @click="closeModal">×</button>
       </div>
       <div class="modal-content">
         <form @submit.prevent="handleSubmit" class="form-box">
           <div class="form-group" v-for="(field, index) in formFields" :key="index">
-            <label :for="field.id">{{ field.label }}</label>
+            <!-- Label for all fields except checkbox -->
+            <label :for="field.id" v-if="field.type !== 'checkbox'">{{ field.label }}</label>
+            
+            <!-- Input field for text fields -->
             <input
+              v-if="field.type !== 'checkbox'"
               :id="field.id"
               :type="field.type"
               :placeholder="field.placeholder"
@@ -17,6 +21,19 @@
               required
               class="input-field"
             />
+            
+            <!-- Checkbox for Plus Note -->
+            <div v-if="field.type === 'checkbox'" class="checkbox-container">
+              <input
+                type="checkbox"
+                :id="field.id"
+                v-model="field.value"
+                class="checkbox-input"
+              />
+              <label :for="field.id" class="checkbox-label">
+                {{ field.label }}
+              </label>
+            </div>
           </div>
           <div class="button-container">
             <button type="button" class="action-btn cancel" @click="closeModal">Cancel</button>
@@ -36,18 +53,19 @@ export default {
       type: Boolean,
       required: true,
     },
-    tittle: {
+    tittlee: {
       type: String,
-      default: "Modify Account", // Default value is "Edit"
+      default: "Loan Management", // Default title
     },
   },
   data() {
     return {
+      // Modified form fields based on the new labels
       formFields: [
         { id: "loanNumber", label: "Loan Number", type: "text", placeholder: "Enter Loan Number", value: "" },
-        { id: "transactionNumber", label: "Transaction Number", type: "text", placeholder: "Enter Transaction Number", value: "" },
-        { id: "tradeNumber", label: "Trade Number", type: "text", placeholder: "Enter Trade Number", value: "" },
-        { id: "transferCode", label: "Transfer Code", type: "text", placeholder: "Enter Transfer Code", value: "" },
+        { id: "loanStatus", label: "Loan Status", type: "text", placeholder: "Enter Loan Status", value: "" },
+        { id: "remarks", label: "Remarks", type: "text", placeholder: "Enter Remarks", value: "" },
+        { id: "plusNote", label: "Plus Note", type: "checkbox", value: false }, // Checkbox for Plus Note
       ],
     };
   },
@@ -66,7 +84,6 @@ export default {
   },
 };
 </script>
-
 
 <style scoped>
 .text {
@@ -130,6 +147,10 @@ export default {
 
 .close-button {
   width: 20px;
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
 }
 
 .form-group {
@@ -161,6 +182,24 @@ label {
   font-size: 12px;
   font-weight: 400;
   line-height: 16.8px;
+}
+
+.checkbox-container {
+  display: flex;
+  align-items: center;
+  gap: 8px; /* Space between checkbox and label */
+}
+
+.checkbox-input {
+  width: 16px;
+  height: 16px;
+  margin: 0;
+}
+
+.checkbox-label {
+  color: #004759;
+  font-size: 14px;
+  margin: 0;
 }
 
 .button-container {

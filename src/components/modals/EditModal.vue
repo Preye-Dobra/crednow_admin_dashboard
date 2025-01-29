@@ -2,7 +2,7 @@
   <div v-if="visible" class="modal-container">
     <div class="modal">
       <div class="modal-header">
-        <h2 class="text">{{ header }}</h2>
+        <h2 class="text">{{ title }}</h2>
         <button class="close-button" @click="closeModal">×</button>
       </div>
       <div class="modal-content">
@@ -28,26 +28,26 @@
   </div>
 </template>
 
-<script>
+<script >
 export default {
-  name: "EditModal",
-  props: {
-    visible: {
-      type: Boolean,
-      required: true,
-    },
-    title: {
-      type: String,
-      default: "Edit",
-    },
+  name: "EdithModal",
+props: {
+  visible: {
+    type: Boolean,
+    required: true,
   },
+  title: {  // Change from titleee to title
+    type: String,
+    default: "Edit",
+  },
+}
+,
   data() {
     return {
       formFields: [
-        { id: "loanNumber", label: "Loan Number", type: "text", placeholder: "Enter Loan Number", value: "" },
-        { id: "transactionNumber", label: "Transaction Number", type: "text", placeholder: "Enter Transaction Number", value: "" },
-        { id: "tradeNumber", label: "Trade Number", type: "text", placeholder: "Enter Trade Number", value: "" },
-        { id: "transferCode", label: "Transfer Code", type: "text", placeholder: "Enter Transfer Code", value: "" },
+        { id: "field1", label: "Total Remaining Payment", type: "number", placeholder: "Enter Total Remaining Payment", value: "" },
+        { id: "field2", label: "Increase Principal", type: "number", placeholder: "Enter Increase Principal", value: "" },
+        { id: "field3", label: "Remarks", type: "text", placeholder: "Enter Remarks", value: "" },
       ],
     };
   },
@@ -56,10 +56,9 @@ export default {
       this.$emit("close");
     },
     handleSubmit() {
-      const formData = this.formFields.reduce((acc, field) => {
-        acc[field.id] = field.value;
-        return acc;
-      }, {});
+      const formData = this.formFields.map((field) => ({
+        [field.id]: field.value,
+      }));
       console.log("Form submitted with data:", formData);
       this.closeModal();
     },
