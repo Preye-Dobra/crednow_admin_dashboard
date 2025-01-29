@@ -42,8 +42,8 @@
             <td>
               <div class="button-container">
                 <button class="operation-button" @click="openBillingModal(item.loanNumber)">Billing</button>
-                <button class="operation-button" @click="performIncrease(item.loanNumber)">Increase</button>
-                <button class="operation-button" @click="performReduction(item.loanNumber)">Reduction</button>
+                <button class="operation-button" @click="openIncreaseModal(item.loanNumber)">Increase</button>
+                <button class="operation-button" @click="openReductionModal(item.loanNumber)">Reduction</button>
               </div>
             </td>
           </tr>
@@ -51,23 +51,43 @@
       </table>
     </div>
 
-    <!-- Modal Component -->
+    <!-- Modal Components -->
     <BillingModal
-      :visible="showModal"
+      :visible="showModal.billing"
       :title="`Billing Information for Loan ${selectedLoan}`"
-      @close="closeModal"
+      @close="closeModal('billing')"
     >
       <p>Provide necessary billing details here.</p>
     </BillingModal>
+
+    <IncreaseModal
+      :visible="showModal.increase"
+      :title="`Increase Amount for Loan ${selectedLoan}`"
+      @close="closeModal('increase')"
+    >
+      <p>Provide necessary increase details here.</p>
+    </IncreaseModal>
+
+    <ReductionModal
+      :visible="showModal.reduction"
+      :title="`Reduction Amount for Loan ${selectedLoan}`"
+      @close="closeModal('reduction')"
+    >
+      <p>Provide necessary reduction details here.</p>
+    </ReductionModal>
   </div>
 </template>
 
 <script>
 import BillingModal from "../modals/billingModal.vue";
+import IncreaseModal from "../modals/IncreaseModal.vue";
+import ReductionModal from "../modals/ReductionModal.vue";
 
 export default {
   components: {
     BillingModal,
+    IncreaseModal,
+    ReductionModal,
   },
   data() {
     return {
@@ -90,23 +110,29 @@ export default {
           pendingDefaultInterest: 100,
         },
       ],
-      showModal: false,
+      showModal: {
+        billing: false,
+        increase: false,
+        reduction: false,
+      },
       selectedLoan: null,
     };
   },
   methods: {
     openBillingModal(loanNumber) {
       this.selectedLoan = loanNumber;
-      this.showModal = true;
+      this.showModal.billing = true;
     },
-    closeModal() {
-      this.showModal = false;
+    openIncreaseModal(loanNumber) {
+      this.selectedLoan = loanNumber;
+      this.showModal.increase = true;
     },
-    performIncrease(loanNumber) {
-      alert(`Increase for Loan Number ${loanNumber} performed.`);
+    openReductionModal(loanNumber) {
+      this.selectedLoan = loanNumber;
+      this.showModal.reduction = true;
     },
-    performReduction(loanNumber) {
-      alert(`Reduction for Loan Number ${loanNumber} performed.`);
+    closeModal(modalType) {
+      this.showModal[modalType] = false;
     },
   },
 };

@@ -12,7 +12,7 @@ import SetPassword from "./views/NewPassword.vue";
 import UserInfo from "./views/User.vue";
 import RepaymentPage from "./views/RepaymentPage.vue";
 import LoanInquiry from "./views/LoanInquiry.vue";
-
+import CollectionPage from "./views/CollectionCase.vue"
 import Reconcilliation from "./views/reconcilliation.vue";
 const routes = [
   {
@@ -34,6 +34,11 @@ const routes = [
     path: "/repay",
     name: "RepaymentPage",
     component: RepaymentPage,
+  },
+  {
+    path: "/collection-case",
+    name: "CollectionPage",
+    component: CollectionPage,
   },
   {
     path: "/reconcilliation",
