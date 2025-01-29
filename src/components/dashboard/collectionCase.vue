@@ -1,6 +1,6 @@
 <template>
   <div class="main-content">
-    <Header />
+    <Header title="Recollection" />
     <!-- Tabs for Collection Case and Overdue Case -->
     <div class="tabs">
       <button
@@ -160,114 +160,166 @@
 </div>
 
       </form>
+      <RepayCase/>
     </div>
 
     <!-- Overdue Case Form -->
     <div v-if="activeTab === 'overdue'" class="form-section">
      
       <form @submit.prevent="handleQuery">
-        <div class="form-grid">
-          <!-- Mobile -->
-          <div class="form-group">
-            <label for="mobile">Mobile</label>
-            <input
-              type="text"
-              id="mobile"
-              v-model="overdueForm.mobile"
-              placeholder="Please enter"
-            />
-          </div>
-          <!-- Name -->
-          <div class="form-group">
-            <label for="name">Name</label>
-            <input
-              type="text"
-              id="name"
-              v-model="overdueForm.name"
-              placeholder="Please enter"
-            />
-          </div>
-          <!-- Loan Number -->
-          <div class="form-group">
-            <label for="loanNumber">Loan Number</label>
-            <input
-              type="text"
-              id="loanNumber"
-              v-model="overdueForm.loanNumber"
-              placeholder="Please enter"
-            />
-          </div>
-          <!-- Loan Order Number -->
-          <div class="form-group">
-            <label for="loanOrderNumber">Loan Order Number</label>
-            <input
-              type="text"
-              id="loanOrderNumber"
-              v-model="overdueForm.loanOrderNumber"
-              placeholder="Please enter"
-            />
-          </div>
-          <!-- Collection Stage -->
-          <div class="form-group">
-            <label for="collectionStage">Collection Stage</label>
-            <select id="collectionStage" v-model="overdueForm.collectionStage">
-              <option disabled value="">Select Option</option>
-              <option v-for="option in stages" :key="option" :value="option">
-                {{ option }}
-              </option>
-            </select>
-          </div>
-          <!-- Collector -->
-          <div class="form-group">
-            <label for="collector">Collector</label>
-            <select id="collector" v-model="overdueForm.collector">
-              <option disabled value="">Select Option</option>
-              <option v-for="option in collectors" :key="option" :value="option">
-                {{ option }}
-              </option>
-            </select>
-          </div>
-          <!-- Product Name -->
-          <div class="form-group">
-            <label for="productName">Product Name</label>
-            <select id="productName" v-model="overdueForm.productName">
-              <option disabled value="">Select Option</option>
-              <option v-for="option in products" :key="option" :value="option">
-                {{ option }}
-              </option>
-            </select>
-          </div>
-          <!-- Loan Tenure -->
-          <div class="form-group">
-            <label for="loanTenure">Loan Tenure</label>
-            <input
-              type="text"
-              id="loanTenure"
-              v-model="overdueForm.loanTenure"
-              placeholder="Please enter"
-            />
-          </div>
-          <!-- Action Buttons -->
-          <div class="form-group action-buttons">
-            <button type="submit" class="btn btn-query">Query</button>
-            <button type="button" class="btn btn-reset" @click="handleReset('overdue')">
-              Reset
-            </button>
-          </div>
-        </div>
+       <div class="form-grid">
+  <!-- Mobile -->
+  <div class="form-group">
+    <label for="mobile">Mobile</label>
+    <input type="text" id="mobile" v-model="overdueForm.mobile" placeholder="Please enter" />
+  </div>
+  
+  <!-- Name -->
+  <div class="form-group">
+    <label for="name">Name</label>
+    <input type="text" id="name" v-model="overdueForm.name" placeholder="Please enter" />
+  </div>
+  
+  <!-- Loan Number -->
+  <div class="form-group">
+    <label for="loanNumber">Loan Number</label>
+    <input type="text" id="loanNumber" v-model="overdueForm.loanNumber" placeholder="Please enter" />
+  </div>
+  
+  <!-- Loan Order Number -->
+  <div class="form-group">
+    <label for="loanOrderNumber">Loan Order Number</label>
+    <input type="text" id="loanOrderNumber" v-model="overdueForm.loanOrderNumber" placeholder="Please enter" />
+  </div>
+  
+  <!-- Collection Stage -->
+  <div class="form-group">
+    <label for="collectionStage">Collection Stage</label>
+    <select id="collectionStage" v-model="overdueForm.collectionStage">
+      <option disabled value="">Select Option</option>
+      <option v-for="option in stages" :key="option" :value="option">{{ option }}</option>
+    </select>
+  </div>
+  
+  <!-- Collector -->
+  <div class="form-group">
+    <label for="collector">Collector</label>
+    <select id="collector" v-model="overdueForm.collector">
+      <option disabled value="">Select Option</option>
+      <option v-for="option in collectors" :key="option" :value="option">{{ option }}</option>
+    </select>
+  </div>
+  
+  <!-- Product Name -->
+  <div class="form-group">
+    <label for="productName">Product Name</label>
+    <select id="productName" v-model="overdueForm.productName">
+      <option disabled value="">Select Option</option>
+      <option v-for="option in products" :key="option" :value="option">{{ option }}</option>
+    </select>
+  </div>
+  
+  <!-- Loan Tenure -->
+  <div class="form-group">
+    <label for="loanTenure">Loan Tenure</label>
+    <input type="text" id="loanTenure" v-model="overdueForm.loanTenure" placeholder="Please enter" />
+  </div>
+  
+  <!-- Loan Amount -->
+  <div class="form-group">
+    <label for="loanAmount">Loan Amount</label>
+    <input type="text" id="loanAmount" v-model="overdueForm.loanAmount" placeholder="Please enter" />
+  </div>
+  
+  <!-- App Version -->
+  <div class="form-group">
+    <label for="appVersion">App Version</label>
+    <input type="text" id="appVersion" v-model="overdueForm.appVersion" placeholder="Please enter" />
+  </div>
+  
+  <!-- Due Date -->
+  <div class="form-group">
+    <label for="dueDate">Due Date</label>
+    <input type="date" id="dueDate" v-model="overdueForm.dueDate" />
+  </div>
+  
+  <!-- Loan Status -->
+  <div class="form-group">
+    <label for="loanStatus">Loan Status</label>
+    <select id="loanStatus" v-model="overdueForm.loanStatus">
+      <option disabled value="">Select Option</option>
+      <option v-for="option in statuses" :key="option" :value="option">{{ option }}</option>
+    </select>
+  </div>
+  
+  <!-- Tag -->
+  <div class="form-group">
+    <label for="tag">Tag</label>
+    <input type="text" id="tag" v-model="overdueForm.tag" placeholder="Please enter" />
+  </div>
+  
+  <!-- Is It Repeated Borrowing -->
+  <div class="form-group">
+    <label for="isRepeated">Is It Repeated Borrowing</label>
+    <select id="isRepeated" v-model="overdueForm.isRepeated">
+      <option value="yes">Yes</option>
+      <option value="no">No</option>
+    </select>
+  </div>
+  
+  <!-- Loan Type -->
+  <div class="form-group">
+    <label for="loanType">Loan Type</label>
+    <input type="text" id="loanType" v-model="overdueForm.loanType" placeholder="Please enter" />
+  </div>
+  
+  <!-- Collection Result -->
+  <div class="form-group">
+    <label for="collectionResult">Collection Result</label>
+    <input type="text" id="collectionResult" v-model="overdueForm.collectionResult" placeholder="Please enter" />
+  </div>
+  
+  <!-- App Name -->
+  <div class="form-group">
+    <label for="appName">App Name</label>
+    <input type="text" id="appName" v-model="overdueForm.appName" placeholder="Please enter" />
+  </div>
+  
+  <!-- The proportion of the amount to be repaid without penalty interest is less than -->
+  <div class="form-group">
+    <label for="repaymentProportion">The proportion of the amount to be repaid without penalty interest is less than</label>
+    <input type="text" id="repaymentProportion" v-model="overdueForm.repaymentProportion" placeholder="Please enter" />
+  </div>
+  
+  <!-- Did You Follow Up On The Day -->
+   <div class="form-group">
+    <label for="remarks">Remarks</label>
+    <input type="text" id="remarks" v-model="overdueForm.remarks" placeholder="Please enter" />
+  </div>
+  
+  <!-- Action Buttons -->
+  <div class="form-group action-buttons">
+    <button type="submit" class="btn btn-query">Query</button>
+    <button type="button" class="btn btn-reset" @click="handleReset('overdue')">Reset</button>
+  </div>
+</div>
       </form>
+      <OverdueCase/>
     </div>
   </div>
 </template>
 
 <script>
 import Header from "../modals/header.vue";
+import OverdueCase from "../modals/OverdueCase.vue";
+import RepayCase from "../modals/RepayCase.vue";
+
 export default {
   name: "MainContent",
    components: {
-    Header
-    // query,
-    // queryTable
+    Header,
+  OverdueCase,
+RepayCase
 
   },
   data() {
@@ -345,13 +397,14 @@ export default {
 .tab {
   padding: 10px 20px;
   cursor: pointer;
-  border: 1px solid #ddd;
+  border: solid #00CCFF;
   border-radius: 8px;
-  background-color: #f9f9f9;
+  
 }
 
 .tab.active {
   background-color: #00CCFF;
+  border-bottom: 0 0 0  1px;
   color: white;
 }
 
@@ -392,7 +445,7 @@ export default {
   gap: 10px;
   justify-content: end;
   align-items: center;
-  margin-top: 22px;
+  margin-top: 60px;
 }
 
 .btn {
