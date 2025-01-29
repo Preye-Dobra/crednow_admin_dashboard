@@ -1,7 +1,7 @@
 <template>
   <div
     class="user-info-container bg-gray-100 p-6 rounded-lg shadow-lg"
-    style="width: 1218px; height: 417px;"
+    style="width: 1218px; height: auto;"
   >
     <!-- Header -->
     <div class="flex items-center justify-between mb-4 bg-white px-4 py-2 border-b">
@@ -30,6 +30,102 @@
         Delete Client
       </button>
     </div>
+
+    <!-- User Information Tab -->
+    <div v-if="activeTab === 'user'" class="user-info-content">
+      <!-- Basic Information -->
+      <div class="basic-info-section mb-6">
+        <h3 class="text-lg font-semibold mb-4">Basic Information</h3>
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <p><strong>User ID:</strong> 198859</p>
+            <p><strong>Name:</strong> Covenant Oubisi</p>
+            <p><strong>Mobile:</strong> 906/459898</p>
+            <p><strong>International Area Code:</strong> 198859</p>
+            <p><strong>Registration Time:</strong> 2025-01-04 13:45:00</p>
+            <p><strong>Current Equipment:</strong> Redmi 2873N002A</p>
+            <p><strong>User Level:</strong> Level 1</p>
+            <p><strong>Loan Settlement Times:</strong> 0</p>
+          </div>
+          <div>
+            <p><strong>Application Channel:</strong> -</p>
+            <p><strong>Face Recognition Score:</strong> -1,000000</p>
+            <p><strong>Status:</strong> Active</p>
+            <p><strong>Expired Date:</strong> -</p>
+            <p><strong>Last Logged in IP:</strong> 102.90.79.152</p>
+            <p><strong>Number of Borrowing:</strong> 0</p>
+            <p><strong>Application Progress:</strong> -</p>
+            <p><strong>Package Name Applied for:</strong> -</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Personal Information -->
+      <div class="personal-info-section mb-6">
+        <h3 class="text-lg font-semibold mb-4">Personal Information</h3>
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <p><strong>Name:</strong> Covenant Oubisi Bello</p>
+            <p><strong>Birthday:</strong> 1996-12-23</p>
+            <p><strong>Province:</strong> Kaduna</p>
+            <p><strong>City:</strong> Kanuna South</p>
+          </div>
+          <div>
+            <p><strong>Address:</strong> Egypt Road Barnawa</p>
+            <p><strong>Mailbox:</strong> covenant@hotmail.com</p>
+            <p><strong>Education Level:</strong> Bachelor</p>
+            <p><strong>Marital Status:</strong> Unmarried</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Employment Information -->
+      <div class="employment-info-section">
+        <h3 class="text-lg font-semibold mb-4">Employment Information</h3>
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <p><strong>Corporation Name:</strong> Mankind factory</p>
+            <p><strong>City of the Company:</strong> Port Harcourt</p>
+            <p><strong>Work Phone:</strong> 816760767</p>
+            <p><strong>Monthly Income before Tax:</strong> 500000</p>
+          </div>
+          <div>
+            <p><strong>Province of Company:</strong> Rivers</p>
+            <p><strong>Company Address:</strong> East west Road</p>
+            <p><strong>Occupation:</strong> Banker</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Media Information Tab -->
+    <div v-if="activeTab === 'media'" class="media-info-content">
+      <!-- OCR Report Section -->
+      <div class="ocr-report-section mb-6">
+        <h3 class="text-lg font-semibold mb-4">OCR Report</h3>
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <p><strong>Recognition Result:</strong> Failed</p>
+            <p><strong>Name:</strong> Isaac Emmanuel</p>
+            <p><strong>Image Identification ID:</strong> 9098989898</p>
+            <p><strong>Creation Time:</strong> 2025-02-01 22:33:08</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Face Recognition Section -->
+      <div class="face-recognition-section">
+        <h3 class="text-lg font-semibold mb-4">Face Recognition</h3>
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <p><strong>Recognition Result:</strong> Failed</p>
+            <p><strong>Name:</strong> Isaac Emmanuel</p>
+            <p><strong>Image Identification ID:</strong> 9098989898</p>
+            <p><strong>Creation Time:</strong> 2025-02-01 22:33:08</p>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -53,8 +149,13 @@ export default {
 .user-info-container {
   width: 1218px; /* Fixed width for the container */
   margin: 0 auto; /* Centers the container */
+  height: 417px;
 }
-
+.user-info-content{
+  width: 519px;
+  background-color: #3182ce;
+  height: 308px;
+}
 button {
   transition: background-color 0.3s ease;
 }
@@ -167,7 +268,34 @@ button:focus {
 .tab-button.active {
   color: #3182ce;
   border-bottom: 2px solid #3182ce; /* Add a blue bottom border for active state */
-  transform: translateX(20%); /* Slide 20% to the right when active */
+}
+
+.user-info-content,
+.media-info-content {
+  padding: 1rem;
+}
+
+.grid {
+  display: grid;
+}
+
+.grid-cols-2 {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.gap-4 {
+  gap: 1rem;
+}
+
+.text-lg {
+  font-size: 1.125rem;
+}
+
+.font-semibold {
+  font-weight: 600;
+}
+
+.mb-4 {
+  margin-bottom: 1rem;
 }
 </style>
-
