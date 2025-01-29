@@ -32,15 +32,32 @@
 
         <!-- Action Buttons -->
         <div class="action-buttons">
-          <button type="submit" class="btn btn-query">Query</button>
-          <button type="button" class="btn btn-reset" @click="handleReset">
+          <button id="query-btn" type="submit" class="btn btn-action btn-query">
+            Query
+          </button>
+          <button
+            id="reset-btn"
+            type="button"
+            class="btn btn-action btn-reset"
+            @click="handleReset"
+          >
             Reset
           </button>
-          <button type="button" class="btn btn-reset" @click="handleReset">
+          <button
+            id="batch-operation-btn"
+            type="button"
+            class="btn btn-action btn-batch"
+            @click="handleBatchOperation"
+          >
             Batch Operation
           </button>
-          <button type="button" class="btn btn-reset" @click="handleReset">
-            Reset
+          <button
+            id="batch-modification-btn"
+            type="button"
+            class="btn btn-action btn-modify"
+            @click="handleBatchModification"
+          >
+            Batch Account Modification
           </button>
         </div>
       </form>
@@ -78,7 +95,7 @@ export default {
           name: "applicationTime",
           label: "Application Time",
           type: "input",
-          props: { type: "date", placeholder: "Enter name" },
+          props: { type: "date", placeholder: "Enter application time" },
         },
         {
           name: "loanNumber",
@@ -92,7 +109,6 @@ export default {
           type: "input",
           props: { type: "text", placeholder: "Enter Product Name" },
         },
-      
       ],
     };
   },
@@ -106,14 +122,18 @@ export default {
         return acc;
       }, {});
     },
+    handleBatchOperation() {
+      console.log("Batch Operation initiated");
+    },
+    handleBatchModification() {
+      console.log("Batch Account Modification initiated");
+    },
   },
 };
 </script>
 
-
-
 <style scoped>
-@import url('https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Fira+Sans:wght@100;200;300;400;500;600;700;800;900&display=swap");
 
 .form-section {
   background-color: white;
@@ -121,16 +141,16 @@ export default {
   border-radius: 8px;
   border: 1px solid #ddd;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  width: 1220px;
+  width: 100%;
+  max-width: 1220px;
 }
 
 .form-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 10px;
   margin-bottom: 10px;
   padding: 10px 12px 12px 10px;
-  border: 1px;
 }
 
 .form-group label {
@@ -144,7 +164,7 @@ export default {
 
 .form-group input,
 .form-group select {
-  width: 286.5px;
+  width: 100%;
   height: 40px;
   padding: 8px;
   border: 1px solid #ddd;
@@ -154,37 +174,52 @@ export default {
 
 .action-buttons {
   display: flex;
+  flex-wrap: wrap;
   gap: 10px;
   justify-content: flex-end;
 }
 
 .btn {
-  padding: 10px 12px;
-  height: 37px;
-  width: 82px;
+  padding: 10px 16px;
+  min-width: 120px;
+  height: 40px;
   border-radius: 8px;
   cursor: pointer;
-  font-size: 10px;
-  border: #00CCFF;
+  font-size: 14px;
+  font-weight: 500;
+  border: 1px solid #00ccff;
+  white-space: nowrap; /* Prevents text wrapping */
+}
+
+.btn-action {
+  transition: background-color 0.2s ease-in-out, opacity 0.2s ease-in-out;
 }
 
 .btn-query {
-  background-color: #00CCFF;
+  background-color: #00ccff;
   color: white;
 }
 
-.btn-reset {
-  background-color: #ffff;
-  color: #00CCFF;
-  border: #00CCFF;
-  border: 1px solid #ddd;
+.btn-reset,
+.btn-batch,
+.btn-modify {
+  background-color: #ffffff;
+  color: #00ccff;
+}
+
+.btn-reset:hover,
+.btn-batch:hover,
+.btn-modify:hover {
+  background-color: #e6f7ff;
+}
+
+.btn-query:hover {
+  opacity: 0.8;
 }
 
 .form-group input::placeholder,
 .form-group select::placeholder {
-  color: #ACACB2;
-  width: 93px;
-  height: 17px;
+  color: #acacb2;
   font-size: 12px;
 }
 </style>

@@ -11,7 +11,7 @@
 import Header from "../modals/header.vue";
 import query from "../modals/FailerOrderQuery.vue";
 
-import queryTable from "../modals/ReconcilliationList.vue";
+import queryTable from "../modals/FailedOrderTable.vue";
 export default {
   components: {
     Header,
