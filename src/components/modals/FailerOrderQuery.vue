@@ -36,6 +36,12 @@
           <button type="button" class="btn btn-reset" @click="handleReset">
             Reset
           </button>
+          <button type="button" class="btn btn-reset" @click="handleReset">
+            Batch Operation
+          </button>
+          <button type="button" class="btn btn-reset" @click="handleReset">
+            Reset
+          </button>
         </div>
       </form>
     </div>
@@ -66,25 +72,25 @@ export default {
           name: "mobile",
           label: "Mobile",
           type: "input",
-          props: { type: "text", placeholder: "Enter mobile number" },
+          props: { type: "number", placeholder: "Enter mobile number" },
         },
         {
-          name: "name",
-          label: "Name",
+          name: "applicationTime",
+          label: "Application Time",
           type: "input",
-          props: { type: "text", placeholder: "Enter name" },
+          props: { type: "date", placeholder: "Enter name" },
         },
         {
           name: "loanNumber",
           label: "Loan Number",
           type: "input",
-          props: { type: "text", placeholder: "Enter loan number" },
+          props: { type: "number", placeholder: "Enter loan number" },
         },
         {
-          name: "userID",
-          label: "User ID",
+          name: "ProductName",
+          label: "Product Name",
           type: "input",
-          props: { type: "text", placeholder: "Enter user ID" },
+          props: { type: "text", placeholder: "Enter Product Name" },
         },
       
       ],
