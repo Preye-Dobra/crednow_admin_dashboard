@@ -43,9 +43,9 @@
             <td>{{ item.pendingDefaultInterest }}</td>
             <td>
               <div class="button-container">
-                <button class="operation-button" @click="openModal('operation', item.loanNumber)">Operation</button>
-                <button class="operation-button" @click="openModal('edit', item.loanNumber)">Edit</button>
-                <button class="operation-button" @click="openModal('refresh', item.loanNumber)">Refresh</button>
+                <button class="operation-button" @click="openModal('operation', item.loanNumber)" style="width: 98px;">Operation</button>
+                <button class="operation-button" @click="openModal('edit', item.loanNumber)" style="width: 98px;">Edit</button>
+                <button class="operation-button" @click="openModal('refresh', item.loanNumber)" style="width: 98px;">Refresh</button>
                 <button class="operation-button" @click="openModal('modifyAccount', item.loanNumber)">Modify Account</button>
               </div>
             </td>
@@ -180,7 +180,7 @@ tr td {
   color: #004759;
   background-color: #fff;
   border: 1px solid #00CCFF;
-  padding: 10px 10px;
+  padding: 10px 16px;
   border-radius: 5px;
   cursor: pointer;
   font-size: 12px;

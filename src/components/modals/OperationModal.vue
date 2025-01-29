@@ -45,11 +45,10 @@ export default {
     return {
       formFields: [
         { id: "field1", label: "Loan Number", type: "text", placeholder: "Enter Loan Number", value: "" },
-        { id: "field2", label: "Name", type: "text", placeholder: "Enter Name", value: "" },
-        { id: "field3", label: "Days Overdue", type: "number", placeholder: "Enter Days Overdue", value: "" },
-        { id: "field4", label: "Total Remaining Repayment", type: "number", placeholder: "Enter Total Remaining Repayment", value: "" },
-        { id: "field5", label: "Public Transfer Amount", type: "number", placeholder: "Enter Public Transfer Amount", value: "" },
+        { id: "field2", label: "Loan Status", type: "text", placeholder: "Enter Name", value: "" },
         { id: "field6", label: "Remarks", type: "text", placeholder: "Enter Remarks", value: "" },
+                { id: "field3", label: "Days Overdue", type: "number", placeholder: "Enter Days Overdue", value: "" },
+    
       ],
     };
   },

@@ -30,7 +30,7 @@
 
 <script>
 export default {
-  name: "EdithModal",
+  name: "Refresh Modal",
   props: {
     visible: {
       type: Boolean,
@@ -38,7 +38,7 @@ export default {
     },
     title: {
       type: String,
-      default: "Edith Modal",
+      default: "Refresh Modal",
     },
   },
   data() {
