@@ -23,94 +23,142 @@
      
       <form @submit.prevent="handleQuery">
         <div class="form-grid">
-          <!-- Mobile -->
-          <div class="form-group">
-            <label for="mobile">Mobile</label>
-            <input
-              type="text"
-              id="mobile"
-              v-model="collectionForm.mobile"
-              placeholder="Please enter"
-            />
-          </div>
-          <!-- Name -->
-          <div class="form-group">
-            <label for="name">Name</label>
-            <input
-              type="text"
-              id="name"
-              v-model="collectionForm.name"
-              placeholder="Please enter"
-            />
-          </div>
-          <!-- Loan Number -->
-          <div class="form-group">
-            <label for="loanNumber">Loan Number</label>
-            <input
-              type="text"
-              id="loanNumber"
-              v-model="collectionForm.loanNumber"
-              placeholder="Please enter"
-            />
-          </div>
-          <!-- Lending Time -->
-          <div class="form-group">
-            <label for="lendingTime">Lending Time</label>
-            <input
-              type="text"
-              id="lendingTime"
-              v-model="collectionForm.lendingTime"
-              placeholder="Start-end"
-            />
-          </div>
-          <!-- Days Overdue -->
-          <div class="form-group">
-            <label for="daysOverdue">Days Overdue</label>
-            <input
-              type="text"
-              id="daysOverdue"
-              v-model="collectionForm.daysOverdue"
-              placeholder="Please enter"
-            />
-          </div>
-          <!-- Collection Log Type -->
-          <div class="form-group">
-            <label for="collectionLogType">Collection Log Type</label>
-            <select id="collectionLogType" v-model="collectionForm.collectionLogType">
-              <option disabled value="">Select Option</option>
-              <option v-for="option in logTypes" :key="option" :value="option">
-                {{ option }}
-              </option>
-            </select>
-          </div>
-          <!-- Collection Stage -->
-          <div class="form-group">
-            <label for="collectionStage">Collection Stage</label>
-            <select id="collectionStage" v-model="collectionForm.collectionStage">
-              <option disabled value="">Select Option</option>
-              <option v-for="option in stages" :key="option" :value="option">
-                {{ option }}
-              </option>
-            </select>
-          </div>
-          <!-- Collector -->
-          <div class="form-group">
-            <label for="collector">Collector</label>
-            <select id="collector" v-model="collectionForm.collector">
-              <option disabled value="">Select Option</option>
-              <option v-for="option in collectors" :key="option" :value="option">
-                {{ option }}
-              </option>
-            </select>
-          </div>
-          <!-- Action Buttons -->
-          <div class="form-group action-buttons">
-            <button type="submit" class="btn btn-query">Query</button>
-            <button type="button" class="btn btn-reset" @click="handleReset('collection')">
-              Reset
-            </button>
-          </div>
-        </div>
+
+  <!-- Mobile -->
+  <div class="form-group">
+    <label for="mobile">Mobile</label>
+    <input type="text" id="mobile" v-model="collectionForm.mobile" placeholder="Please enter" />
+  </div>
+
+  <!-- Name -->
+  <div class="form-group">
+    <label for="name">Name</label>
+    <input type="text" id="name" v-model="collectionForm.name" placeholder="Please enter" />
+  </div>
+
+  <!-- Loan Number -->
+  <div class="form-group">
+    <label for="loanNumber">Loan Number</label>
+    <input type="text" id="loanNumber" v-model="collectionForm.loanNumber" placeholder="Please enter" />
+  </div>
+
+  <!-- Loan Order Number -->
+  <div class="form-group">
+    <label for="loanOrderNumber">Loan Order Number</label>
+    <input type="text" id="loanOrderNumber" v-model="collectionForm.loanOrderNumber" placeholder="Please enter" />
+  </div>
+
+  <!-- Product Name -->
+  <div class="form-group">
+    <label for="productName">Product Name</label>
+    <input type="text" id="productName" v-model="collectionForm.productName" placeholder="Please enter" />
+  </div>
+
+  <!-- Loan Tenure -->
+  <div class="form-group">
+    <label for="loanTenure">Loan Tenure</label>
+    <input type="text" id="loanTenure" v-model="collectionForm.loanTenure" placeholder="Please enter" />
+  </div>
+
+  <!-- Loan Amount -->
+  <div class="form-group">
+    <label for="loanAmount">Loan Amount</label>
+    <input type="text" id="loanAmount" v-model="collectionForm.loanAmount" placeholder="Please enter" />
+  </div>
+
+  <!-- App Version -->
+  <div class="form-group">
+    <label for="appVersion">App Version</label>
+    <input type="text" id="appVersion" v-model="collectionForm.appVersion" placeholder="Please enter" />
+  </div>
+
+  <!-- Due Date -->
+  <div class="form-group">
+    <label for="dueDate">Due Date</label>
+    <input type="date" id="dueDate" v-model="collectionForm.dueDate" />
+  </div>
+
+  <!-- Loan Status -->
+  <div class="form-group">
+    <label for="loanStatus">Loan Status</label>
+    <input type="text" id="loanStatus" v-model="collectionForm.loanStatus" placeholder="Please enter" />
+  </div>
+
+  <!-- Tag -->
+  <div class="form-group">
+    <label for="tag">Tag</label>
+    <input type="text" id="tag" v-model="collectionForm.tag" placeholder="Please enter" />
+  </div>
+
+  <!-- Is Repeated Borrowing -->
+  <div class="form-group">
+    <label for="isRepeatedBorrowing">Is Repeated Borrowing</label>
+    <select id="isRepeatedBorrowing" v-model="collectionForm.isRepeatedBorrowing">
+      <option disabled value="">Select Option</option>
+      <option value="yes">Yes</option>
+      <option value="no">No</option>
+    </select>
+  </div>
+
+  <!-- Loan Type -->
+  <div class="form-group">
+    <label for="loanType">Loan Type</label>
+    <input type="text" id="loanType" v-model="collectionForm.loanType" placeholder="Please enter" />
+  </div>
+
+  <!-- Collection Result -->
+  <div class="form-group">
+    <label for="collectionResult">Collection Result</label>
+    <input type="text" id="collectionResult" v-model="collectionForm.collectionResult" placeholder="Please enter" />
+  </div>
+
+  <!-- Proportion Without Penalty -->
+  <div class="form-group">
+    <label for="proportionWithoutPenalty">Proportion Without Penalty</label>
+    <input type="text" id="proportionWithoutPenalty" v-model="collectionForm.proportionWithoutPenalty" placeholder="Please enter" />
+  </div>
+
+  <!-- Follow-up On Day -->
+  <div class="form-group">
+    <label for="followUpOnDay">Follow-up On Day</label>
+    <input type="date" id="followUpOnDay" v-model="collectionForm.followUpOnDay" />
+  </div>
+
+  <!-- App Name -->
+  <div class="form-group">
+    <label for="appName">App Name</label>
+    <input type="text" id="appName" v-model="collectionForm.appName" placeholder="Please enter" />
+  </div>
+
+  <!-- Collection Stage -->
+  <div class="form-group">
+    <label for="collectionStage">Collection Stage</label>
+    <select id="collectionStage" v-model="collectionForm.collectionStage">
+      <option disabled value="">Select Option</option>
+      <option v-for="option in stages" :key="option" :value="option">
+        {{ option }}
+      </option>
+    </select>
+  </div>
+
+  <!-- Collector -->
+  <div class="form-group">
+    <label for="collector">Collector</label>
+    <select id="collector" v-model="collectionForm.collector">
+      <option disabled value="">Select Option</option>
+      <option v-for="option in collectors" :key="option" :value="option">
+        {{ option }}
+      </option>
+    </select>
+  </div>
+
+  <!-- Action Buttons -->
+  <div class="form-group action-buttons">
+    <button type="submit" class="btn btn-query">Query</button>
+    <button type="button" class="btn btn-reset" @click="handleReset('collection')">Reset</button>
+  </div>
+</div>
+
       </form>
     </div>
 
@@ -226,15 +274,26 @@ export default {
     return {
       activeTab: "collection", // Default active tab
       collectionForm: {
-        mobile: "",
-        name: "",
-        loanNumber: "",
-        lendingTime: "",
-        daysOverdue: "",
-        collectionLogType: "",
-        collectionStage: "",
-        collector: "",
-      },
+  mobile: "",
+  name: "",
+  loanNumber: "",
+  loanOrderNumber: "", // Added
+  collectionStage: "",
+  collector: "",
+  productName: "", // Added
+  loanTenure: "", // Added
+  loanAmount: "", // Added
+  appVersion: "", // Added
+  dueDate: "", // Added
+  loanStatus: "", // Added
+  tag: "", // Added
+  isRepeatedBorrowing: "", // Added
+  loanType: "", // Added
+  collectionResult: "", // Added
+  proportionWithoutPenalty: "", // Added
+  followUpOnDay: "", // Added
+  appName: "", // Added
+},
       overdueForm: {
         mobile: "",
         name: "",
