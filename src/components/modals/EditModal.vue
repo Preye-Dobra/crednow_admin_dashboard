@@ -36,7 +36,7 @@ export default {
       type: Boolean,
       required: true,
     },
-    header: {
+    title: {
       type: String,
       default: "Edit",
     },

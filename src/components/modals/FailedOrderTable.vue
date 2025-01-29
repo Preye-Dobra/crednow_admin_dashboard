@@ -68,7 +68,7 @@
 </template>
 
 <script>
-import OperationModal from "../modals/OperationModal.vue";
+import OperationModal from "../modals/Tip.vue";
 import EditModal from "../modals/EditModal.vue";
 import RefreshModal from "../modals/RefreshModal.vue";
 import ModifyAccountModal from "../modals/ModifyAccountModal.vue";

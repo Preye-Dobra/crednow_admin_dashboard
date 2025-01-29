@@ -1,0 +1,148 @@
+<template>
+  <div v-if="visible" class="modal-container">
+    <div class="modal">
+      <div class="modal-header">
+        <h2 class="text">{{ header }}</h2>
+        <button class="close-button" @click="closeModal">×</button>
+      </div>
+      <div class="modal-content">
+        <div class="icon-container">
+          <img src="/public/warning.png" alt="Warning Icon" class="icon" />
+        </div>
+        <p class="message">Are you sure you want to notify the user to modify the account?</p>
+      </div>
+      <div class="button-container">
+        <button class="action-btn cancel" @click="closeModal">Cancel</button>
+        <button class="action-btn submit" @click="confirmAction">Confirm</button>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  name: "ConfirmationModal",
+  props: {
+    visible: {
+      type: Boolean,
+      required: true,
+    },
+    header: {
+      type: String,
+      default: "Tips",
+    },
+  },
+  methods: {
+    closeModal() {
+      this.$emit("close");
+    },
+    confirmAction() {
+      this.$emit("confirm");
+    },
+  },
+};
+</script>
+
+<style scoped>
+.modal-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal {
+  width: 563px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  position: relative;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #00ccff;
+  height: 46px;
+  border-radius: 8px 8px 0 0;
+  font-size: 24px;
+  font-weight: bold;
+  padding: 0 16px;
+}
+
+.text {
+  color: #ffffff;
+}
+
+.close-button {
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  color: #fff;
+}
+
+.modal-content {
+  text-align: center;
+  padding: 20px;
+}
+
+.icon-container {
+  margin-bottom: 20px;
+}
+
+.icon {
+  width: 50px;
+  height: 50px;
+}
+
+.message {
+  font-size: 16px;
+  color: #333;
+}
+
+.button-container {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  padding: 20px;
+}
+
+.action-btn {
+  width: 98px;
+  height: 40px;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  text-align: center;
+  font-size: 14px;
+}
+
+.action-btn.cancel {
+  border: 1px solid #009fcc;
+  color: #009fcc;
+  background-color: #fff;
+}
+
+.action-btn.cancel:hover {
+  background-color: #009fcc;
+  color: #fff;
+}
+
+.action-btn.submit {
+  border: 1px solid #009fcc;
+  background-color: #009fcc;
+}
+
+.action-btn.submit:hover {
+  background-color: #006f99;
+}
+</style>
