@@ -5,138 +5,88 @@
         <thead>
           <tr>
             <th>Loan Number</th>
-            <th>Product Name</th>
-            <th>Master Loan</th>
             <th>Mobile</th>
             <th>Name</th>
-            <th>Days Overdue</th>
-            <th>Repayment Date</th>
-            <th>Already Flattened Amount</th>
-            <th>Flatting Amount</th>
-            <th>Total Remaining Repayment</th>
-            <th>Pending Principal</th>
-            <th>Reduce Principal</th>
-            <th>Pending Interest</th>
-            <th>Pending Service Fee</th>
-            <th>Pending Default Interest</th>
-            <th>Operation</th>
+            
+            <th>Loan Order Number</th>
+            <th>Product Name</th>
+            <th>Loan Tenure</th>
+            <th>Loan Amount</th>
+            <th>App Version</th>
+            <th>Due Date</th>
+            <th>Loan Status</th>
+            <th>Tag</th>
+            <th>Is Repeated Borrowing</th>
+            <th>Loan Type</th>
+            <th>Collection Result</th>
+            <th>Proportion Without Penalty</th>
+            <th>Follow-up On Day</th>
+            <th>App Name</th>
+            <th>Collection Stage</th>
+            <th>Collector</th>
           </tr>
         </thead>
         <tbody>
           <tr v-for="(item, index) in tableData" :key="index">
-            <td>{{ item.loanNumber }}</td>
-            <td>{{ item.productName }}</td>
-            <td>{{ item.masterLoan }}</td>
+                       <td style="color: #00CCFF;">{{ item.loanNumber }}</td>
             <td>{{ item.mobile }}</td>
             <td>{{ item.name }}</td>
-            <td>{{ item.daysOverdue }}</td>
-            <td>{{ item.repaymentDate }}</td>
-            <td>{{ item.alreadyFlattenedAmount }}</td>
-            <td>{{ item.flattingAmount }}</td>
-            <td>{{ item.totalRemainingRepayment }}</td>
-            <td>{{ item.pendingPrincipal }}</td>
-            <td>{{ item.reducePrincipal }}</td>
-            <td>{{ item.pendingInterest }}</td>
-            <td>{{ item.pendingServiceFee }}</td>
-            <td>{{ item.pendingDefaultInterest }}</td>
-            <td>
-              <div class="button-container">
-                <button class="operation-button" @click="openBillingModal(item.loanNumber)">Billing</button>
-                <button class="operation-button" @click="openIncreaseModal(item.loanNumber)">Increase</button>
-                <button class="operation-button" @click="openReductionModal(item.loanNumber)">Reduction</button>
-              </div>
-            </td>
+
+            <td>{{ item.loanOrderNumber }}</td>
+            <td>{{ item.productName }}</td>
+            <td>{{ item.loanTenure }}</td>
+            <td>{{ item.loanAmount }}</td>
+            <td>{{ item.appVersion }}</td>
+            <td>{{ item.dueDate }}</td>
+            <td>{{ item.loanStatus }}</td>
+            <td>{{ item.tag }}</td>
+            <td>{{ item.isRepeatedBorrowing }}</td>
+            <td>{{ item.loanType }}</td>
+            <td>{{ item.collectionResult }}</td>
+            <td>{{ item.proportionWithoutPenalty }}</td>
+            <td>{{ item.followUpOnDay }}</td>
+            <td>{{ item.appName }}</td>
+            <td>{{ item.collectionStage }}</td>
+            <td>{{ item.collector }}</td>
           </tr>
         </tbody>
       </table>
     </div>
-
-    <!-- Modal Components -->
-    <BillingModal
-      :visible="showModal.billing"
-      :title="``"
-      @close="closeModal('billing')"
-    >
-      <p>Provide necessary billing details here.</p>
-    </BillingModal>
-
-    <IncreaseModal
-      :visible="showModal.increase"
-      :title="`Increase Amount for Loan ${selectedLoan}`"
-      @close="closeModal('increase')"
-    >
-      <p>Provide necessary increase details here.</p>
-    </IncreaseModal>
-
-    <ReductionModal
-      :visible="showModal.reduction"
-      :title="`Reduction Amount for Loan ${selectedLoan}`"
-      @close="closeModal('reduction')"
-    >
-      <p>Provide necessary reduction details here.</p>
-    </ReductionModal>
   </div>
 </template>
 
 <script>
-import BillingModal from "../modals/billingModal.vue";
-import IncreaseModal from "../modals/IncreaseModal.vue";
-import ReductionModal from "../modals/ReductionModal.vue";
-
 export default {
-  components: {
-    BillingModal,
-    IncreaseModal,
-    ReductionModal,
-  },
   data() {
     return {
       tableData: [
         {
           loanNumber: "211024",
           productName: "Crednow",
-          masterLoan: "MasterLoan1",
+          loanOrderNumber: "1001",
           mobile: "9098989898",
           name: "Isaac Emmanuel",
-          daysOverdue: 5,
-          repaymentDate: "2023-11-01",
-          alreadyFlattenedAmount: 3000,
-          flattingAmount: 2000,
-          totalRemainingRepayment: 2000,
-          pendingPrincipal: 1500,
-          reducePrincipal: 500,
-          pendingInterest: 300,
-          pendingServiceFee: 200,
-          pendingDefaultInterest: 100,
+          loanTenure: "12 months",
+          loanAmount: "5000",
+          appVersion: "1.2.3",
+          dueDate: "2023-11-01",
+          loanStatus: "Active",
+          tag: "Urgent",
+          isRepeatedBorrowing: "Yes",
+          loanType: "Personal Loan",
+          collectionResult: "Pending",
+          proportionWithoutPenalty: "80%",
+          followUpOnDay: "2023-11-05",
+          appName: "LoanApp",
+          collectionStage: "Stage 2",
+          collector: "John Doe",
         },
       ],
-      showModal: {
-        billing: false,
-        increase: false,
-        reduction: false,
-      },
-      selectedLoan: null,
     };
-  },
-  methods: {
-    openBillingModal(loanNumber) {
-      this.selectedLoan = loanNumber;
-      this.showModal.billing = true;
-    },
-    openIncreaseModal(loanNumber) {
-      this.selectedLoan = loanNumber;
-      this.showModal.increase = true;
-    },
-    openReductionModal(loanNumber) {
-      this.selectedLoan = loanNumber;
-      this.showModal.reduction = true;
-    },
-    closeModal(modalType) {
-      this.showModal[modalType] = false;
-    },
   },
 };
 </script>
+
 
 
 <style scoped>
