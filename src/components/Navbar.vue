@@ -8,13 +8,13 @@
     <div class="nav-list">
       <ul>
         <!-- Straight Links -->
-        <li><a href="/dashboard"><img src="/public/all.png" alt="All applications" class="nav-icon" /> All applications</a></li>
-        <li><a href="all-client"><img src="/public/cl.png" alt="All client" class="nav-icon" /> All client</a></li>
+        <li><a href="/dashboard"><img src="/public/all.svg" alt="All applications" class="nav-icon" /> All applications</a></li>
+        <li><a href="all-client"><img src="/public/pp.png" alt="All client" class="nav-icon" /> All client</a></li>
         
         <!-- Financial Link with Dropdown -->
         <li>
           <div class="dropdown-header" @click="toggleDropdown('financial')">
-            <a href="#"><img src="/public/finance.png" alt="Financial" class="nav-icon" /> Financial</a>
+            <a href="#"><img src="/public/money-recive.png" alt="Financial" class="nav-icon" /> Financial</a>
             <span class="dropdown-icon" :class="{ 'rotate': activeDropdown === 'financial' }">▼</span>
           </div>
           <ul class="dropdown" v-if="activeDropdown === 'financial'">
@@ -25,23 +25,25 @@
         </li>
 
         <!-- Straight Links -->
-        <li><a href="collection-case"><img src="/public/cocase.png" alt="Collection case" class="nav-icon" /> Collection case</a></li>
+        <li><a href="collection-case"><img src="/public/suit.png" alt="Collection case" class="nav-icon" /> Collection case</a></li>
         
         <!-- Operation Link with Dropdown -->
         <li>
           <div class="dropdown-header" @click="toggleDropdown('operation')">
-            <a href="#"><img src="/public/opera.png" alt="Operation" class="nav-icon" /> Operation</a>
+            <a href="#"><img src="/public/operat.png" alt="Operation" class="nav-icon" /> Operation</a>
             <span class="dropdown-icon" :class="{ 'rotate': activeDropdown === 'operation' }">V</span>
           </div>
           <ul class="dropdown" v-if="activeDropdown === 'operation'">
             <li><a href="failed-order">Failed Operation</a></li>
             <li><a href="loan-management">Loan Managment</a></li>
+                        <li><a href="loan-status">Loan Order With Unknown Status</a></li>
+            
           </ul>
         </li>
 
         <!-- Straight Links -->
-        <li><a href="#"><img src="/public/cl.png" alt="Admin" class="nav-icon" /> Admin</a></li>
-        <li><a href="#"><img src="/public/bro.png" alt="Admin" class="nav-icon" /> Broadcast</a></li>
+        <li><a href="#"><img src="/public/admin.png" alt="Admin" class="nav-icon" /> Admin</a></li>
+        <li><a href="#"><img src="/public/broad.png" alt="Admin" class="nav-icon" /> Broadcast</a></li>
       </ul>
     </div>
   </div>
