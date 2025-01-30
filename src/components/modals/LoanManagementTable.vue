@@ -85,20 +85,20 @@ export default {
     return {
 tableData: [
   {
-    loanNumber: "123456",              // Order Number
-    paymentCompany: "XYZ Payments",    // Payment Company
-    paymentAmount: "$500",             // Payment Amount
-    handlingFee: "$5",                 // Handling Fee
-    taxes: "$2",                       // Taxes
-    realAmount: "$493",                // Real Amount
-    transaction: "Success",            // The Transaction
-    bankAccount: "1234 **** **** 5678",// Bank Account
-    mobile: "9876543210",              // Mobile
-    userName: "John Doe",              // Use Name
-    lendingStatus: "Approved",         // Lending Status
-    reasonForFailure: "N/A",           // Reason Failure
-    paymentTime: "2024-01-29 14:30",   // Payment Time
-    loanChannel: "Bank ABC",           // Loan Channel
+    loanNumber: "123456",             
+    paymentCompany: "XYZ Payments",
+    paymentAmount: "$500",             
+    handlingFee: "$5",
+    taxes: "$2",                       
+    realAmount: "$493",
+    transaction: "Success",
+    bankAccount: "1234 **** **** 5678",
+    mobile: "9876543210",              
+    userName: "John Doe",              
+    lendingStatus: "Approved",
+    reasonForFailure: "N/A", 
+    paymentTime: "2024-01-29 14:30",   
+    loanChannel: "Bank ABC",          
   }
 ]
 ,
