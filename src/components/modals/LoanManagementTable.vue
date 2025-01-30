@@ -5,21 +5,21 @@
         <thead>
           <tr>
             <th>Select</th>
-            <th>Loan Number</th>
-            <th>Mobile</th>
-            <th>Loan Status</th>
-            <th>Payout Number</th>
+            <th>Order Number</th>
+            <th>Payment Company</th>
+            <th>Payment Amount</th>
+            <th>Handling Fee</th>
             
+            <th>Taxes</th>
+            <th>Real Amount</th>
+            <th>The Transaction</th>
+            <th>Bank Account</th>
+            <th>Mobile</th>
+            <th>Use Name</th>
             <th>Lending Status</th>
-            <th>Reason For Failure</th>
-            <th>Loan Application</th>
-            <th>Pay Time</th>
-            <th>Update Time</th>
+            <th>Reason Failure</th>
+            <th>Payment Time</th>
             <th>Loan Channel</th>
-            <th>Customer Bank Card Number</th>
-            <th>Loan Amount</th>
-            <th>User Inique Number</th>
-
             <th>Operation</th>
           </tr>
         </thead>
@@ -27,18 +27,19 @@
   <tr v-for="(item, index) in tableData" :key="index">
     <td><input type="checkbox" :id="`checkbox-${index}`" /></td>
     <td style="color: #00CCFF;">{{ item.loanNumber }}</td>
+    <td>{{ item.paymentCompany }}</td>
+    <td>{{ item.paymentAmount }}</td>
+    <td>{{ item.handlingFee }}</td>
+    <td>{{ item.taxes }}</td>
+    <td>{{ item.realAmount }}</td>
+    <td>{{ item.transaction }}</td>
+    <td>{{ item.bankAccount }}</td>
     <td>{{ item.mobile }}</td>
-    <td>{{ item.loanStatus }}</td>
-    <td>{{ item.payoutNumber }}</td>
+    <td>{{ item.userName }}</td>
     <td>{{ item.lendingStatus }}</td>
     <td>{{ item.reasonForFailure }}</td>
-    <td>{{ item.loanApplication }}</td>
-    <td>{{ item.payTime }}</td>
-    <td>{{ item.updateTime }}</td>
+    <td>{{ item.paymentTime }}</td>
     <td>{{ item.loanChannel }}</td>
-    <td>{{ item.customerBankCardNumber }}</td>
-    <td>{{ item.loanAmount }}</td>
-    <td>{{ item.userUniqueNumber }}</td>
     <td>
       <div class="button-container">
         <button class="operation-button" @click="openModal('operation', item.loanNumber)" style="width: 98px;">Operation</button>
@@ -49,6 +50,7 @@
     </td>
   </tr>
 </tbody>
+
 
       </table>
     </div>
@@ -81,68 +83,25 @@ export default {
   },
   data() {
     return {
-      tableData: [
-      {
-        loanNumber: 'LN123456789',
-        mobile: '08012345678',
-        loanStatus: 'Approved',
-        payoutNumber: 'PN987654321',
-        lendingStatus: 'Active',
-        reasonForFailure: 'N/A',
-        loanApplication: 'App001',
-        payTime: '2024-01-15 14:00',
-        updateTime: '2024-01-20 09:30',
-        loanChannel: 'Online',
-        customerBankCardNumber: '1234567890123456',
-        loanAmount: '₦500,000',
-        userUniqueNumber: 'UN12345'
-      },
-      {
-        loanNumber: 'LN987654321',
-        mobile: '08087654321',
-        loanStatus: 'Pending',
-        payoutNumber: 'PN123456789',
-        lendingStatus: 'Inactive',
-        reasonForFailure: 'Not Verified',
-        loanApplication: 'App002',
-        payTime: '2024-01-18 10:30',
-        updateTime: '2024-01-20 11:00',
-        loanChannel: 'App',
-        customerBankCardNumber: '6543210987654321',
-        loanAmount: '₦300,000',
-        userUniqueNumber: 'UN98765'
-      },
-      {
-        loanNumber: 'LN1122334455',
-        mobile: '08011223344',
-        loanStatus: 'Rejected',
-        payoutNumber: 'PN6655443322',
-        lendingStatus: 'Inactive',
-        reasonForFailure: 'Insufficient Credit',
-        loanApplication: 'App003',
-        payTime: '2024-01-10 13:20',
-        updateTime: '2024-01-12 15:40',
-        loanChannel: 'Website',
-        customerBankCardNumber: '1111222233334444',
-        loanAmount: '₦150,000',
-        userUniqueNumber: 'UN11223'
-      },
-      {
-        loanNumber: 'LN2233445566',
-        mobile: '08099887766',
-        loanStatus: 'Approved',
-        payoutNumber: 'PN8899776655',
-        lendingStatus: 'Active',
-        reasonForFailure: 'N/A',
-        loanApplication: 'App004',
-        payTime: '2024-01-12 09:50',
-        updateTime: '2024-01-15 16:10',
-        loanChannel: 'Partner',
-        customerBankCardNumber: '5555444433332222',
-        loanAmount: '₦1,000,000',
-        userUniqueNumber: 'UN22334'
-      }
-    ],
+tableData: [
+  {
+    loanNumber: "123456",              // Order Number
+    paymentCompany: "XYZ Payments",    // Payment Company
+    paymentAmount: "$500",             // Payment Amount
+    handlingFee: "$5",                 // Handling Fee
+    taxes: "$2",                       // Taxes
+    realAmount: "$493",                // Real Amount
+    transaction: "Success",            // The Transaction
+    bankAccount: "1234 **** **** 5678",// Bank Account
+    mobile: "9876543210",              // Mobile
+    userName: "John Doe",              // Use Name
+    lendingStatus: "Approved",         // Lending Status
+    reasonForFailure: "N/A",           // Reason Failure
+    paymentTime: "2024-01-29 14:30",   // Payment Time
+    loanChannel: "Bank ABC",           // Loan Channel
+  }
+]
+,
       showModal: false,
       selectedModal: null,
       modalTitle: "",
