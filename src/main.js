@@ -15,6 +15,8 @@ import LoanInquiry from "./views/LoanInquiry.vue";
 import CollectionPage from "./views/CollectionCase.vue"
 import Reconcilliation from "./views/reconcilliation.vue";
 import FailedOrderPage from "./views/FailedOrder.vue";
+
+import LoanMangement from "./views/LoanManagement.vue";
 const routes = [
   {
     path: "/",
@@ -45,6 +47,11 @@ const routes = [
     path: "/failed-order",
     name: "FailedOrderPage",
     component: FailedOrderPage,
+  },
+  {
+    path: "/loan-management",
+    name: "LoanMangement",
+    component: LoanMangement,
   },
   {
     path: "/reconcilliation",

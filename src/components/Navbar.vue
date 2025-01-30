@@ -7,11 +7,39 @@
 
     <div class="nav-list">
       <ul>
+        <!-- Straight Links -->
         <li><a href="/dashboard"><img src="/public/all.png" alt="All applications" class="nav-icon" /> All applications</a></li>
         <li><a href="all-client"><img src="/public/cl.png" alt="All client" class="nav-icon" /> All client</a></li>
-        <li><a href="#"><img src="/public/finance.png" alt="Financial" class="nav-icon" /> Financial</a></li>
-        <li><a href="#"><img src="/public/cocase.png" alt="Collection case" class="nav-icon" /> Collection case</a></li>
-        <li><a href="#"><img src="/public/opera.png" alt="Operation" class="nav-icon" /> Operation</a></li>
+        
+        <!-- Financial Link with Dropdown -->
+        <li>
+          <div class="dropdown-header" @click="toggleDropdown('financial')">
+            <a href="#"><img src="/public/finance.png" alt="Financial" class="nav-icon" /> Financial</a>
+            <span class="dropdown-icon" :class="{ 'rotate': activeDropdown === 'financial' }">▼</span>
+          </div>
+          <ul class="dropdown" v-if="activeDropdown === 'financial'">
+            <li><a href="/repay">Repay Inquiries</a></li>
+            <li><a href="loan-inquiry">Loan Inquiry</a></li>
+                        <li><a href="reconcilliation">Reconcilliation</a></li>
+          </ul>
+        </li>
+
+        <!-- Straight Links -->
+        <li><a href="collection-case"><img src="/public/cocase.png" alt="Collection case" class="nav-icon" /> Collection case</a></li>
+        
+        <!-- Operation Link with Dropdown -->
+        <li>
+          <div class="dropdown-header" @click="toggleDropdown('operation')">
+            <a href="#"><img src="/public/opera.png" alt="Operation" class="nav-icon" /> Operation</a>
+            <span class="dropdown-icon" :class="{ 'rotate': activeDropdown === 'operation' }">V</span>
+          </div>
+          <ul class="dropdown" v-if="activeDropdown === 'operation'">
+            <li><a href="failed-order">Failed Operation</a></li>
+            <li><a href="loan-management">Loan Managment</a></li>
+          </ul>
+        </li>
+
+        <!-- Straight Links -->
         <li><a href="#"><img src="/public/cl.png" alt="Admin" class="nav-icon" /> Admin</a></li>
         <li><a href="#"><img src="/public/bro.png" alt="Admin" class="nav-icon" /> Broadcast</a></li>
       </ul>
@@ -22,9 +50,22 @@
 <script>
 export default {
   name: 'Sidebar',
+  data() {
+    return {
+      activeDropdown: null, // Tracks which dropdown is active
+    };
+  },
+  methods: {
+    toggleDropdown(dropdown) {
+      if (this.activeDropdown === dropdown) {
+        this.activeDropdown = null; // Close dropdown if already open
+      } else {
+        this.activeDropdown = dropdown; // Open dropdown
+      }
+    },
+  },
 };
 </script>
-
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
@@ -34,20 +75,16 @@ export default {
   color: white;
   font-size: 12px;
   box-sizing: border-box; 
-  
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   padding: 20px;
   align-items: center;
-
   position: fixed; 
   top: 0;
   left: 0;
   height: 100%; 
-  
 }
-
 
 .logo-box {
   width: 100px;
@@ -81,13 +118,16 @@ export default {
   padding: 0;
   margin: 0;
 }
+
 .nav-list li {
-  height: 46px;
+  height: auto;
   padding: 12px 10px 10px 12px;
   display: flex;
-  align-items: center;
-  gap: 12px; /* Adjusted gap between icon and text */
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
   border-radius: 8px;
+  position: relative;
 }
 
 .nav-list a {
@@ -96,9 +136,9 @@ export default {
   font-size: 12px;
   font-weight: 400;
   display: flex;
-   font-family: 'Fira Sans', sans-serif;
+  font-family: 'Fira Sans', sans-serif;
   align-items: center; 
-  gap: 8px; /* Add space between icon and text inside the <a> tag */
+  gap: 8px;
 }
 
 .nav-icon {
@@ -108,21 +148,54 @@ export default {
   transition: filter 0.3s ease; 
 }
 
+.dropdown-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  cursor: pointer;
+}
+
+.dropdown-icon {
+  font-size: 10px;
+  transition: transform 0.3s ease;
+}
+
+.dropdown-icon.rotate {
+  transform: rotate(180deg);
+}
+
+.dropdown {
+  list-style: none;
+  padding-left: 20px;
+  margin-top: 8px;
+  animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 /* Hover effect for list items */
 .nav-list li:hover {
   background-color: #ffff;
-  color: #004759;
 }
 
-.nav-list a:hover {
-  color: #004759;
+/* Change icon and text color to black on hover */
+.nav-list li:hover a {
+  color: black; /* Text color turns black */
 }
 
-/* Icon hover effect */
-.nav-list li:hover .nav-icon {
-  filter: brightness(0) saturate(100%) invert(51%) sepia(66%) saturate(290%) hue-rotate(158deg) brightness(95%) contrast(94%);
+.nav-list li:hover .nav-icon .dropdown-icon{
+  filter: brightness(0) saturate(100%) invert(0%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(0%) contrast(100%); /* Icon turns black */
 }
-
 </style>
 
 
