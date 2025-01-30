@@ -195,9 +195,17 @@ export default {
   color: black; /* Text color turns black */
 }
 
-.nav-list li:hover .nav-icon .dropdown-icon{
-  filter: brightness(0) saturate(100%) invert(0%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(0%) contrast(100%); /* Icon turns black */
+/* Adjust the icon's filter to make it #004759 */
+.nav-list li:hover .nav-icon {
+  filter: brightness(0) saturate(100%) invert(26%) sepia(94%) saturate(4536%) hue-rotate(174deg) brightness(101%) contrast(101%); /* Adjusted filter */
 }
+
+
+/* Make sure the hover effect works on the dropdown icon as well */
+.nav-list li:hover .dropdown-icon {
+  color: #004759; /* Change the dropdown icon color to #004759 */
+}
+
 </style>
 
 
