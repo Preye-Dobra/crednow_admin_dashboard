@@ -141,6 +141,7 @@ tr td {
   line-height: 16.8px;
   font-weight: 400;
   text-align: center;
+  color: #585865;
 }
 
 .data-table th,

@@ -4,7 +4,7 @@
       <table class="data-table">
         <thead>
           <tr>
-            <th>Select</th>
+            <th><input type="checkbox" :id="`checkbox-${index}`" /></th>
             <th>Loan Number</th>
             <th>Mobile</th>
             <th>Loan Status</th>
@@ -204,6 +204,7 @@ tr td {
   line-height: 16.8px;
   font-weight: 400;
   text-align: center;
+  color: #585865;
 }
 
 .data-table th,

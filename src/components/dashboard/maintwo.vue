@@ -393,7 +393,7 @@ tr td{
 .data-table th,
 .data-table td {
   padding: 0.75rem;
-  
+  color: #585865;
 }
 
 .table-scroll-buttons {

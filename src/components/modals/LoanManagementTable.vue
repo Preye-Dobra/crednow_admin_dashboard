@@ -4,12 +4,11 @@
       <table class="data-table">
         <thead>
           <tr>
-            <th>Select</th>
+            <th><input type="checkbox" :id="`checkbox-${index}`" /></th>
             <th>Order Number</th>
             <th>Payment Company</th>
             <th>Payment Amount</th>
-            <th>Handling Fee</th>
-            
+            <th>Handling Fee</th>  
             <th>Taxes</th>
             <th>Real Amount</th>
             <th>The Transaction</th>
@@ -99,6 +98,22 @@ tableData: [
     reasonForFailure: "N/A", 
     paymentTime: "2024-01-29 14:30",   
     loanChannel: "Bank ABC",          
+  },
+  {
+    loanNumber: "123456",             
+    paymentCompany: "XYZ Payments",
+    paymentAmount: "$500",             
+    handlingFee: "$5",
+    taxes: "$2",                       
+    realAmount: "$493",
+    transaction: "Success",
+    bankAccount: "1234 **** **** 5678",
+    mobile: "9876543210",              
+    userName: "John Doe",              
+    lendingStatus: "Approved",
+    reasonForFailure: "N/A", 
+    paymentTime: "2024-01-29 14:30",   
+    loanChannel: "Bank ABC",          
   }
 ]
 ,
@@ -132,6 +147,8 @@ tableData: [
 
 
 <style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
 .table-container {
   overflow-x: auto;
   width: 99.5%;
@@ -141,6 +158,7 @@ tableData: [
   border: 1px solid #ddd;
   border-radius: 10px;
   margin-top: 12px;
+  font-family: 'Fira Sans', sans-serif;
 }
 
 .data-table {
@@ -163,6 +181,7 @@ tr td {
   line-height: 16.8px;
   font-weight: 400;
   text-align: center;
+  color: #585865;
 }
 
 .data-table th,

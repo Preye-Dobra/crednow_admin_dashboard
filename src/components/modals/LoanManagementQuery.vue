@@ -14,51 +14,81 @@
               v-model="formData[field.name]"
             >
               <!-- Add default select option -->
-              <template v-if="field.type === 'select'">
-                <option disabled value="">
-                  {{ field.props.placeholder || "--Select Option--" }}
-                </option>
-                <option
-                  v-for="(option, idx) in field.props.options"
-                  :key="idx"
-                  :value="option"
+              <div class="action-buttons">
+                <button
+                  id="query-btn"
+                  type="submit"
+                  class="btn btn-action btn-query"
+                  style="width: 82px;"
                 >
-                  {{ option }}
-                </option>
-              </template>
+                  Query
+                </button>
+                <button
+                  id="reset-btn"
+                  type="button"
+                  class="btn btn-action btn-reset"
+                  @click="handleReset"
+                >
+                  Reset
+                </button>
+                <button
+                  id="batch-operation-btn"
+                  type="button"
+                  class="btn btn-action btn-batch"
+                  @click="handleBatchOperation"
+                >
+                  Batch Success
+                </button>
+                <button
+                  id="batch-modification-btn"
+                  type="button"
+                  class="btn btn-action btn-modify"
+                  @click="handleBatchModification"
+                >
+                  Batch Failure
+                </button>
+              </div>
             </component>
           </div>
-        </div>
-
-        <!-- Action Buttons -->
-        <div class="action-buttons">
-          <button id="query-btn" type="submit" class="btn btn-action btn-query">
-            Query
-          </button>
-          <button
-            id="reset-btn"
-            type="button"
-            class="btn btn-action btn-reset"
-            @click="handleReset"
+          <!-- Action Buttons -->
+          <div
+            class="action-buttons"
+            style=" width: 398px;
+            margin-top: 20px;"
+            
           >
-            Reset
-          </button>
-          <button
-            id="batch-operation-btn"
-            type="button"
-            class="btn btn-action btn-batch"
-            @click="handleBatchOperation"
-          >
-            Batch Operation
-          </button>
-          <button
-            id="batch-modification-btn"
-            type="button"
-            class="btn btn-action btn-modify"
-            @click="handleBatchModification"
-          >
-            Batch Account Modification
-          </button>
+            <button
+              id="query-btn"
+              type="submit"
+              class="btn btn-action btn-query"
+            >
+              Query
+            </button>
+            <button
+              id="reset-btn"
+              type="button"
+              class="btn btn-action btn-reset"
+              @click="handleReset"
+            >
+              Reset
+            </button>
+            <button
+              id="batch-operation-btn"
+              type="button"
+              class="btn btn-action btn-batch"
+              @click="handleBatchOperation"
+            >
+              Batch Success
+            </button>
+            <button
+              id="batch-modification-btn"
+              type="button"
+              class="btn btn-action btn-modify"
+              @click="handleBatchModification"
+            >
+              Batch Failure
+            </button>
+          </div>
         </div>
       </form>
     </div>
@@ -99,7 +129,6 @@ export default {
           type: "input",
           props: { type: "number", placeholder: "Enter order number" },
         },
-
       ],
     };
   },
@@ -134,14 +163,19 @@ export default {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   width: 100%;
   max-width: 1220px;
+  font-family: 'Fira Sans', sans-serif;
 }
 
 .form-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 10px;
+  display: flex;
+  align-items: center;
+  gap: 0; /* Remove gap between inputs */
   margin-bottom: 10px;
   padding: 10px 12px 12px 10px;
+}
+
+.form-group {
+  margin-right: 10px; /* Adjust spacing between form groups */
 }
 
 .form-group label {
@@ -155,7 +189,7 @@ export default {
 
 .form-group input,
 .form-group select {
-  width: 100%;
+  width: 266px;
   height: 40px;
   padding: 8px;
   border: 1px solid #ddd;
@@ -165,25 +199,25 @@ export default {
 
 .action-buttons {
   display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  justify-content: flex-end;
+  align-items: center; /* Vertically center buttons */
+  gap: 10px; /* Spacing between buttons */
+  margin-left: auto; /* Push the container to the right */
+
+  width: 398px; /* Fixed width */
+  justify-content: flex-end; /* Align buttons to the end (right) */
+  padding: 10px; /* Optional: Add padding for better spacing */
 }
 
 .btn {
   padding: 10px 16px;
-  min-width: 120px;
+ line-height: 16.8px;
   height: 40px;
   border-radius: 8px;
   cursor: pointer;
-  font-size: 14px;
-  font-weight: 500;
+  font-size: 12px;
+  font-weight: 400;
   border: 1px solid #00ccff;
   white-space: nowrap; /* Prevents text wrapping */
-}
-
-.btn-action {
-  transition: background-color 0.2s ease-in-out, opacity 0.2s ease-in-out;
 }
 
 .btn-query {
