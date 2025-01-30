@@ -1,18 +1,18 @@
 <template>
   <div class="dashboard-container">
-    <LoanManagement class="dashboard" />
+    <LoanStatus class="dashboard" />
     <!-- <dashboardTwo class="dashboard-two" />-->
     <pagination class="pagination"/> 
   </div>
 </template>
 
 <script>
-import LoanManagement from "../components/dashboard/LoanManagement.vue";
+import LoanStatus from "../components/dashboard/LoanStatus.vue";
  import pagination from "../components/modals/pagination.vue";
 export default {
   components: {
     pagination,
-    LoanManagement,
+    LoanStatus,
 
     
   },
