@@ -8,33 +8,33 @@
       <table class="data-table">
         <thead>
           <tr>
-            <th>Loan Number</th>
-            <th>Result Of The Automatic Audit</th>
-            <th>Product Name</th>
-            <th>Name</th>
-            <th>Application Channel</th>
-            <th>Gender</th>
-            <th>User Level</th>
-            <th>App Name</th>
-            <th>Mobile</th>
-            <th>Loan Tenure</th>
-            <th>Amount</th>
-            <th>Application Type</th>
-            <th>Loan Type</th>
-            <th>Application Status</th>
-            <th>Final Approval Time</th>
-            <th>Enter Approval Time</th>
-            <th>Successful Lending Time</th>
-            <th>Rejection Phase</th>
-            <th>Refuse Reason</th>
-            <th>App Version</th>
-            <th>App Package</th>
-            <th>Application Method</th>
-            <th>Tag</th>
-            <th>Is Privacy Data Authorized</th>
-            <th>User Unique Number</th>
-            <th>Reviewer</th>
-            <th>Actions</th>
+            <th style="color: #004759; font-size: 14px;" >Loan Number</th>
+            <th style="color: #004759; font-size: 14px;" >Result Of The Automatic Audit</th>
+            <th style="color: #004759; font-size: 14px;" >Product Name</th>
+            <th style="color: #004759; font-size: 14px;" >Name</th>
+            <th style="color: #004759; font-size: 14px;" >Application Channel</th>
+            <th style="color: #004759; font-size: 14px;" >Gender</th>
+            <th style="color: #004759; font-size: 14px;" >User Level</th>
+            <th style="color: #004759; font-size: 14px;" >App Name</th>
+            <th style="color: #004759; font-size: 14px;" >Mobile</th>
+            <th style="color: #004759; font-size: 14px;" >Loan Tenure</th>
+            <th style="color: #004759; font-size: 14px;" >Amount</th>
+            <th style="color: #004759; font-size: 14px;" >Application Type</th>
+            <th style="color: #004759; font-size: 14px;" >Loan Type</th>
+            <th style="color: #004759; font-size: 14px;" >Application Status</th>
+            <th style="color: #004759; font-size: 14px;" >Final Approval Time</th>
+            <th style="color: #004759; font-size: 14px;" >Enter Approval Time</th>
+            <th style="color: #004759; font-size: 14px;" >Successful Lending Time</th>
+            <th style="color: #004759; font-size: 14px;" >Rejection Phase</th>
+            <th style="color: #004759; font-size: 14px;" >Refuse Reason</th>
+            <th style="color: #004759; font-size: 14px;" >App Version</th>
+            <th style="color: #004759; font-size: 14px;" >App Package</th>
+            <th style="color: #004759; font-size: 14px;" >Application Method</th>
+            <th style="color: #004759; font-size: 14px;" >Tag</th>
+            <th style="color: #004759; font-size: 14px;" >Is Privacy Data Authorized</th>
+            <th style="color: #004759; font-size: 14px;" >User Unique Number</th>
+            <th style="color: #004759; font-size: 14px;" >Reviewer</th>
+            <th style="color: #004759; font-size: 14px;" >Actions</th>
           </tr>
         </thead>
         <tbody>

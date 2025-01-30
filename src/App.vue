@@ -1,12 +1,13 @@
 <template>
   <div id="app" class="dashboard-layout">
+    <Loading v-if="globalState.isLoading" /> <!-- Show loading state -->
     <Sidebar v-if="showSidebar" />
     <router-view />
   </div>
 </template>
 
 <script>
-import { computed } from "vue";
+import { computed, inject } from "vue"; // Import inject
 import { useRoute } from "vue-router";
 import Sidebar from "./components/Navbar.vue";
 
@@ -16,11 +17,13 @@ export default {
   },
   setup() {
     const route = useRoute();
+    const globalState = inject("globalState"); // Inject the global state
 
     const showSidebar = computed(() => !route.path.startsWith("/auth"));
 
     return {
       showSidebar,
+      globalState, // Return globalState to use in the template
     };
   },
 };

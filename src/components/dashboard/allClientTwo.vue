@@ -8,16 +8,16 @@
       <table class="data-table">
         <thead>
           <tr>
-            <th>User Id</th>
-            <th>Name</th>
-            <th>Id Card</th>
-            <th>Status</th>
-            <th>Registration Time</th>
-            <th>User Level</th>
-            <th>Email</th>
-            <th>Deleted</th>
-            <th>Eligibility</th>
-            <th>Operation</th>
+            <th style="color: #004759;">User Id</th>
+            <th style="color: #004759;">Name</th>
+            <th style="color: #004759;">Id Card</th>
+            <th style="color: #004759;">Status</th>
+            <th style="color: #004759;">Registration Time</th>
+            <th style="color: #004759;">User Level</th>
+            <th style="color: #004759;">Email</th>
+            <th style="color: #004759;">Deleted</th>
+            <th style="color: #004759;">Eligibility</th>
+            <th style="color: #004759;">Operation</th>
           </tr>
         </thead>
         <tbody>
@@ -139,12 +139,15 @@ tr th {
   color: #004759;
   font-weight: 400;
 }
-
+th{
+  color: #004759;
+}
 tr td {
   font-size: 12px;
   line-height: 16.8px;
   font-weight: 400;
   text-align: center;
+  color: #585865;
 }
 
 .data-table th,
