@@ -11,30 +11,31 @@
         <div class="logo-box-container">
           <div class="content-wrapper">
             <img src="/logo1.png" class="logo-img" alt="Sign in" />
-            <h2 class="text-center signin-text">Verify your token</h2>
-            <p class="text-gray-500 text-center signin-paragragh">A token has been sent to your email</p>
+            <h2 class="text-center signin-text">Enter your OTP</h2>
+            <p class="text-gray-500 text-center signin-paragragh">
+              An OTP has been sent to your email
+            </p>
           </div>
         </div>
 
         <div class="form-box">
-          <form action="post">
+          <form @submit.prevent="handleSubmit">
             <div class="form-group">
-              <label for="code">Enter token</label>
+              <label for="code">Enter OTP</label>
               <div class="input-container">
-                <input 
-                  placeholder="********" 
-                  type="password" 
-                  id="code" 
-                  name="code" 
-                  required 
+                <input
+                  placeholder="Enter your OTP"
+                  type="password"
+                  id="code"
+                  name="code"
+                  v-model="code"
+                  required
                   class="input-field"
                 />
-                <i 
-                  id="togglePassword" 
-                  class="fa fa-eye-slash" 
-                  @click="togglePasswordVisibility"
-                ></i>
+                <i id="togglePassword" class="fa fa-eye-slash" @click="togglePasswordVisibility"></i>
               </div>
+              <div v-if="loading" class="text-center text-blue-500">Loading...</div>
+              <div v-if="verificationError" class="text-center text-red-500">{{ verificationError }}</div>
             </div>
 
             <button type="submit" class="submit-btn mt-4">Verify</button>
@@ -46,11 +47,73 @@
 </template>
 
 <script>
+import { useToast } from 'vue-toastification';
+import { fetchDataWithToken } from '../../auth';
+import Cookies from 'js-cookie';
+
 export default {
-  mounted() {
-    this.togglePasswordVisibility = this.togglePasswordVisibility.bind(this);
+  data() {
+    return {
+      code: '',
+      loading: false,
+      verificationError: null,
+    };
+  },
+  setup(){
+    const toast = useToast();
+
+    return{
+      toast
+    }
   },
   methods: {
+    async handleSubmit() {
+      this.verificationError = null;
+      this.loading = true;
+
+      try {
+        const token = Cookies.get("resetToken");
+        console.log("Token is:", token)
+        console.log("Error before response");
+         const response = await fetchDataWithToken(
+          'https://crednow-app-t4vnc.ondigitalocean.app/api/v1/admin/auth/verify-forgot-password',
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+               Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({ otp: this.code, token: token }),
+          }
+        );
+        console.log("response is:", response)
+
+        if (response.success) {
+            this.toast.success(response.message, {
+              timeout: 3000, // Duration in milliseconds
+              position: 'top-right',
+            });
+          // Navigate to the /auth/set-password route
+          this.$router.push('/auth/set-password');
+        } else {
+          this.verificationError = response.message || 'OTP verification failed.';
+            this.toast.error(response.message || "OTP verification failed.", {
+              timeout: 3000, // Duration in milliseconds
+              position: 'top-right',
+            });
+        }
+      } catch (error) {
+        console.error('Network error:', error);
+        this.verificationError = 'Network error occurred. Please try again.';
+        this.toast.error("Network error!", {
+              timeout: 3000, // Duration in milliseconds
+              position: 'top-right',
+            });
+      } finally {
+        this.loading = false;
+      }
+    },
+    // Toggle password visibility
     togglePasswordVisibility() {
       const passwordInput = document.getElementById('code');
       const icon = document.getElementById('togglePassword');
@@ -69,14 +132,30 @@ export default {
 </script>
 
 <style scoped>
+/* ... (Your existing styles) ... */
 .dashboard-container {
   display: flex;
-  flex-direction: row;
-  height: 100vh;
-  padding: 0;
+  width: 100vw; /* Full viewport width */
+  height: 100vh; /* Full viewport height */
   margin: 0;
+  padding: 0;
+  overflow: hidden; /* Prevent scrolling */
 }
 
+.left-section {
+  width: 50%; /* Exact 50% width */
+  display: flex;
+  
+  background-color: #00ccff;
+  border-radius: 0 0 150px 0;
+}
+
+.right-section {
+  width: 50%; /* Exact 50% width */
+  display: flex;
+  
+  background-color: #ffffff;
+}
 .left-section {
   display: flex;
   justify-content: center;
@@ -151,6 +230,7 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  margin: auto;
 }
 
 .form-group {
@@ -171,12 +251,12 @@ label {
 }
 
 .input-field {
-  padding: 12px;
+  padding: 18px 18px; /* Reduced padding */
   font-size: 16px;
   border: 1px solid #ccc;
   border-radius: 30px;
-  width: 100%;
-  height: 40px; /* Reduced height */
+  width: 425px;
+  height: 46px; /* Reduced height */
 }
 
 .input-field::placeholder {
@@ -185,7 +265,7 @@ label {
 }
 
 .submit-btn {
-  width: 100%;
+  width: 425px;
   padding: 14px;
   background-color: #00ccff;
   color: #fff;
@@ -197,6 +277,7 @@ label {
 
 .submit-btn:hover {
   background-color: #0097cc;
+  
 }
 
 #togglePassword {
@@ -208,5 +289,9 @@ label {
   font-size: 1.1em;
   color: #555;
 }
+.form-container{
+  margin-top: 0px;
+}
 </style>
+
 

@@ -7,7 +7,7 @@
       </div>
       <div class="modal-content">
         <div class="icon-container">
-          <img src="/public/warning.png" alt="Warning Icon" class="icon" />
+          <img src="/public/info-circle.png" alt="Warning Icon" class="icon" />
         </div>
         <p class="message">Are you sure you want to notify the user to modify the account?</p>
       </div>
@@ -64,11 +64,12 @@ export default {
   border-radius: 10px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
   position: relative;
+  height: 335px;
 }
 
 .modal-header {
   display: flex;
-  justify-content: center; /* Center title */
+  justify-content: center;
   align-items: center;
   margin-bottom: 20px;
   background-color: #00CCFF;
@@ -77,20 +78,20 @@ export default {
   border-radius: 8px 8px 0 0;
   font-size: 24px;
   padding: 0 16px;
-  position: relative; /* Required for absolute positioning */
+  position: relative;
 }
 
 .text {
   color: #ffffff;
   font-weight: 400;
   font-size: 22px;
-  flex-grow: 1; /* Allows centering while pushing close button */
+  flex-grow: 1;
   text-align: center;
 }
 
 .close-button {
   position: absolute;
-  right: 16px; /* Keep close button aligned to the right */
+  right: 16px;
   background: none;
   border: none;
   font-size: 20px;
@@ -98,24 +99,32 @@ export default {
   color: #fff;
 }
 
-
 .modal-content {
-  text-align: center;
-  padding: 20px;
+  display: flex;
+  align-items: center;
+  padding: 8px;
+  justify-content: center;
+  margin: auto;
+  width: 350px;
+  margin-top: 70px;
+  gap: px; /* Space between icon and text */
 }
 
 .icon-container {
-  margin-bottom: 20px;
+  flex-shrink: 0; /* Prevents the icon from shrinking */
+  
 }
 
 .icon {
-  width: 50px;
-  height: 50px;
+  width: 24px;
+  height: 24px;
+  margin-right: 10px;
 }
 
 .message {
-  font-size: 16px;
-  color: #333;
+  font-size: 20px;
+  color: #585865;
+  text-align: left;
 }
 
 .button-container {
@@ -137,19 +146,19 @@ export default {
 }
 
 .action-btn.cancel {
-  border: 1px solid #009fcc;
-  color: #009fcc;
+  border: 1px solid#00CCFF;
+  color:#00CCFF;
   background-color: #fff;
 }
 
 .action-btn.cancel:hover {
-  background-color: #009fcc;
+  background-color:#00CCFF;
   color: #fff;
 }
 
 .action-btn.submit {
-  border: 1px solid #009fcc;
-  background-color: #009fcc;
+  border: 1px solid#00CCFF;
+  background-color:#00CCFF;
 }
 
 .action-btn.submit:hover {

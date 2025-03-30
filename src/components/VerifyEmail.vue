@@ -30,7 +30,8 @@
                 class="input-field"
               />
             </div>
-
+            <div v-if="loading" class="text-center text-blue-500">Loading...</div>
+            <div v-if="verificationError" class="text-center text-red-500">{{ verificationError }}</div>
             <button type="submit" class="submit-btn mt-4">Verify</button>
           </form>
         </div>
@@ -40,30 +41,97 @@
 </template>
 
 <script>
+import { useToast } from 'vue-toastification';
+import { fetchDataWithToken } from '/auth';
+import Cookies from 'js-cookie';
 export default {
   data() {
     return {
       email: '', // Store the email input value
+      loading: false,
+      verificationError: null
     };
   },
+  setup(){
+       const toast = useToast();
+
+      return{
+      toast
+     }
+  },
   methods: {
-    handleSubmit() {
-      // Handle form submission logic
-      console.log("Email entered:", this.email);
+    async handleSubmit() {
+      this.verificationError = null;
+      this.loading = true;
+
+      try {
+        const response = await fetchDataWithToken('https://crednow-app-t4vnc.ondigitalocean.app/api/v1/admin/auth/forgot-password', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ email: this.email }),
+        });
+
+        if (response.success) {
+          // Store the token in a cookie
+          Cookies.set('resetToken', response.token, {
+            expires: 1,
+            secure: true,
+            sameSite: 'Strict',
+          });
+          this.toast.success(response.message, {
+          timeout: 3000, // Duration in milliseconds
+          position: 'top-right',
+        });
+          // Navigate to the /auth/password-reset route
+          this.$router.push('/auth/password-reset');
+        } else {
+          this.verificationError = response.message || 'Verification failed.';
+          this.toast.error(response.message || "Verification failed", {
+          timeout: 3000, // Duration in milliseconds
+          position: 'top-right',
+        });
+        }
+      } catch (error) {
+          console.error('Network error:', error);
+          this.verificationError = 'Network error occurred. Please try again.';
+          this.toast.error("Network error!", {
+          timeout: 3000, // Duration in milliseconds
+          position: 'top-right',
+        });
+      }
+      finally{
+        this.loading = false;
+      }
     },
   },
 };
 </script>
 
 <style scoped>
+/* ... (Your existing styles) ... */
 .dashboard-container {
   display: flex;
-  flex-direction: row;
+  width: 100vw;
   height: 100vh;
-  padding: 0;
   margin: 0;
+  padding: 0;
+  overflow: hidden;
 }
 
+.left-section {
+  width: 50%;
+  display: flex;
+  background-color: #00ccff;
+  border-radius: 0 0 150px 0;
+}
+
+.right-section {
+  width: 50%;
+  display: flex;
+  background-color: #ffffff;
+}
 .left-section {
   display: flex;
   justify-content: center;
@@ -91,7 +159,7 @@ export default {
   justify-content: center;
   align-items: center;
   text-align: center;
-  margin-top: 100px;
+  margin-top: 90px;
 }
 
 .content-wrapper {
@@ -138,8 +206,11 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  margin: auto;
 }
-
+.form-container {
+  margin-top: 100px;
+}
 .form-group {
   display: flex;
   flex-direction: column;
@@ -153,12 +224,12 @@ label {
 }
 
 .input-field {
-  padding: 12px; /* Reduced padding */
+  padding: 18px 18px;
   font-size: 16px;
   border: 1px solid #ccc;
   border-radius: 30px;
-  width: 100%;
-  height: 40px; /* Reduced height */
+  width: 425px;
+  height: 46px;
 }
 
 .input-field::placeholder {
@@ -167,7 +238,7 @@ label {
 }
 
 .submit-btn {
-  width: 100%;
+  width: 425px;
   padding: 14px;
   background-color: #00ccff;
   color: #fff;
@@ -180,4 +251,8 @@ label {
 .submit-btn:hover {
   background-color: #0097cc;
 }
+.form-container {
+  margin-top: 0px;
+}
 </style>
+

@@ -104,6 +104,7 @@ props: {
   align-items: center;
   margin-bottom: 20px;
   text-align: center;
+  color: #004759;
   background-color: #00CCFF;
   height: 46px;
   width: 100%;
@@ -180,18 +181,18 @@ label {
 }
 
 .action-btn:hover {
-  background-color: #009fcc;
+  background-color:  #00CCFF;
 }
 
 .cancel {
-  border: 1px solid #009fcc;
-  color: #009fcc;
+  border: 1px solid  #00CCFF;
+  color:  #00CCFF;
   background-color: #fff;
 }
 
 .submit {
-  border: 1px solid #009fcc;
+  border: 1px solid  #00CCFF;
   color: #ecf1f2;
-  background-color: #009fcc;
+  background-color:  #00CCFF;
 }
 </style>

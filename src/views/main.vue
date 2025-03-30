@@ -1,23 +1,35 @@
 <template>
   <div class="dashboard-container">
-    <dashboard class="dashboard" />
-    <dashboardTwo class="dashboard-two" />
-    <pagination class="pagination"/>
+    <dashboard class="dashboard" @query="handleQuery" />
+    <dashboardTwo class="dashboard-two" :queryData="queryData" />
+    <!-- Pass queryData as a prop -->
+
   </div>
 </template>
 
 <script>
 import dashboard from "../components/dashboard/main.vue";
 import dashboardTwo from "../components/dashboard/maintwo.vue";
-import pagination from "../components/modals/pagination.vue";
+
 export default {
   components: {
     dashboard,
     dashboardTwo,
-    pagination,
+  },
+  data() {
+    return {
+      queryData: null, // Initialize queryData as null
+    };
+  },
+  methods: {
+    handleQuery(data) {
+       console.log('main.vue received data',data)
+      this.queryData = data; // Update queryData with the received data
+    },
   },
 };
 </script>
+
 
 <style scoped>
 .dashboard-container {

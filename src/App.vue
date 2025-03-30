@@ -29,10 +29,10 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .dashboard-layout {
   display: flex;
-
+background-color: #D9F7FF;
 }
 
 #app {

@@ -188,13 +188,16 @@ export default {
 }
 
 .form-group input,
-.form-group select {
-  width: 266px;
+.form-group select,
+.form-group option {
+  width: 286.5px;
   height: 40px;
   padding: 8px;
   border: 1px solid #ddd;
   border-radius: 20px;
   font-size: 14px;
+  color: #ACACB2;
+;
 }
 
 .action-buttons {
@@ -216,12 +219,12 @@ export default {
   cursor: pointer;
   font-size: 12px;
   font-weight: 400;
-  border: 1px solid #00ccff;
+  border: 1px solid #00CCFF;
   white-space: nowrap; /* Prevents text wrapping */
 }
 
 .btn-query {
-  background-color: #00ccff;
+  background-color: #00CCFF;
   color: white;
 }
 
@@ -229,7 +232,7 @@ export default {
 .btn-batch,
 .btn-modify {
   background-color: #ffffff;
-  color: #00ccff;
+  color: #00CCFF;
 }
 
 .btn-reset:hover,

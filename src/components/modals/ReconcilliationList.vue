@@ -1,49 +1,69 @@
 <template>
   <div>
-    <div class="table-container" ref="tableContainer">
+    <!-- Loading State -->
+    <div v-if="isLoading" class="loading-container">
+      <div class="loading-spinner"></div>
+      <p class="loading-text">Loading data...</p>
+    </div>
+    
+    <!-- Error State -->
+    <div v-else-if="loadingError" class="error-container">
+      <p>{{ loadingError }}</p>
+    </div>
+
+    <!-- Table Container -->
+    <div v-else-if="tableData.length > 0" class="table-container" ref="tableContainer">
       <table class="data-table">
         <thead>
           <tr>
-            <th>Loan Number</th>
-            <th>Product Name</th>
-            <th>Master Loan</th>
-            <th>Mobile</th>
+            <th>Loan ID</th>
+            <th>Loan Limit</th>
             <th>Name</th>
+            <th>Loan Type</th>
+            <th>Loan Terms</th>
+            <th>Product Name</th>
+            <th>Status</th>
+            <th>Loan Tenure</th>
+            <th>Loan Number</th>
+            <th>Phone Number</th>
             <th>Days Overdue</th>
-            <th>Repayment Date</th>
-            <th>Already Flattened Amount</th>
-            <th>Flatting Amount</th>
-            <th>Total Remaining Repayment</th>
-            <th>Pending Principal</th>
-            <th>Reduce Principal</th>
-            <th>Pending Interest</th>
-            <th>Pending Service Fee</th>
-            <th>Pending Default Interest</th>
-            <th>Operation</th>
+            <th>Loan Amount</th>
+            <th>Transaction Reference</th>
+            <th>Loan Status</th>
+            <th>Processing Fee</th>
+            <th>Loan Balance</th>
+            <th>Total Amount</th>
+            <th class="operation-header">Operation</th>
           </tr>
         </thead>
         <tbody>
           <tr v-for="(item, index) in tableData" :key="index">
-            <td>{{ item.loanNumber }}</td>
+            <td>{{ item.loanId }}</td>
+            <td>{{ item.loanLimit }}</td>
+            <td>{{ item.user.lastName }} {{ item.user.firstName }}</td>
+            <td>{{ item.loanType }}</td>
+            <td>{{ item.loanTerms }}</td>
             <td>{{ item.productName }}</td>
-            <td>{{ item.masterLoan }}</td>
-            <td>{{ item.mobile }}</td>
-            <td>{{ item.name }}</td>
-            <td>{{ item.daysOverdue }}</td>
-            <td>{{ item.repaymentDate }}</td>
-            <td>{{ item.alreadyFlattenedAmount }}</td>
-            <td>{{ item.flattingAmount }}</td>
-            <td>{{ item.totalRemainingRepayment }}</td>
-            <td>{{ item.pendingPrincipal }}</td>
-            <td>{{ item.reducePrincipal }}</td>
-            <td>{{ item.pendingInterest }}</td>
-            <td>{{ item.pendingServiceFee }}</td>
-            <td>{{ item.pendingDefaultInterest }}</td>
-            <td>
+            <td>{{ item.status }}</td>
+            <td>{{ item.loanTenure }}</td>
+            <td>{{ item.loanNumber }}</td>
+            <td>{{ item.phoneNumber }}</td>
+            <td>{{ item.daysOverDue }}</td>
+            <td>{{ item.loanAmount }}</td>
+            <td>{{ item.transactionReference }}</td>
+            <td>{{ item.loanStatus }}</td>
+            <td>{{ item.processingFee }}</td>
+            <td>{{ formatCurrency(item.loanBalance) }}</td>
+            <td>{{ formatCurrency(item.totalAmount) }}</td>
+            <td class="operation-cell">
               <div class="button-container">
-                <button class="operation-button" @click="openBillingModal(item.loanNumber)">Billing</button>
-                <button class="operation-button" @click="openIncreaseModal(item.loanNumber)">Increase</button>
-                <button class="operation-button" @click="openReductionModal(item.loanNumber)">Reduction</button>
+                <button 
+                  v-if="isSuperAdmin" 
+                  class="operation-button" 
+                  @click="openBillingModal(item)"
+                >
+                  Billing
+                </button>
               </div>
             </td>
           </tr>
@@ -51,104 +71,241 @@
       </table>
     </div>
 
-    <!-- Modal Components -->
+    <!-- No Data State -->
+    <div v-else class="no-data-container">
+      <p>No data available.</p>
+    </div>
+
+    <!-- Status Message -->
+    <div v-if="statusMessage" class="status-message" :class="statusMessage.type">
+      {{ statusMessage.text }}
+    </div>
+
+    <!-- Billing Modal -->
     <BillingModal
-      :visible="showModal.billing"
-      :title="`Billing Information for Loan ${selectedLoan}`"
-      @close="closeModal('billing')"
-    >
-      <p>Provide necessary billing details here.</p>
-    </BillingModal>
-
-    <IncreaseModal
-      :visible="showModal.increase"
-      :title="`Increase Amount for Loan ${selectedLoan}`"
-      @close="closeModal('increase')"
-    >
-      <p>Provide necessary increase details here.</p>
-    </IncreaseModal>
-
-    <ReductionModal
-      :visible="showModal.reduction"
-      :title="`Reduction Amount for Loan ${selectedLoan}`"
-      @close="closeModal('reduction')"
-    >
-      <p>Provide necessary reduction details here.</p>
-    </ReductionModal>
+      v-if="showBillingModal"
+      :visible="showBillingModal"
+      :loanId="selectedLoanId"
+      :loanData="selectedLoanData"
+      @close="closeBillingModal"
+      @success="handleBillingSuccess"
+      @error="handleBillingError"
+    />
   </div>
 </template>
 
 <script>
+import Cookies from "js-cookie";
 import BillingModal from "../modals/billingModal.vue";
-import IncreaseModal from "../modals/IncreaseModal.vue";
-import ReductionModal from "../modals/ReductionModal.vue";
 
 export default {
   components: {
-    BillingModal,
-    IncreaseModal,
-    ReductionModal,
+    BillingModal
+  },
+  props: {
+    queryResult: {
+      type: Object,
+      default: null
+    },
+    isQueryLoading: {
+      type: Boolean,
+      default: false
+    },
+    queryError: {
+      type: String,
+      default: null
+    }
   },
   data() {
     return {
-      tableData: [
-        {
-          loanNumber: "211024",
-          productName: "Crednow",
-          masterLoan: "MasterLoan1",
-          mobile: "9098989898",
-          name: "Isaac Emmanuel",
-          daysOverdue: 5,
-          repaymentDate: "2023-11-01",
-          alreadyFlattenedAmount: 3000,
-          flattingAmount: 2000,
-          totalRemainingRepayment: 2000,
-          pendingPrincipal: 1500,
-          reducePrincipal: 500,
-          pendingInterest: 300,
-          pendingServiceFee: 200,
-          pendingDefaultInterest: 100,
-        },
-      ],
-      showModal: {
-        billing: false,
-        increase: false,
-        reduction: false,
-      },
-      selectedLoan: null,
+      tableData: [],
+      isLoading: true,
+      loadingError: null,
+      showBillingModal: false,
+      selectedLoanId: null,
+      selectedLoanData: null,
+      statusMessage: null,
+      userProfile: null
     };
   },
-  methods: {
-    openBillingModal(loanNumber) {
-      this.selectedLoan = loanNumber;
-      this.showModal.billing = true;
-    },
-    openIncreaseModal(loanNumber) {
-      this.selectedLoan = loanNumber;
-      this.showModal.increase = true;
-    },
-    openReductionModal(loanNumber) {
-      this.selectedLoan = loanNumber;
-      this.showModal.reduction = true;
-    },
-    closeModal(modalType) {
-      this.showModal[modalType] = false;
-    },
+  computed: {
+    isSuperAdmin() {
+      return this.userProfile && this.userProfile.role === "super-admin";
+    }
   },
+  watch: {
+    queryResult(newData) {
+      if (newData && newData.success && newData.data) {
+        this.tableData = newData.data;
+        this.loadingError = null;
+      } else if (newData) {
+        this.loadingError = "No data available for this query.";
+        this.tableData = [];
+      }
+      this.isLoading = false;
+    },
+    isQueryLoading(isLoading) {
+      this.isLoading = isLoading;
+    },
+    queryError(error) {
+      if (error) {
+        this.loadingError = error;
+        this.tableData = [];
+      } else {
+        this.loadingError = null;
+      }
+    }
+  },
+  mounted() {
+    // Load user profile from local storage
+    this.loadUserProfile();
+    
+    // Auto-fetch data when the component mounts, only if no queryResult is provided
+    if (!this.queryResult) {
+      this.fetchAllData();
+    }
+  },
+  methods: {
+    loadUserProfile() {
+      // Fetch user profile from local storage
+      const userProfile = localStorage.getItem("userProfile");
+      if (userProfile) {
+        this.userProfile = JSON.parse(userProfile);
+        console.log("Loaded user profile from local storage:", this.userProfile);
+      } else {
+        console.warn("No user profile found in local storage");
+        this.userProfile = { role: "super-admin" }; // Fallback for testing
+      }
+    },
+    async fetchAllData() {
+      console.log("Auto-fetching all records on component mount");
+      this.isLoading = true;
+      this.loadingError = null;
+      
+      try {
+        const authToken = Cookies.get("authToken");
+        
+        if (!authToken) {
+          this.loadingError = "Authentication token not found. Please log in again.";
+          this.isLoading = false;
+          return;
+        }
+        
+        const emptyQuery = {};
+        
+        const response = await fetch(
+          "https://crednow-app-t4vnc.ondigitalocean.app/api/v1/admin/financial/reconciliation",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${authToken}`
+            },
+            body: JSON.stringify(emptyQuery)
+          }
+        );
+        
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        
+        const data = await response.json();
+        
+        if (data.success && data.data && data.data.length > 0) {
+          this.tableData = data.data;
+        } else {
+          this.loadingError = "No data available.";
+          this.tableData = [];
+        }
+      } catch (error) {
+        console.error("Error fetching reconciliation data:", error);
+        this.loadingError = error.message || "Failed to load data. Please try again.";
+        this.tableData = [];
+      } finally {
+        this.isLoading = false;
+      }
+    },
+    formatCurrency(value) {
+      if (!value) return "0.00";
+      return parseFloat(value).toLocaleString('en-US', { 
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2 
+      });
+    },
+    openBillingModal(loanItem) {
+      this.selectedLoanId = loanItem.loanId;
+      this.selectedLoanData = loanItem;
+      this.showBillingModal = true;
+    },
+    closeBillingModal() {
+      this.showBillingModal = false;
+      setTimeout(() => {
+        this.selectedLoanId = null;
+        this.selectedLoanData = null;
+      }, 300);
+    },
+    handleBillingSuccess(data) {
+      console.log('Billing update successful:', data);
+      this.statusMessage = {
+        type: 'success',
+        text: 'Billing update was successful!'
+      };
+      setTimeout(() => {
+        this.statusMessage = null;
+      }, 3000);
+      this.fetchAllData();
+    },
+    handleBillingError(errorMessage) {
+      console.error('Billing update failed:', errorMessage);
+      this.statusMessage = {
+        type: 'error',
+        text: `Error: ${errorMessage}`
+      };
+      setTimeout(() => {
+        this.statusMessage = null;
+      }, 5000);
+    }
+  }
 };
 </script>
-
 
 <style scoped>
 .table-container {
   overflow-x: auto;
   width: 99.5%;
-  padding: 8px;
   white-space: nowrap;
   background-color: #fff;
   border: 1px solid #ddd;
   border-radius: 10px;
   margin-top: 12px;
+}
+
+.data-table th:first-child,
+.data-table td:first-child {
+  position: sticky;
+  left: 0;
+  background-color: #fff;
+  z-index: 1;
+}
+
+.data-table th:first-child {
+  background-color: #F2F7F8;
+}
+
+.data-table th.operation-header,
+.data-table td.operation-cell {
+  position: sticky;
+  right: 0;
+  background-color: #fff;
+  z-index: 1;
+}
+
+.data-table th.operation-header {
+  background-color: #F2F7F8;
+}
+
+.data-table th {
+  background-color: #F2F7F8;
 }
 
 .data-table {
@@ -177,7 +334,6 @@ tr td {
 .data-table th,
 .data-table td {
   padding: 0.75rem;
-  
 }
 
 .button-container {
@@ -188,13 +344,16 @@ tr td {
 }
 
 .operation-button {
-  color: #004759;
+  color: #00CCFF;
   background-color: #fff;
   border: 1px solid #00CCFF;
   padding: 10px 10px;
-  border-radius: 5px;
+  border-radius: 8px;
   cursor: pointer;
   font-size: 12px;
+  width: 86px;
+  height: 34px;
+  font-weight: 400;
 }
 
 .operation-button:hover {
@@ -202,11 +361,78 @@ tr td {
   color: #fff;
 }
 
+.data-table tbody tr:hover {
+  background-color: #ffff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+}
 
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 200px;
+  width: 100%;
+}
 
+.loading-spinner {
+  border: 4px solid rgba(0, 204, 255, 0.3);
+  border-radius: 50%;
+  border-top: 4px solid #00CCFF;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+  margin-bottom: 15px;
+}
 
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
 
+.loading-text {
+  color: #004759;
+  font-size: 14px;
+}
 
+.error-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100px;
+  width: 100%;
+  color: #ff3333;
+  font-weight: 500;
+}
+
+.no-data-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100px;
+  width: 100%;
+  color: #585865;
+  font-size: 14px;
+}
+
+.status-message {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  padding: 10px 20px;
+  border-radius: 5px;
+  color: white;
+  font-size: 14px;
+}
+
+.status-message.success {
+  background-color: #4CAF50;
+}
+
+.status-message.error {
+  background-color: #F44336;
+}
 </style>
 
 

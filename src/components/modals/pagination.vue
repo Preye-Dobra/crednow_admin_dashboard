@@ -2,7 +2,7 @@
   <div class="pagination-container">
     <!-- Total Count -->
     <div class="total-box">Total {{ totalItems }}</div>
-
+    
     <!-- Items Per Page Selector -->
     <select
       v-model="itemsPerPage"
@@ -13,20 +13,21 @@
         {{ option }}/Page
       </option>
     </select>
-
+    
     <!-- Previous Button -->
     <button
-      :disabled="currentPage === 1"
+      :disabled="currentPage === 1 || loading"
       @click="goToPage(currentPage - 1)"
       class="pagination-button"
     >
       &lt;
     </button>
-
+    
     <!-- Page Numbers -->
     <div v-for="page in visiblePages" :key="page" class="page-number">
       <button
         @click="goToPage(page)"
+        :disabled="loading"
         :class="[
           'pagination-button',
           { 'active-page': currentPage === page }
@@ -35,16 +36,16 @@
         {{ page }}
       </button>
     </div>
-
+    
     <!-- Next Button -->
     <button
-      :disabled="currentPage === totalPages"
+      :disabled="currentPage === totalPages || loading"
       @click="goToPage(currentPage + 1)"
       class="pagination-button bg-gray-100"
     >
       &gt;
     </button>
-
+    
     <!-- Go To Page -->
     <div class="go-page">
       <span class="go-label">Go to:</span>
@@ -55,6 +56,7 @@
         class="go-input"
         :min="1"
         :max="totalPages"
+        :disabled="loading"
       />
     </div>
   </div>
@@ -62,38 +64,103 @@
 
 <script>
 export default {
+  name: "Pagination",
+  props: {
+    totalItems: {
+      type: Number,
+      default: 0
+    },
+    initialItemsPerPage: {
+      type: Number,
+      default: 10
+    },
+    initialPage: {
+      type: Number,
+      default: 1
+    },
+    loading: {
+      type: Boolean,
+      default: false
+    }
+  },
+  created() {
+    console.log("Pagination component initialized with:", {
+      totalItems: this.totalItems,
+      initialPage: this.initialPage,
+      initialItemsPerPage: this.initialItemsPerPage
+    });
+  },
   data() {
     return {
-      totalItems: 93319,
-      itemsPerPage: 10,
+      itemsPerPage: this.initialItemsPerPage,
       itemsPerPageOptions: [10, 20, 50, 100],
-      currentPage: 1,
-      goToPageInput: 1,
+      currentPage: this.initialPage,
+      goToPageInput: this.initialPage,
     };
   },
   computed: {
     totalPages() {
-      return Math.ceil(this.totalItems / this.itemsPerPage);
+      return Math.max(Math.ceil(this.totalItems / this.itemsPerPage) || 1, 1);
     },
     visiblePages() {
       const maxPages = 6;
       const pages = [];
-      const startPage = Math.max(1, this.currentPage - Math.floor(maxPages / 2));
-      const endPage = Math.min(startPage + maxPages - 1, this.totalPages);
-      for (let i = startPage; i <= endPage; i++) {
-        pages.push(i);
+      
+      if (this.totalPages <= maxPages) {
+        // Show all pages if there are fewer than maxPages
+        for (let i = 1; i <= this.totalPages; i++) {
+          pages.push(i);
+        }
+      } else {
+        // Calculate range for display
+        const halfMax = Math.floor(maxPages / 2);
+        let startPage = Math.max(1, this.currentPage - halfMax);
+        let endPage = Math.min(startPage + maxPages - 1, this.totalPages);
+        
+        // Adjust if we're near the end
+        if (endPage - startPage + 1 < maxPages) {
+          startPage = Math.max(1, endPage - maxPages + 1);
+        }
+        
+        for (let i = startPage; i <= endPage; i++) {
+          pages.push(i);
+        }
       }
+      
       return pages;
     },
+  },
+  watch: {
+    initialPage(newValue) {
+      this.currentPage = newValue;
+      this.goToPageInput = newValue;
+    },
+    initialItemsPerPage(newValue) {
+      this.itemsPerPage = newValue;
+    },
+    totalItems() {
+      // When totalItems changes, check if current page is still valid
+      if (this.currentPage > this.totalPages && this.totalPages > 0) {
+        this.currentPage = this.totalPages;
+        this.goToPageInput = this.totalPages;
+      }
+    }
   },
   methods: {
     onItemsPerPageChange() {
       this.currentPage = 1;
+      this.goToPageInput = 1;
+      console.log(`Changing items per page to ${this.itemsPerPage}`);
+      this.$emit('page-change', this.currentPage, this.itemsPerPage);
     },
     goToPage(page) {
-      if (page >= 1 && page <= this.totalPages) {
+      if (page >= 1 && page <= this.totalPages && !this.loading) {
         this.currentPage = page;
         this.goToPageInput = page;
+        console.log(`Navigating to page ${page} with ${this.itemsPerPage} items per page`);
+        this.$emit('page-change', this.currentPage, this.itemsPerPage);
+      } else {
+        console.warn(`Invalid page number: ${page}. Valid range: 1-${this.totalPages}`);
       }
     },
   },
@@ -104,13 +171,15 @@ export default {
 .pagination-container {
   display: flex;
   align-items: center;
-  justify-content:end;
+  justify-content: flex-end;
   flex-wrap: wrap;
-  background:  #d9f7ff;
+  background: #d9f7ff;
   padding: 16px;
   border-radius: 12px;
   gap: 12px;
   font-weight: 400;
+  margin-top: 20px;
+  
 }
 
 .total-box {
@@ -159,8 +228,8 @@ export default {
   display: flex;
   align-items: center;
   gap: 8px;
-  background:   #d9f7ff;
-  border: 1px solid   #d9f7ff;
+  background: #d9f7ff;
+  border: 1px solid #d9f7ff;
   border-radius: 8px;
   padding: 6px 12px;
 }
@@ -171,11 +240,14 @@ export default {
 }
 
 .go-input {
-  border: 1px solid   #00ccff;
+  border: 1px solid #00ccff;
   border-radius: 4px;
   padding: 4px 8px;
   width: 60px;
   text-align: center;
   background-color: #d9f7ff;
 }
+
+
 </style>
+

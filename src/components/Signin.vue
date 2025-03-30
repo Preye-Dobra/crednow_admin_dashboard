@@ -12,7 +12,9 @@
           <div class="content-wrapper">
             <image src="/logo1.png" class="logo-img" alt="Sign in" />
             <h2 class="text-center signin-text">Sign in</h2>
-            <p class="text-gray-500 text-center signin-paragragh">Please login to your account</p>
+            <p class="text-gray-500 text-center signin-paragragh">
+              Please login to your account
+            </p>
           </div>
         </div>
 
@@ -32,10 +34,10 @@
             </div>
             <div class="form-group">
               <label for="password">Password:</label>
-              <div style="position: relative; display: flex; align-items: center;">
+              <div class="password-input-wrapper">
                 <input
                   placeholder="Enter Password"
-                  type="password"
+                  :type="showPassword ? 'text' : 'password'"
                   id="password"
                   name="password"
                   required
@@ -43,21 +45,20 @@
                   v-model="password"
                 />
                 <i
-                  id="togglePassword"
-                  class="fa fa-eye-slash"
-                  style="
-                    position: absolute;
-                    right: 10px;
-                    cursor: pointer;
-                    font-size: 1.0em;
-                    color: #555;
-                  "
+                  class="password-toggle-icon"
+                  :class="showPassword ? 'fa fa-eye' : 'fa fa-eye-slash'"
                   @click="togglePasswordVisibility"
                 ></i>
               </div>
-              <a href="#" class="forgot-password">Forgot Password?</a>
+              <a href="/auth/verify-email" class="forgot-password">Forgot Password?</a>
             </div>
-            <button type="submit" class="submit-btn">Continue</button>
+            <div v-if="loginError" class="text-center text-red-500 error-message">{{ loginError }}</div>
+            <button type="submit" class="submit-btn" :disabled="loading">
+              <span v-if="!loading">Continue</span>
+              <span v-else class="loading-spinner-btn">
+                <i class="fa fa-spinner fa-spin"></i> Loading...
+              </span>
+            </button>
           </form>
         </div>
       </div>
@@ -66,43 +67,121 @@
 </template>
 
 <script>
+import Cookies from 'js-cookie'; // Import js-cookie
+import { useToast } from 'vue-toastification';
+
 export default {
   data() {
     return {
       email: '',
       password: '',
+      loading: false,
+      loginError: null,
+      showPassword: false, // Added state for password visibility
     };
   },
-  mounted() {
-    const passwordInput = document.getElementById("password");
-    const togglePassword = document.getElementById("togglePassword");
-
-    togglePassword.addEventListener("click", () => {
-      const isPassword = passwordInput.type === "password";
-      passwordInput.type = isPassword ? "text" : "password";
-
-      // Toggle icons using Font Awesome classes
-      togglePassword.classList.toggle("fa-eye");
-      togglePassword.classList.toggle("fa-eye-slash");
-    });
+  setup() {
+    const toast = useToast();
+    return { toast };
   },
   methods: {
     togglePasswordVisibility() {
-      const passwordInput = document.getElementById("password");
-      const togglePassword = document.getElementById("togglePassword");
-      
-      const isPassword = passwordInput.type === "password";
-      passwordInput.type = isPassword ? "text" : "password";
-
-      // Toggle icons using Font Awesome classes
-      togglePassword.classList.toggle("fa-eye");
-      togglePassword.classList.toggle("fa-eye-slash");
+      this.showPassword = !this.showPassword;
     },
-    handleSubmit() {
-      // Handle form submission logic here (e.g., API request)
+    
+    redirectBasedOnRole(userProfile) {
+      // Check if user role is super-agent
+      if (userProfile && userProfile.role === 'super-agent') {
+        // Redirect to collection-case page
+        this.$router.push('/collection-case');
+      } else {
+        // Redirect to dashboard for all other roles
+        this.$router.push('/dashboard');
+      }
+    },
+    
+    async handleSubmit() {
+      this.loginError = null; // Clear previous errors
+      this.loading = true; // Start loading
       
-      // Redirect to the dashboard after successful login
-      this.$router.push('/dashboard');
+      try {
+        const response = await fetch(
+          'https://crednow-app-t4vnc.ondigitalocean.app/api/v1/admin/auth/login',
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              email: this.email,
+              password: this.password,
+            }),
+          }
+        );
+        
+        if (response.ok) {
+          const data = await response.json();
+          // Assuming the token is in data.token or data.accessToken
+          const token = data.token || data.accessToken;
+          
+          if (token) {
+            // Set the token in a cookie (using js-cookie)
+            Cookies.set('authToken', token, {
+              expires: 7,
+              secure: true,
+              sameSite: 'Strict',
+            }); // expires in 7 days
+            
+            // Create user profile object
+            let userProfile = null;
+            
+            // Store user data in localStorage under 'UserProfile'
+            if (data.data) {
+              userProfile = {
+                firstName: data.data.firstName,
+                lastName: data.data.lastName,
+                email: data.data.email,
+                role: data.data.role
+              };
+              localStorage.setItem('UserProfile', JSON.stringify(userProfile));
+              
+              // Log for debugging
+            //  console.log('User role:', userProfile.role);
+              
+              // Notify with a toast
+              this.toast.success('Login successful!', {
+                timeout: 3000,
+                position: 'top-right',
+              });
+              
+              // Redirect based on user role
+              this.redirectBasedOnRole(userProfile);
+            } else {
+              this.loginError = 'User data not found in response.';
+              this.$router.push('/dashboard'); // Fallback to dashboard if no user data
+            }
+          } else {
+            this.loginError = 'Token not found in response.';
+          }
+        } else {
+          const errorData = await response.json();
+          this.loginError = errorData.message || 'Login failed.'; // Assuming the server returns an error message
+            
+          this.toast.error('Login failed!', {
+            timeout: 3000,
+            position: 'top-right',
+          });
+        }
+      } catch (error) {
+        console.error('Network error:', error);
+        this.loginError = 'Network error occurred. Please try again.';
+        this.toast.error('Network error!', {
+          timeout: 3000,
+          position: 'top-right',
+        });
+      } finally {
+        this.loading = false; // Stop loading
+      }
     },
   },
 };
@@ -111,13 +190,25 @@ export default {
 <style scoped>
 .dashboard-container {
   display: flex;
-  flex-direction: row;
-  height: 1024px;
-  padding: 0;
+  width: 100vw;
+  height: 100vh;
   margin: 0;
-  width: 1440px;
+  padding: 0;
+  overflow: hidden;
 }
 
+.left-section {
+  width: 50%;
+  display: flex;
+  background-color: #00ccff;
+  border-radius: 0 0 150px 0;
+}
+
+.right-section {
+  width: 50%;
+  display: flex;
+  background-color: #ffffff;
+}
 .left-section {
   display: flex;
   justify-content: center;
@@ -138,7 +229,7 @@ export default {
 }
 
 .logo-box-container {
-  width: 250px;
+  width: 541px;
   height: 250px;
   margin: 0 auto;
   display: flex;
@@ -195,12 +286,14 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  margin: auto;
 }
 
 .form-group {
   display: flex;
   flex-direction: column;
   margin-bottom: 16px;
+  width: 100%;
 }
 
 label {
@@ -211,13 +304,27 @@ label {
 
 .input-field,
 .submit-btn {
-  width: 100%;
-  height: 50px;
-  padding: 8px;
+  padding: 18px 18px;
   font-size: 16px;
   border: 1px solid #ccc;
   border-radius: 30px;
-  box-sizing: border-box;
+  width: 100%;
+  height: 46px;
+}
+
+.password-input-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.password-toggle-icon {
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  font-size: 16px;
+  color: #555;
 }
 
 .input-field::placeholder {
@@ -239,9 +346,32 @@ label {
   color: #fff;
   border: none;
   cursor: pointer;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.submit-btn:disabled {
+  background-color: #80e5ff;
+  cursor: not-allowed;
+}
+
+.loading-spinner-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.error-message {
+  margin-bottom: 10px;
+}
+.form-container {
+  margin-top: 0px;
 }
 </style>
-
 
 
 

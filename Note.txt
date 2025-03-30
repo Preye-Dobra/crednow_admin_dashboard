@@ -1,72 +1,385 @@
 <template>
-  <div class="dashboard-container">
-    <repayment class="dashboard" />
-    <!-- <dashboardTwo class="dashboard-two" />
-    <pagination class="pagination"/> -->
+  <div class="container">
+    <div class="header-button-container flex items-center justify-between mb-4 bg-white px-4 py-2 border-b">
+      <!-- Tabs -->
+      <div class="button-container flex space-x-4">
+        <button
+          class="tab-button"
+          :class="{ active: activeTab === 'user' }"
+          @click="activeTab = 'user'"
+        >
+          User Information
+        </button>
+        <button
+          class="tab-button"
+          :class="{ active: activeTab === 'media' }"
+          @click="activeTab = 'media'"
+        >
+          Media Information
+        </button>
+      </div>
+
+      <!-- Delete Button -->
+      <div class="delete-button-container">
+        <button
+          class="delete-button"
+          @click="openDeleteModal"
+          style="
+            width: 94px;
+            height: 33px;
+            border-radius: 8px;
+            padding: 8px 12px;
+            background-color: #E85353;
+            border: none;
+            color: #fff;
+          "
+        >
+          Delete
+        </button>
+      </div>
+    </div>
+
+    <div class="tab-content">
+      <!-- User Information Section -->
+      <div v-if="activeTab === 'user'" class="content-box">
+        <!-- Header for Basic Information -->
+        <div class="basic-header">
+          <h3 class="header-title">Basic Information 
+            <span class="edit" @click="openBasicInfoModal">
+              Edit 
+              <img src="/public/mynaui_edit.png" style="width: 12px; height: 12px;" srcset="">
+            </span>
+          </h3>
+        </div>
+
+        <!-- Three Boxes -->
+        <div class="box-container">
+          <!-- First Box (48% width) - Basic Information -->
+          <div class="box box-1">
+            <div class="info-item">
+              <strong>User ID:</strong><div class="normal" style="color: #00CCFF; margin-top: 20px;">195859</div>
+            </div>
+            <div class="info-item">
+              <strong>Name:</strong><div class="normal">Covenant Olubisi</div>
+            </div>
+            <div class="info-item">
+              <strong>Mobile:</strong><div class="normal">9067459898</div>
+            </div>
+            <div class="info-item">
+              <strong>International Area Code:</strong><div class="normal">195859</div>
+            </div>
+            <div class="info-item">
+              <strong>Registration Time:</strong><div class="normal"><span class="blue" style="font-size: 12px;">2025-01-04 <span class="red">18:45:00</span></span></div>
+            </div>
+            <div class="info-item">
+              <strong>Current Equipment:</strong><div class="normal"><span class="blue" style="font-size: 12px;">Redmi 2873RN02A</span></div>
+            </div>
+            <div class="info-item">
+              <strong>User Level:</strong><div class="normal">Level 1</div>
+            </div>
+            <div class="info-item">
+              <strong>Loan Settlement Times:</strong><div class="normal">0</div>
+            </div>
+          </div>
+
+          <!-- Second Box (26% width) - Personal Information -->
+          <div class="box box-2">
+            <h3>Personal Information 
+              <span class="edit" @click="openPersonalInfoModal">
+                Edit 
+                <img src="/public/mynaui_edit.png" style="width: 12px; height: 12px;" srcset="">
+              </span>
+            </h3>
+            <div class="info-item">
+              <strong>Name:</strong><div class="normal">Covenant Olubisi Bello</div>
+            </div>
+            <div class="info-item">
+              <strong>Birthday:</strong><div class="normal">1996-12-23</div>
+            </div>
+            <div class="info-item">
+              <strong>Province:</strong><div class="normal">Kaduna</div>
+            </div>
+            <div class="info-item">
+              <strong>City:</strong><div class="normal">Kanuna South</div>
+            </div>
+            <div class="info-item">
+              <strong>Address:</strong><div class="normal">Egypt Road Barnawa</div>
+            </div>
+            <div class="info-item">
+              <strong>Mailbox:</strong><div class="normal">covenant@hotmail.com</div>
+            </div>
+            <div class="info-item">
+              <strong>Education Level:</strong><div class="normal">Bachelor</div>
+            </div>
+            <div class="info-item">
+              <strong>Marital Status:</strong><div class="normal">Unmarried</div>
+            </div>
+          </div>
+
+          <!-- Third Box (26% width) - Employment Information -->
+          <div class="box box-3">
+            <h3>Employment Information 
+              <span class="edit" @click="openEmploymentInfoModal">
+                Edit 
+                <img src="/public/mynaui_edit.png" style="width: 12px; height: 12px;" srcset="">
+              </span>
+            </h3>
+            <div class="info-item">
+              <strong>Corporation Name:</strong><div class="normal">Mankind Factory</div>
+            </div>
+            <div class="info-item">
+              <strong>City of the Company:</strong><div class="normal">Port Harcourt</div>
+            </div>
+            <div class="info-item">
+              <strong>Work Phone:</strong><div class="normal">8167676767</div>
+            </div>
+            <div class="info-item">
+              <strong>Monthly Income before Tax:</strong><div class="normal">500000</div>
+            </div>
+            <div class="info-item">
+              <strong>Province of Company:</strong><div class="normal">Rivers</div>
+            </div>
+            <div class="info-item">
+              <strong>Company Address:</strong><div class="normal">East West Road</div>
+            </div>
+            <div class="info-item">
+              <strong>Occupation:</strong><div class="normal">Banker</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Media Information Section -->
+      <div v-if="activeTab === 'media'" class="content-box" style="height: 30vh;">
+        <ChildComponent />
+      </div>
+    </div>
+
+    <UserInfoTable />
+    <!-- Modals -->
+    <BasicInformation v-if="isBasicInfoModalOpen" @close="closeBasicInfoModal" />
+    <DeleteUser v-if="isDeleteModalOpen" @close="closeDeleteModal" />
+    <PersonalInfo v-if="isPersonalInfoModalOpen" @close="closePersonalInfoModal" />
+    <EmploymentInfo v-if="isEmploymentInfoOpen" @close="closeEmploymentInfoModal" />
   </div>
 </template>
 
 <script>
-import repayment from "../components/dashboard/repayment.vue";
-// import dashboardTwo from "../components/dashboard/maintwo.vue";
-// import pagination from "../components/modals/pagination.vue";
-export default {
-  components: {
-    repayment,
-    // dashboardTwo,
-    // pagination,
-  },
-};
-</script>
-
-<style scoped>
-.dashboard-container {
-  width: calc(100% - 198px); /* Adjust width to account for the sidebar */
-  margin-left: 198px; /* Offset the container to avoid overlapping */
-  padding: 10px; /* Optional: Add padding for better spacing */
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  background-color: #d9f7ff;
-  font-family: 'Fira Sans', sans-serif;
-  box-sizing: border-box; /* Ensure padding does not affect width */
-}
-.pagination,
-.dashboard,
-.dashboard-two {
-  width: 100%;
-}
-
-</style>
-
-
----import prop---
-Header title="User Info" />
-  </div>
-</template>
-
-<script>
-import Header from "../modals/header.vue";
+import UserInfoTable from "./userInfoTable.vue";
+import BasicInformation from "./EditUser.vue";
+import DeleteUser from "./DeleteUser.vue";
+import PersonalInfo from "./EditPersonalInfo.vue";
+import EmploymentInfo from "./EditEmploymentModal.vue";
+import ChildComponent from "./medialOp.vue";
 
 export default {
   components: {
-    Header,
+    BasicInformation,
+    DeleteUser,
+    PersonalInfo,
+    EmploymentInfo,
+    ChildComponent,
+    UserInfoTable,
   },
   data() {
     return {
-      isModalOpen: false,
+      activeTab: "user",
+      isBasicInfoModalOpen: false,
+      isDeleteModalOpen: false,
+      isPersonalInfoModalOpen: false,
+      isEmploymentInfoOpen: false,
     };
   },
   methods: {
-    toggleModal() {
-      this.isModalOpen = !this.isModalOpen;
+    openBasicInfoModal() {
+      this.isBasicInfoModalOpen = true;
+    },
+    closeBasicInfoModal() {
+      this.isBasicInfoModalOpen = false;
+    },
+    openDeleteModal() {
+      this.isDeleteModalOpen = true;
+    },
+    closeDeleteModal() {
+      this.isDeleteModalOpen = false;
+    },
+    openPersonalInfoModal() {
+      this.isPersonalInfoModalOpen = true;
+    },
+    closePersonalInfoModal() {
+      this.isPersonalInfoModalOpen = false;
+    },
+    openEmploymentInfoModal() {
+      this.isEmploymentInfoOpen = true;
+    },
+    closeEmploymentInfoModal() {
+      this.isEmploymentInfoOpen = false;
     },
   },
 };
 </script>
 
-<style scoped>
-.main-content {
-  /* Main content styles (optional) */
+<style lang="scss" scoped>
+.basic-header {
+  margin-top: -420px; /* Maintains the original positioning if needed */
+}
+
+.basic-header h3 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.header-title {
+  font-size: 12px;
+  font-weight: 400;
+  color: #004759;
+  margin: 0;
+}
+
+.edit {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: #00CCFF;
+  font-weight: 400;
+  font-size: 12px;
+}
+
+.edit img {
+  vertical-align: middle;
+}
+
+.container {
+  max-width: 85vw;
+  margin: 0;
+  height: 417px;
+  overflow: none;
+  font-family: 'Fira Sans', sans-serif;
+  background-color: #ffff;
+  padding: 10px;
+}
+
+.header-button-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #fff;
+  padding: 0 16px;
+}
+
+.button-container {
+  display: flex;
+  width: 350px;
+  background: #d9f7ff;
+  height: 49px;
+  border-radius: 24px;
+  padding: 6px 12px;
+}
+
+.tab-button {
+  flex: 1;
+  border-radius: 24px;
+  height: 37px;
+  transition: background 0.3s ease;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  gap: 8px;
+}
+
+.tab-button.active {
+  background: #00CCFF;
+  color: white;
+}
+
+.tab-content {
+  margin-top: 180px;
+  background: white;
+  padding: 12px;
+  border-radius: 8px;
+}
+
+.content-box {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.box-container {
+  display: flex;
+  gap: 12px;
+  justify-content: space-between;
+}
+
+.box {
+  background-color: #fff;
+  border-radius: 8px;
+  padding: 20px;
+  border: 1px solid #e0e0e0; /* Light gray border to match the design */
+  box-shadow: none; /* Removed shadow for consistency */
+}
+
+.box-1 {
+  width: 48%; /* Basic Information takes 48% */
+}
+
+.box-2, .box-3 {
+  width: 26%; /* Personal and Employment Information each take 26% */
+}
+
+.info-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  height: 33px;
+  font-weight: 400;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding: 0 8px;
+}
+
+strong {
+  color: #acacb2;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 16.8px;
+  min-width: 40px;
+  white-space: nowrap;
+}
+
+.normal {
+  font-size: 12px;
+  color: #004759;
+  white-space: nowrap;
+  text-align: right;
+  flex: 1;
+  transform: translateY(-25px); /* Maintains alignment from your earlier style */
+}
+
+.line {
+  width: 1px;
+  height: 400px;
+  background-color: #000;
+  margin: 0 20px;
+}
+
+.red {
+  color: #E85353;
+}
+
+.blue {
+  color: #00CCFF;
+}
+
+.active {
+  color: #00CCFF;
+  font-size: 12px;
+  font-weight: 400;
 }
 </style>

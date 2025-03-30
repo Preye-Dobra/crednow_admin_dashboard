@@ -2,28 +2,28 @@
   <div>
     <div class="table-container" ref="tableContainer">
       <table class="data-table">
-        <thead>
+        <thead style="background-color: #D9F7FF;">
           <tr>
-            <th><input type="checkbox" :id="`checkbox-${index}`" /></th>
-            <th>Loan Number</th>
-            <th>Order Number</th>
-            <th>Payment Serial Number</th>
-            <th>Payment Company’s order status</th>
-            <th>Payment Amount</th>
-            <th>Handling Fee</th>
-            <th>Taxes</th>
-            <th>Real Amount</th>
-            <th>The Transaction Amount</th>
-            <th>Bank Account</th>
-            <th>Mobile</th>
-            <th>User Name</th>
-            <th>Lending Status</th>
-            <th>Reason for failure</th>
-            <th>Payment time</th>
-            <th>Loan Channel</th>
-            <th>Creation time</th>
-            <th>Update time</th>
-            <th>Operation</th>
+            <th ><input type="checkbox" :id="`checkbox-${index}`" /></th>
+            <th >Loan Number</th>
+            <th >Order Number</th>
+            <th >Payment Serial Number</th>
+            <th >Payment Company’s order status</th>
+            <th >Payment Amount</th>
+            <th >Handling Fee</th>
+            <th >Taxes</th>
+            <th >Real Amount</th>
+            <th >The Transaction Amount</th>
+            <th >Bank Account</th>
+            <th >Mobile</th>
+            <th >User Name</th>
+            <th >Lending Status</th>
+            <th >Reason for failure</th>
+            <th >Payment time</th>
+            <th >Loan Channel</th>
+            <th >Creation time</th>
+            <th >Update time</th>
+            <th >Operation</th>
           </tr>
         </thead>
         <tbody>
@@ -43,16 +43,24 @@
             <td>{{ item.userName }}</td>
             <td>{{ item.lendingStatus }}</td>
             <td>{{ item.reasonForFailure }}</td>
-            <td>{{ item.paymentTime }}</td>
+            <td>
+              <span>{{ getDate(item.paymentTime) }}</span>
+              <span style="color: #00CCFF;">{{ getTime(item.paymentTime) }}</span>
+            </td>
             <td>{{ item.loanChannel }}</td>
-            <td>{{ item.creationTime }}</td>
-            <td>{{ item.updateTime }}</td>
+            <td>
+              <span>{{ getDate(item.creationTime) }}</span>
+              <span style="color: #00CCFF;">{{ getTime(item.creationTime) }}</span>
+            </td>
+            <td>
+              <span>{{ getDate(item.updateTime) }}</span>
+              <span style="color: #00CCFF;">{{ getTime(item.updateTime) }}</span>
+            </td>
             <td>
               <div class="button-container">
-                <button class="operation-button" @click="openModal('success', item.loanNumber)" style="width: 98px; color: #004759; background-color:  #B8FFC1; border-color: #B8FFC1;">Success</button>
-                <button class="operation-button" @click="openModal('failure', item.loanNumber)" style="width: 98px;color:#AB2828; background-color:  #EEC8C8; border-color:#EEC8C8;">Failure</button>
-                 <button class="operation-button" @click="openModal('refresh', item.loanNumber)" style="width: 98px;color:#00CCFF; background-color:#D9F7FF; border-color:#D9F7FF;">Refresh</button>
-             
+                <button class="operation-button" @click="openModal('success', item.loanNumber)" style="width: 86px; color: #004759; background-color:  #B8FFC1; border-color: #B8FFC1;">Success</button>
+                <button class="operation-button" @click="openModal('failure', item.loanNumber)" style="width: 86px;color:#AB2828; background-color:  #EEC8C8; border-color:#EEC8C8;">Failure</button>
+                 <button class="operation-button" @click="openModal('refresh', item.loanNumber)" style="width: 86px;color:#00CCFF; background-color:#D9F7FF; border-color:#D9F7FF;">Refresh</button>
               </div>
             </td>
           </tr>
@@ -74,7 +82,7 @@
 
 <script>
 import SuccessModal from "../modals/SuccessModal.vue"; // Only import SuccessModal and FailureModal
-import FailureModal from "../modals/FailureModal.vue"; // Only import SuccessModal and FailureModal
+import FailureModal from "../modals/FailModal.vue"; // Only import SuccessModal and FailureModal
 
 export default {
   components: {
@@ -123,7 +131,86 @@ export default {
           loanChannel: "Credit Card",
           creationTime: "2025-01-12 10:30:00",
           updateTime: "2025-01-16 14:00:00"
+        },
+                {
+          loanNumber: "LN1234568",
+          orderNumber: "ORD987655",
+          paymentSerialNumber: "PSN567891",
+          paymentCompanyOrderStatus: "Pending",
+          paymentAmount: "$2,000.00",
+          handlingFee: "$20.00",
+          taxes: "$60.00",
+          realAmount: "$1,920.00",
+          transactionAmount: "$2,000.00",
+          bankAccount: "2345678901234567",
+          mobile: "+1234567891",
+          userName: "Jane Smith",
+          lendingStatus: "Pending",
+          reasonForFailure: "N/A",
+          paymentTime: "2025-01-16 14:00:00",
+          loanChannel: "Credit Card",
+          creationTime: "2025-01-12 10:30:00",
+          updateTime: "2025-01-16 14:00:00"
+        },
+                {
+          loanNumber: "LN1234568",
+          orderNumber: "ORD987655",
+          paymentSerialNumber: "PSN567891",
+          paymentCompanyOrderStatus: "Pending",
+          paymentAmount: "$2,000.00",
+          handlingFee: "$20.00",
+          taxes: "$60.00",
+          realAmount: "$1,920.00",
+          transactionAmount: "$2,000.00",
+          bankAccount: "2345678901234567",
+          mobile: "+1234567891",
+          userName: "Jane Smith",
+          lendingStatus: "Pending",
+          reasonForFailure: "N/A",
+          paymentTime: "2025-01-16 14:00:00",
+          loanChannel: "Credit Card",
+          creationTime: "2025-01-12 10:30:00",
+          updateTime: "2025-01-16 14:00:00"
+        },        {
+          loanNumber: "LN1234568",
+          orderNumber: "ORD987655",
+          paymentSerialNumber: "PSN567891",
+          paymentCompanyOrderStatus: "Pending",
+          paymentAmount: "$2,000.00",
+          handlingFee: "$20.00",
+          taxes: "$60.00",
+          realAmount: "$1,920.00",
+          transactionAmount: "$2,000.00",
+          bankAccount: "2345678901234567",
+          mobile: "+1234567891",
+          userName: "Jane Smith",
+          lendingStatus: "Pending",
+          reasonForFailure: "N/A",
+          paymentTime: "2025-01-16 14:00:00",
+          loanChannel: "Credit Card",
+          creationTime: "2025-01-12 10:30:00",
+          updateTime: "2025-01-16 14:00:00"
+        },        {
+          loanNumber: "LN1234568",
+          orderNumber: "ORD987655",
+          paymentSerialNumber: "PSN567891",
+          paymentCompanyOrderStatus: "Pending",
+          paymentAmount: "$2,000.00",
+          handlingFee: "$20.00",
+          taxes: "$60.00",
+          realAmount: "$1,920.00",
+          transactionAmount: "$2,000.00",
+          bankAccount: "2345678901234567",
+          mobile: "+1234567891",
+          userName: "Jane Smith",
+          lendingStatus: "Pending",
+          reasonForFailure: "N/A",
+          paymentTime: "2025-01-16 14:00:00",
+          loanChannel: "Credit Card",
+          creationTime: "2025-01-12 10:30:00",
+          updateTime: "2025-01-16 14:00:00"
         }
+        
       ],
       showModal: false,
       selectedModal: null,
@@ -147,6 +234,13 @@ export default {
       this.showModal = false;
       this.selectedModal = null;
     },
+    // Helper functions to extract date and time
+    getDate(dateTime) {
+      return dateTime.split(" ")[0]; // Extract the date portion
+    },
+    getTime(dateTime) {
+      return dateTime.split(" ")[1]; // Extract the time portion
+    },
   },
 };
 </script>
@@ -158,7 +252,7 @@ export default {
 .table-container {
   overflow-x: auto;
   width: 99.5%;
-  padding: 8px;
+  
   white-space: nowrap;
   background-color: #fff;
   border: 1px solid #ddd;
@@ -180,6 +274,7 @@ tr th {
   text-align: center;
   color: #004759;
   font-weight: 400;
+  background-color: #F2F7F8;
 }
 
 tr td {
@@ -193,8 +288,21 @@ tr td {
 .data-table th,
 .data-table td {
   padding: 0.75rem;
+border: 1px solid #ddd;
 }
-
+/* Sticky the Loan Number column */
+.data-table th:first-child,
+.data-table td:first-child {
+  position: sticky;
+  left: 0;
+  background-color: #fff; /* Ensure the background color matches the rest */
+  z-index: 1; /* Keep it on top of other elements */
+}
+.data-table th:first-child {
+  
+  background-color: #F2F7F8; /* Ensure the background color matches the rest */
+  
+}
 .button-container {
   display: flex;
   justify-content: center;
@@ -215,5 +323,20 @@ tr td {
 .operation-button:hover {
   background-color: #00CCFF;
   color: #fff;
+}
+
+/* Sticky the Operation column */
+.data-table th:last-child,
+.data-table td:last-child {
+  position: sticky;
+  right: 0;
+  background-color: #fff; /* Ensure the background color matches the rest */
+  z-index: 1; /* Keep it on top of other elements */
+}
+
+.data-table tbody tr:hover {
+  background-color: #ffff; /* Change background color on hover */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add shadow under the hovered row */
+  cursor: pointer; /* Change cursor to pointer on hover */
 }
 </style>

@@ -1,51 +1,52 @@
 <template>
   <div>
-    <div class="table-scroll-buttons">
-      <!-- <button @click="scrollLeft" class="scroll-button">◀ Scroll Left</button>
-      <button @click="scrollRight" class="scroll-button">Scroll Right ▶</button> -->
-    </div>
     <div class="table-container" ref="tableContainer">
       <table class="data-table">
         <thead>
           <tr>
-            <th>Payout Number</th>
+            <th>Loan ID</th>
             <th>Loan Number</th>
-            <th>Loan Status</th>
+            <th>Product Name</th>
             <th>Name</th>
             <th>Mobile</th>
-            <th>Lending Status</th>
+            <th>Loan Status</th>
+            <th>Loan Type</th>
+            <th>Loan Terms</th>
+            <th>Transaction Reference</th>
             <th>Loan Amount</th>
-            <th>Real Amount</th>
-            <th>Payment Serial Number</th>
-            <th>Loan Channel</th>
-            <th>Bank Card Number</th>
+            <th>Days Overdue</th>
+            <th>Payment Channel</th>
             <th>Bank Name</th>
-            <th>Payment Time</th>
-            <th>Remarks</th>
-            <th>Reason For Failure</th>
+            <th>Account Number</th>
+            <th>Lending Status</th>
             <th>Creation Time</th>
-            <th>Update Time</th>
+            <th>Repayment Deadline</th>
+            <th>Loan Balance</th>
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(item, index) in tableData" :key="index">
-            <td>{{ item.payoutNumber }}</td>
-            <td>{{ item.loanNumber }}</td>
-            <td>{{ item.loanStatus }}</td>
-            <td>{{ item.name }}</td>
-            <td>{{ item.mobile }}</td>
-            <td>{{ item.lendingStatus }}</td>
-            <td>{{ item.loanAmount }}</td>
-            <td>{{ item.realAmount }}</td>
-            <td>{{ item.paymentSerialNumber }}</td>
-            <td>{{ item.loanChannel }}</td>
-            <td>{{ item.bankCardNumber }}</td>
-            <td>{{ item.bankName }}</td>
-            <td>{{ item.paymentTime }}</td>
-            <td>{{ item.remarks }}</td>
-            <td>{{ item.reasonForFailure }}</td>
-            <td>{{ item.creationTime }}</td>
-            <td>{{ item.updateTime }}</td>
+          <tr v-for="(loan, loanIndex) in tableData" :key="loanIndex">
+            <td>{{ truncateId(loan.loanId) }}</td>
+            <td style="color: #00CCFF;">{{ loan.loanNumber }}</td>
+            <td>{{ loan.productName }}</td>
+            <td>{{ loan.user ? `${loan.user.firstName} ${loan.user.lastName}` : '-' }}</td>
+            <td>{{ loan.phoneNumber }}</td>
+            <td>{{ loan.loanStatus }}</td>
+            <td>{{ loan.loanType }}</td>
+            <td>{{ loan.loanTerms }}</td>
+            <td>{{ loan.transactionReference }}</td>
+            <td>{{ formatCurrency(loan.loanAmount) }}</td>
+            <td>{{ loan.daysOverDue }}</td>
+            <td>{{ loan.paymentChannel }}</td>
+            <td>{{ loan.bank ? loan.bank.bankName : '-' }}</td>
+            <td>{{ loan.bank ? loan.bank.accountNumber : '-' }}</td>
+            <td>{{ loan.lendingStatus }}</td>
+            <td v-html="formatDateTime(loan.createdAt)"></td>
+            <td v-html="formatDateTime(loan.repaymentDeadline)"></td>
+            <td>{{ formatCurrency(loan.loanBalance) }}</td>
+          </tr>
+          <tr v-if="!tableData || tableData.length === 0">
+            <td colspan="18" class="no-data">No loan data found</td>
           </tr>
         </tbody>
       </table>
@@ -55,61 +56,62 @@
 
 <script>
 export default {
-  data() {
-    return {
-      tableData: [
-        {
-          payoutNumber: "PN20231024",
-          loanNumber: "211024",
-          loanStatus: "Cleared",
-          name: "Isaac Emmanuel",
-          mobile: "9098989898",
-          lendingStatus: "Active",
-          loanAmount: "5000",
-          realAmount: "5000",
-          paymentSerialNumber: "PSN123456",
-          loanChannel: "Bank Transfer",
-          bankCardNumber: "1234567890",
-          bankName: "Bank XYZ",
-          paymentTime: "2023-10-22",
-          remarks: "No issues",
-          reasonForFailure: "",
-          creationTime: "2023-10-21",
-          updateTime: "2023-10-23",
-        },
-        {
-          payoutNumber: "PN20231023",
-          loanNumber: "211023",
-          loanStatus: "Pending",
-          name: "Rebecca Tife",
-          mobile: "9098981234",
-          lendingStatus: "Pending",
-          loanAmount: "10000",
-          realAmount: "0",
-          paymentSerialNumber: "PSN654321",
-          loanChannel: "Mobile Money",
-          bankCardNumber: "9876543210",
-          bankName: "Bank ABC",
-          paymentTime: "2023-10-20",
-          remarks: "Awaiting approval",
-          reasonForFailure: "Pending review",
-          creationTime: "2023-10-19",
-          updateTime: "2023-10-20",
-        },
-      ],
-    };
+  props: {
+    queryResponse: {
+      type: Object,
+      default: () => ({
+        success: false,
+        message: "",
+        totalLoans: 0,
+        data: []
+      })
+    }
+  },
+  computed: {
+    tableData() {
+      return this.queryResponse && this.queryResponse.data ? this.queryResponse.data : [];
+    }
   },
   methods: {
-    scrollLeft() {
-      this.$refs.tableContainer.scrollBy({ left: -300, behavior: "smooth" });
+    truncateId(id) {
+      if (!id) return '';
+      return id.length > 8 ? `${id.substring(0, 8)}...` : id;
     },
-    scrollRight() {
-      this.$refs.tableContainer.scrollBy({ left: 300, behavior: "smooth" });
+    
+    formatCurrency(amount) {
+      if (!amount) return '₦0';
+      const numAmount = typeof amount === 'string' ? parseFloat(amount) : amount;
+      return new Intl.NumberFormat('en-NG', {
+        style: 'currency',
+        currency: 'NGN',
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0
+      }).format(numAmount);
     },
-  },
+    
+    formatDateTime(datetime) {
+      if (!datetime) return '-';
+      
+      // Handle different date formats
+      let date;
+      if (datetime.includes('T')) {
+        // ISO format: 2025-03-18T15:26:40.643Z
+        date = new Date(datetime);
+      } else {
+        // Custom format: 2025-03-18 15:47:57.0
+        const [datePart, timePart] = datetime.split(' ');
+        const [year, month, day] = datePart.split('-');
+        const [hour, minute, second] = timePart.split(':');
+        date = new Date(year, month-1, day, hour, minute, parseInt(second));
+      }
+      
+      const formattedDate = date.toLocaleDateString();
+      const formattedTime = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      return `${formattedDate} <span style="color: #00CCFF;">${formattedTime}</span>`;
+    }
+  }
 };
 </script>
-
 
 <style scoped>
 .table-container {
@@ -147,9 +149,25 @@ tr td {
 .data-table th,
 .data-table td {
   padding: 0.75rem;
-  border: 1px solid #ddd;
 }
 
+/* Sticky the Loan Number column */
+.data-table th:first-child,
+.data-table td:first-child {
+  position: sticky;
+  left: 0;
+  background-color: #fff; /* Ensure the background color matches the rest */
+  z-index: 1; /* Keep it on top of other elements */
+}
+.data-table th:first-child {
+  
+  background-color: #F2F7F8; /* Ensure the background color matches the rest */
+  
+}
+/* Styling for header row to make sure sticky column header stays visible */
+.data-table th {
+  background-color: #F2F7F8;
+}
 .table-scroll-buttons {
   display: flex;
   justify-content: center;
@@ -172,9 +190,13 @@ tr td {
 }
 
 .pass {
-  color: #00ccff;
+  color:  #00CCFF;
 }
-
+.data-table tbody tr:hover {
+  background-color: #ffff; /* Change background color on hover */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add shadow under the hovered row */
+  cursor: pointer; /* Change cursor to pointer on hover */
+}
 .waiting {
   color: orange;
 }
@@ -186,7 +208,7 @@ button-container {
 
 .approve-button {
   color: #fff;
-  background-color: #00ccff;
+  background-color:  #00CCFF;
   border: none;
   padding: 10px;
   border-radius: 5px;
@@ -200,5 +222,10 @@ button-container {
   padding: 10px;
   border-radius: 5px;
   cursor: pointer;
+}
+
+/* Make only the time part blue */
+.blue-time {
+  color:  #00CCFF; /* Apply light blue color to the time */
 }
 </style>

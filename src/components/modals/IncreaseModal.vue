@@ -2,7 +2,7 @@
   <div v-if="visible" class="modal-container">
     <div class="modal">
       <div class="modal-header">
-        <h2 class="text">{{ title }}</h2>
+        <h2 class="text">Increase in Principal Repayable</h2>
         <button class="close-button" @click="closeModal">×</button>
       </div>
       <div class="modal-content">
@@ -105,6 +105,7 @@ export default {
   text-align: center;
   background-color: #00CCFF;
   height: 46px;
+  color: #004759;
   width: 100%;
   border-radius: 8px 8px 0 0;
   font-size: 24px;
@@ -179,18 +180,18 @@ label {
 }
 
 .action-btn:hover {
-  background-color: #009fcc;
+  background-color: #00CCFF;
 }
 
 .cancel {
-  border: 1px solid #009fcc;
-  color: #009fcc;
+  border: 1px solid #00CCFF;
+  color: #00CCFF;
   background-color: #fff;
 }
 
 .submit {
-  border: 1px solid #009fcc;
-  color: #ecf1f2;
-  background-color: #009fcc;
+  border: 1px solid #00CCFF;
+  color: #ffff;
+  background-color: #00CCFF;
 }
 </style>

@@ -3,24 +3,37 @@
     <div class="modal">
       <div class="modal-header">
         <h2 class="text">{{ title }}</h2>
-        <button class="close-button" @click="closeModal">×</button>
+        <!-- <button class="close-button" @click="closeModal">&times;</button> -->
       </div>
       <div class="modal-content">
         <form @submit.prevent="handleSubmit" class="form-box">
           <div class="form-group" v-for="(field, index) in formFields" :key="index">
             <label :for="field.id">{{ field.label }}</label>
+            
+            <div v-if="field.id === 'lendingStatus'" class="dropdown-container">
+              <select v-model="field.value" id="lendingStatus" class="input-field">
+                <option value="Succeed">Succeed</option>
+                <option value="Pending">Pending</option>
+                <option value="Failed">Failed</option>
+              </select>
+              <img src="https://img.icons8.com/?size=100&id=40021&format=png&color=000000" alt="Dropdown" class="dropdown-icon" />
+            </div>
+
             <input
+              v-else
               :id="field.id"
               :type="field.type"
               :placeholder="field.placeholder"
               v-model="field.value"
-              required
+              :readonly="field.readonly"
+              :required="field.required"
               class="input-field"
             />
           </div>
+
           <div class="button-container">
             <button type="button" class="action-btn cancel" @click="closeModal">Cancel</button>
-            <button type="submit" class="action-btn submit">Submit</button>
+            <button type="submit" class="action-btn submit">Confirm</button>
           </div>
         </form>
       </div>
@@ -28,26 +41,28 @@
   </div>
 </template>
 
-<script >
+<script>
 export default {
   name: "SuccessModal",
-props: {
-  visible: {
-    type: Boolean,
-    required: true,
+  props: {
+    visible: {
+      type: Boolean,
+      required: true,
+    },
+    title: {
+      type: String,
+      default: "Successful Lending",
+    },
   },
-  title: {  // Change from titleee to title
-    type: String,
-    default: "Success",
-  },
-}
-,
   data() {
     return {
       formFields: [
-        { id: "field1", label: "Total Remaining Payment", type: "number", placeholder: "Enter Total Remaining Payment", value: "" },
-        { id: "field2", label: "Increase Principal", type: "number", placeholder: "Enter Increase Principal", value: "" },
-        { id: "field3", label: "Remarks", type: "text", placeholder: "Enter Remarks", value: "" },
+        { id: "orderNumber", label: "Order Number", type: "text", placeholder: "", value: "P1768754678987675544", readonly: true },
+        { id: "lendingStatus", label: "Lending Status", type: "text", placeholder: "", value: "Succeed" },
+        { id: "tradeNumber", label: "Trade Number", type: "text", placeholder: "Please Enter", value: "" },
+        { id: "paymentCode", label: "Payment Partner Transfer Code", type: "text", placeholder: "Please Enter", value: "" },
+        { id: "loanDate", label: "Loan Date", type: "date", placeholder: "Select Date", value: "" },
+        { id: "remarks", label: "Remarks", type: "text", placeholder: "Please Enter", value: "", required: true },
       ],
     };
   },
@@ -103,8 +118,8 @@ props: {
   justify-content: space-between;
   align-items: center;
   margin-bottom: 20px;
-  text-align: center;
   background-color: #00CCFF;
+  color: #004759;
   height: 46px;
   width: 100%;
   border-radius: 8px 8px 0 0;
@@ -152,6 +167,7 @@ label {
   border-radius: 20px;
   box-sizing: border-box;
   margin-top: 4px;
+  color: #004759;
 }
 
 .input-field::placeholder {
@@ -159,6 +175,26 @@ label {
   font-size: 12px;
   font-weight: 400;
   line-height: 16.8px;
+}
+
+.dropdown-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.dropdown-icon {
+  position: absolute;
+  right: 12px;
+  width: 18px;
+  height: 18px;
+  pointer-events: none;
+}
+
+select.input-field {
+  appearance: none;
+  background-color: white;
+  padding-right: 40px;
 }
 
 .button-container {
@@ -179,19 +215,15 @@ label {
   font-size: 14px;
 }
 
-.action-btn:hover {
-  background-color: #009fcc;
-}
-
 .cancel {
-  border: 1px solid #009fcc;
-  color: #009fcc;
+  border: 1px solid#00CCFF;
+  color:#00CCFF;
   background-color: #fff;
 }
 
 .submit {
-  border: 1px solid #009fcc;
+  border: 1px solid#00CCFF;
   color: #ecf1f2;
-  background-color: #009fcc;
+  background-color:#00CCFF;
 }
 </style>

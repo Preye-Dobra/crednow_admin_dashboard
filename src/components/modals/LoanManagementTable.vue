@@ -2,9 +2,9 @@
   <div>
     <div class="table-container" ref="tableContainer">
       <table class="data-table">
-        <thead>
+        <thead style="background-color: #D9F7FF;">
           <tr>
-            <th><input type="checkbox" :id="`checkbox-${index}`" /></th>
+            <th style="background-color: #F2F7F8;"><input type="checkbox" :id="`checkbox-${index}`" /></th>
             <th>Order Number</th>
             <th>Payment Company</th>
             <th>Payment Amount</th>
@@ -37,7 +37,11 @@
     <td>{{ item.userName }}</td>
     <td>{{ item.lendingStatus }}</td>
     <td>{{ item.reasonForFailure }}</td>
-    <td>{{ item.paymentTime }}</td>
+<td>
+    {{ item.paymentTime.split(' ')[0] }} 
+    <span style="color: #00CCFF;">{{ item.paymentTime.split(' ')[1] }}</span>
+  </td>
+
     <td>{{ item.loanChannel }}</td>
     <td>
       <div class="button-container">
@@ -71,7 +75,7 @@
 import OperationModal from "../modals/ModifyAccountModal.vue";
 import EditModal from "../modals/EditModal.vue";
 import RefreshModal from "../modals/RefreshModal.vue";
-import ModifyAccountModal from "../modals/ModifyAccountModal.vue";
+import ModifyAccountModal from "../modals/Tip.vue";
 
 export default {
   components: {
@@ -100,6 +104,73 @@ tableData: [
     loanChannel: "Bank ABC",          
   },
   {
+    loanNumber: "123456",             
+    paymentCompany: "XYZ Payments",
+    paymentAmount: "$500",             
+    handlingFee: "$5",
+    taxes: "$2",                       
+    realAmount: "$493",
+    transaction: "Success",
+    bankAccount: "1234 **** **** 5678",
+    mobile: "9876543210",              
+    userName: "John Doe",              
+    lendingStatus: "Approved",
+    reasonForFailure: "N/A", 
+    paymentTime: "2024-01-29 14:30",   
+    loanChannel: "Bank ABC",          
+  },
+    {
+    loanNumber: "123456",             
+    paymentCompany: "XYZ Payments",
+    paymentAmount: "$500",             
+    handlingFee: "$5",
+    taxes: "$2",                       
+    realAmount: "$493",
+    transaction: "Success",
+    bankAccount: "1234 **** **** 5678",
+    mobile: "9876543210",              
+    userName: "John Doe",              
+    lendingStatus: "Approved",
+    reasonForFailure: "N/A", 
+    paymentTime: "2024-01-29 14:30",   
+    loanChannel: "Bank ABC",          
+  }
+  ,
+    {
+    loanNumber: "123456",             
+    paymentCompany: "XYZ Payments",
+    paymentAmount: "$500",             
+    handlingFee: "$5",
+    taxes: "$2",                       
+    realAmount: "$493",
+    transaction: "Success",
+    bankAccount: "1234 **** **** 5678",
+    mobile: "9876543210",              
+    userName: "John Doe",              
+    lendingStatus: "Approved",
+    reasonForFailure: "N/A", 
+    paymentTime: "2024-01-29 14:30",   
+    loanChannel: "Bank ABC",          
+  }
+  ,
+    {
+    loanNumber: "123456",             
+    paymentCompany: "XYZ Payments",
+    paymentAmount: "$500",             
+    handlingFee: "$5",
+    taxes: "$2",                       
+    realAmount: "$493",
+    transaction: "Success",
+    bankAccount: "1234 **** **** 5678",
+    mobile: "9876543210",              
+    userName: "John Doe",              
+    lendingStatus: "Approved",
+    reasonForFailure: "N/A", 
+    paymentTime: "2024-01-29 14:30",   
+    loanChannel: "Bank ABC",          
+  }
+  ,
+    {
     loanNumber: "123456",             
     paymentCompany: "XYZ Payments",
     paymentAmount: "$500",             
@@ -152,7 +223,7 @@ tableData: [
 .table-container {
   overflow-x: auto;
   width: 99.5%;
-  padding: 8px;
+  
   white-space: nowrap;
   background-color: #fff;
   border: 1px solid #ddd;
@@ -174,6 +245,8 @@ tr th {
   text-align: center;
   color: #004759;
   font-weight: 400;
+  background-color: #F2F7F8;
+  
 }
 
 tr td {
@@ -181,12 +254,13 @@ tr td {
   line-height: 16.8px;
   font-weight: 400;
   text-align: center;
-  color: #585865;
+  color:#585865;
 }
 
 .data-table th,
 .data-table td {
-  padding: 0.75rem;
+padding: 0.75rem;
+  
 }
 
 .button-container {
@@ -195,7 +269,14 @@ tr td {
   align-items: center;
   gap: 10px;
 }
-
+/* Sticky the Loan Number column */
+.data-table th:first-child,
+.data-table td:first-child {
+  position: sticky;
+  left: 0;
+  background-color: #fff; /* Ensure the background color matches the rest */
+  z-index: 1; /* Keep it on top of other elements */
+}
 .operation-button {
   color: #00CCFF;
   background-color: #fff;
@@ -209,5 +290,19 @@ tr td {
 .operation-button:hover {
   background-color: #00CCFF;
   color: #fff;
+}
+
+/* Sticky the Operation column */
+.data-table th:last-child,
+.data-table td:last-child {
+  position: sticky;
+  right: 0;
+  background-color: #fff;
+  z-index: 1; /* Keep it on top of other elements */
+}
+.data-table tbody tr:hover {
+  background-color: #ffff; /* Change background color on hover */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add shadow under the hovered row */
+  cursor: pointer; /* Change cursor to pointer on hover */
 }
 </style>

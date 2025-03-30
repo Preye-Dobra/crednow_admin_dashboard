@@ -1,19 +1,18 @@
+
 <template>
-  <div>
-    <!-- Parent Modal -->
-    <div class="modal-overlay" v-if="isOpen" @click.self="closeModal">
-      <div class="modal-content" ref="dropdownModal">
-        <ul class="modal-list">
-          <li @click="openChangePasswordModal" class="modal-item">Change Password</li>
-          <li @click="openLogoutConfirmationModal" class="modal-item">Logout</li>
-        </ul>
+  <div class="dropdown-menu" @click.stop>
+    <div v-if="isOpen" class="item-container">
+      <div class="dropdown-item" @click="openChangePasswordModal">
+        Change Password
+      </div>
+      <div class="dropdown-item" @click="openLogoutConfirmationModal">
+        Logout
       </div>
     </div>
 
-    <!-- Import and use ChangePasswordForm -->
+    <!-- Change Password Modal -->
     <ChangePasswordForm
       v-if="showChangePasswordModal"
-      :position="changePasswordModalPosition"
       @close="closeChangePasswordModal"
     />
 
@@ -27,13 +26,13 @@
 </template>
 
 <script>
-import ChangePasswordForm from './changePasswordModal.vue';
-import LogoutConfirmationModal from './logoutModal.vue'; // Import the new modal component
+import ChangePasswordForm from "./changePasswordModal.vue";
+import LogoutConfirmationModal from "./logoutModal.vue";
 
 export default {
   components: {
     ChangePasswordForm,
-    LogoutConfirmationModal, // Register the new modal component
+    LogoutConfirmationModal,
   },
   props: {
     isOpen: {
@@ -44,30 +43,20 @@ export default {
   data() {
     return {
       showChangePasswordModal: false,
-      showLogoutConfirmationModal: false, // State for the logout confirmation modal
-      changePasswordModalPosition: { top: '0px', left: '0px' }, // Default position
+      showLogoutConfirmationModal: false,
     };
   },
   methods: {
-    closeModal() {
-      this.$emit("close");
-    },
     openChangePasswordModal() {
-      const dropdownModal = this.$refs.dropdownModal.getBoundingClientRect();
-      this.changePasswordModalPosition = {
-        top: `${dropdownModal.top}px`,
-        left: `${dropdownModal.left}px`,
-      };
-
       this.showChangePasswordModal = true;
-      this.closeModal();
+      this.$emit("close");
     },
     closeChangePasswordModal() {
       this.showChangePasswordModal = false;
     },
     openLogoutConfirmationModal() {
       this.showLogoutConfirmationModal = true;
-      this.closeModal();
+      this.$emit("close");
     },
     closeLogoutConfirmationModal() {
       this.showLogoutConfirmationModal = false;
@@ -81,48 +70,41 @@ export default {
 </script>
 
 <style scoped>
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.3);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-}
-
-.modal-content {
+.dropdown-menu {
+  position: absolute;
+  width: 161px;
+  right: 20px;
   background: white;
-  border-radius: 8px;
-  padding: 20px;
-  width: 250px;
-  text-align: center;
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.modal-list {
-  list-style-type: none;
-  padding: 0;
-  margin: 0;
-}
-
-.modal-item {
-  cursor: pointer;
-  margin: 10px 0;
-  font-size: 16px;
-  font-weight: bold;
-  color: #333;
-  padding: 8px 0;
-}
-
-.modal-item:hover {
-  color: #007bff;
-  background-color: #f1f1f1;
+  margin-top: -16px;
+  z-index: 1000;
   border-radius: 4px;
-  transition: background-color 0.3s;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.item-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  margin-top: 8px;
+}
+
+.dropdown-item {
+  display: flex;
+  padding: 14px 16px;
+  cursor: pointer;
+  font-size: 13px;
+  width: 140px;
+  height: 22px;
+  align-items: center;
+  justify-content: center;
+  color: #333;
+  text-align: center;
+}
+
+.dropdown-item:hover {
+  background-color: #f5f5f5;
 }
 </style>
 

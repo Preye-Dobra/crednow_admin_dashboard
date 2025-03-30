@@ -1,19 +1,18 @@
 <template>
   <div class="dashboard-container">
-    <dashboard class="dashboard" />
-     <dashboardTwo class="dashboard-two" />
-    <pagination class="pagination"/>
+    <AllclientQuery class="dashboard" />
+
+   
   </div>
 </template>
 
 <script>
-import dashboard from "../components/dashboard/allClient.vue";
-import dashboardTwo from "../components/dashboard/allClientTwo.vue";
+import AllclientQuery from "../components/dashboard/allClient.vue";
  import pagination from "../components/modals/pagination.vue";
 export default {
   components: {
-    dashboard,
-     dashboardTwo,
+AllclientQuery,
+    
      pagination,
   },
 };

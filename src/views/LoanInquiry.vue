@@ -2,7 +2,7 @@
   <div class="dashboard-container">
     <LoanInquiry class="dashboard" />
     <!-- <dashboardTwo class="dashboard-two" /> -->
-    <pagination class="pagination"/>
+
   </div>
 </template>
 

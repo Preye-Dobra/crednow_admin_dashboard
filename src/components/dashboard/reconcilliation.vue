@@ -1,39 +1,64 @@
 <template>
-  <div class="main-content">
-    <!-- Header Section -->
-    <Header title="Reconcilliation" />
-    <query />
-    <queryTable/>
+  <div>
+    <Header title="Reconciliation" />
+    <div class="main-content">
+      <!-- Query Form Component -->
+      <reconciliation-query
+        @loading="handleLoading"
+        @query-result="handleQueryResult"
+        @error="handleError"
+      />
+      
+      <!-- Table Component -->
+      <reconciliation-table
+        :queryResult="queryResult"
+        :isQueryLoading="isLoading"
+        :queryError="error"
+      />
+    </div>
   </div>
 </template>
 
 <script>
 import Header from "../modals/header.vue";
-import query from "../modals/reconcilliation.vue";
+import ReconciliationQuery from "../modals/reconcilliation.vue";
+import ReconciliationTable from "../modals/ReconcilliationList.vue";
 
-import queryTable from "../modals/ReconcilliationList.vue";
 export default {
   components: {
     Header,
-    query,
-    queryTable
-
+    ReconciliationQuery,
+    ReconciliationTable
   },
   data() {
     return {
-      isModalOpen: false,
+      isLoading: false,
+      queryResult: null,
+      error: null
     };
   },
   methods: {
-    toggleModal() {
-      this.isModalOpen = !this.isModalOpen;
+    handleLoading(loading) {
+      this.isLoading = loading;
+      if (loading) {
+        this.error = null;
+      }
     },
-  },
+    
+    handleQueryResult(result) {
+      console.log("Query result received in parent:", result);
+      this.queryResult = result;
+    },
+    
+    handleError(errorMessage) {
+      console.error("Error received in parent:", errorMessage);
+      this.error = errorMessage;
+      this.queryResult = null;
+    }
+  }
 };
 </script>
 
 <style scoped>
-.main-content {
-  /* Main content styles (optional) */
-}
+
 </style>

@@ -1,53 +1,52 @@
 <template>
   <div>
-    <div class="table-scroll-buttons">
-      <!-- <button @click="scrollLeft" class="scroll-button">◀ Scroll Left</button>
-      <button @click="scrollRight" class="scroll-button">Scroll Right ▶</button> -->
-    </div>
     <div class="table-container" ref="tableContainer">
       <table class="data-table">
         <thead>
           <tr>
-            <th>Repayment Number</th>
+            <th>Loan ID</th>
             <th>Loan Number</th>
             <th>Product Name</th>
             <th>Name</th>
             <th>Mobile</th>
-            <th>Trading Status</th>
-            <th>Repayment Code (VA)/Link</th>
-            <th>Repayment Amount</th>
-            <th>Real Amount</th>
-            <th>Liquidation Amount</th>
+            <th>Loan Status</th>
+            <th>Payment Reference</th>
+            <th>Payment Method</th>
+            <th>Transaction Reference</th>
+            <th>Payment Amount</th>
             <th>Days Overdue</th>
-            <th>Collector</th>
-            <th>Payment Company Serial Number</th>
-            <th>Transaction No. of the Payment Company</th>
             <th>Payment Channel</th>
-            <th>Creation Time</th>
-            <th>Payback Time</th>
-            <th>Whether It Has Been Backed</th>
+            <th>Bank Name</th>
+            <th>Account Number</th>
+            <th>Payment Status</th>
+            <th>Date of Payment</th>
+            <th>Repayment Deadline</th>
+            <th>Loan Balance</th>
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(item, index) in tableData" :key="index">
-            <td>{{ item.repaymentNumber }}</td>
-            <td>{{ item.loanNumber }}</td>
-            <td>{{ item.productName }}</td>
-            <td>{{ item.name }}</td>
-            <td>{{ item.mobile }}</td>
-            <td>{{ item.tradingStatus }}</td>
-            <td>{{ item.repaymentCode }}</td>
-            <td>{{ item.repaymentAmount }}</td>
-            <td>{{ item.realAmount }}</td>
-            <td>{{ item.liquidationAmount }}</td>
-            <td>{{ item.daysOverdue }}</td>
-            <td>{{ item.collector }}</td>
-            <td>{{ item.paymentCompanySerialNumber }}</td>
-            <td>{{ item.transactionNo }}</td>
-            <td>{{ item.paymentChannel }}</td>
-            <td>{{ item.creationTime }}</td>
-            <td>{{ item.paybackTime }}</td>
-            <td>{{ item.hasBeenBacked }}</td>
+          <tr v-for="(loan, loanIndex) in tableData" :key="loanIndex">
+            <td>{{ truncateId(loan.loanId) }}</td>
+            <td style="color: #00CCFF;">{{ loan.loanNumber }}</td>
+            <td>{{ loan.productName }}</td>
+            <td>{{ loan.user ? `${loan.user.firstName} ${loan.user.lastName}` : '-' }}</td>
+            <td>{{ loan.phoneNumber }}</td>
+            <td>{{ loan.loanStatus }}</td>
+            <td>{{ getRepaymentValue(loan, 'paymentReference', loan.reference) }}</td>
+            <td>{{ getRepaymentValue(loan, 'paymentMethod', '-') }}</td>
+            <td>{{ getRepaymentValue(loan, 'transactionReference', loan.transactionReference) }}</td>
+            <td>{{ formatCurrency(getRepaymentValue(loan, 'amount', loan.paidAmount)) }}</td>
+            <td>{{ loan.daysOverDue }}</td>
+            <td>{{ getRepaymentValue(loan, 'repaymentChannel', loan.paymentChannel) }}</td>
+            <td>{{ loan.bank ? loan.bank.bankName : '-' }}</td>
+            <td>{{ loan.bank ? loan.bank.accountNumber : '-' }}</td>
+            <td>{{ getRepaymentValue(loan, 'paymentStatus', '-') }}</td>
+            <td v-html="formatDateTime(getRepaymentValue(loan, 'dateOfPayment', null))"></td>
+            <td v-html="formatDateTime(loan.repaymentDeadline)"></td>
+            <td>{{ formatCurrency(loan.loanBalance) }}</td>
+          </tr>
+          <tr v-if="!tableData || tableData.length === 0">
+            <td colspan="18" class="no-data">No repayment data found</td>
           </tr>
         </tbody>
       </table>
@@ -57,62 +56,71 @@
 
 <script>
 export default {
-  data() {
-    return {
-      tableData: [
-        {
-          repaymentNumber: "RN20231024",
-          loanNumber: "211024",
-          productName: "Personal Loan",
-          name: "Isaac Emmanuel",
-          mobile: "9098989898",
-          tradingStatus: "Cleared",
-          repaymentCode: "VA123456",
-          repaymentAmount: "5000",
-          realAmount: "5000",
-          liquidationAmount: "0",
-          daysOverdue: "3",
-          collector: "John Doe",
-          paymentCompanySerialNumber: "PCS123456",
-          transactionNo: "TXN789123",
-          paymentChannel: "Bank Transfer",
-          creationTime: "2023-10-21 to 2023-10-22",
-          paybackTime: "2023-10-22 to 2023-10-23",
-          hasBeenBacked: "Yes",
-        },
-        {
-          repaymentNumber: "RN20231023",
-          loanNumber: "211023",
-          productName: "Car Loan",
-          name: "Rebecca Tife",
-          mobile: "9098981234",
-          tradingStatus: "Pending",
-          repaymentCode: "VA654321",
-          repaymentAmount: "10000",
-          realAmount: "0",
-          liquidationAmount: "0",
-          daysOverdue: "5",
-          collector: "Jane Smith",
-          paymentCompanySerialNumber: "PCS654321",
-          transactionNo: "TXN321789",
-          paymentChannel: "Mobile Money",
-          creationTime: "2023-10-19 to 2023-10-20",
-          paybackTime: "2023-10-20 to 2023-10-21",
-          hasBeenBacked: "No",
-        },
-      ],
-    };
+  props: {
+    queryResponse: {
+      type: Object,
+      default: () => ({
+        success: false,
+        message: "",
+        totalLoans: 0,
+        data: []
+      })
+    }
+  },
+  computed: {
+    tableData() {
+      return this.queryResponse && this.queryResponse.data ? this.queryResponse.data : [];
+    }
   },
   methods: {
-    scrollLeft() {
-      this.$refs.tableContainer.scrollBy({ left: -300, behavior: "smooth" });
+    // Helper method to get value from repayment or fallback
+    getRepaymentValue(loan, field, fallback) {
+      if (loan.loanRepayments && loan.loanRepayments.length > 0) {
+        return loan.loanRepayments[0][field]; // Get from first repayment
+      }
+      return fallback; // Fallback value
     },
-    scrollRight() {
-      this.$refs.tableContainer.scrollBy({ left: 300, behavior: "smooth" });
+    
+    truncateId(id) {
+      if (!id) return '';
+      return id.length > 8 ? `${id.substring(0, 8)}...` : id;
     },
-  },
+    
+    formatCurrency(amount) {
+      if (!amount) return '₦0';
+      const numAmount = typeof amount === 'string' ? parseFloat(amount) : amount;
+      return new Intl.NumberFormat('en-NG', {
+        style: 'currency',
+        currency: 'NGN',
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0
+      }).format(numAmount);
+    },
+    
+    formatDateTime(datetime) {
+      if (!datetime) return '-';
+      
+      // Handle different date formats
+      let date;
+      if (datetime.includes('T')) {
+        // ISO format: 2025-03-18T15:26:40.643Z
+        date = new Date(datetime);
+      } else {
+        // Custom format: 2025-03-18 15:47:57.0
+        const [datePart, timePart] = datetime.split(' ');
+        const [year, month, day] = datePart.split('-');
+        const [hour, minute, second] = timePart.split(':');
+        date = new Date(year, month-1, day, hour, minute, parseInt(second));
+      }
+      
+      const formattedDate = date.toLocaleDateString();
+      const formattedTime = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      return `${formattedDate} <span style="color: #00CCFF;">${formattedTime}</span>`;
+    }
+  }
 };
 </script>
+
 
 <style scoped>
 .table-container {
@@ -121,7 +129,7 @@ export default {
   white-space: nowrap;
   background-color: #fff;
   border: 1px solid #ddd;
-  border-radius: 10px;
+margin-top: 8px;
 }
 
 .data-table {
@@ -151,6 +159,24 @@ tr td {
 .data-table td {
   padding: 0.75rem;
   
+}
+
+/* Sticky the Loan Number column */
+.data-table th:first-child,
+.data-table td:first-child {
+  position: sticky;
+  left: 0;
+  background-color: #fff; /* Ensure the background color matches the rest */
+  z-index: 1; /* Keep it on top of other elements */
+}
+.data-table th:first-child {
+  
+  background-color: #F2F7F8; /* Ensure the background color matches the rest */
+  
+}
+/* Styling for header row to make sure sticky column header stays visible */
+.data-table th {
+  background-color: #F2F7F8;
 }
 
 .table-scroll-buttons {
@@ -203,5 +229,15 @@ button-container {
   padding: 10px;
   border-radius: 5px;
   cursor: pointer;
+}
+.data-table tbody tr:hover {
+  background-color: #ffff; /* Change background color on hover */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add shadow under the hovered row */
+  cursor: pointer; /* Change cursor to pointer on hover */
+}
+
+/* Target the time part of the date */
+.blue-time {
+  color: #00CCFF; /* Apply light blue color to the time */
 }
 </style>

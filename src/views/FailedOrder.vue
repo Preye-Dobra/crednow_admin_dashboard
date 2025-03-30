@@ -27,6 +27,7 @@ export default {
   display: flex;
   flex-direction: column;
   gap: 4px;
+  height: 100vh;
   background-color: #d9f7ff;
   font-family: 'Fira Sans', sans-serif;
   box-sizing: border-box; /* Ensure padding does not affect width */

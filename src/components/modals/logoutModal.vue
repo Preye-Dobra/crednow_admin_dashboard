@@ -1,7 +1,7 @@
 <template>
   <div class="modal-overlay" @click.self="$emit('close')">
     <div class="modal-content">
-      <h2 class="modal-header">Change Password</h2>
+      <h2 class="modal-header">Logout</h2>
       <div class="form-content">
         <p class="text-message">Are you sure you want to Logout of this account?</p>
         <div class="form-actions">
@@ -13,7 +13,8 @@
             Cancel
           </button>
           <button
-            type="submit"
+            type="button"
+            @click="handleLogout"
             class="btn btn-confirm"
           >
             Confirm
@@ -25,15 +26,25 @@
 </template>
 
 <script>
+import Cookies from "js-cookie"; // Import js-cookie
+
 export default {
   methods: {
-    handleSubmit() {
-      alert('Password change confirmed!');
+    handleLogout() {
+      // Remove the authToken from cookies
+      Cookies.remove("authToken");
+      
+      // Close the modal
       this.$emit('close');
+      
+      // Redirect to login page
+      window.location.href = "/auth/signin";
     },
   },
 };
 </script>
+
+
 
 <style scoped>
 .modal-overlay {
@@ -63,7 +74,7 @@ export default {
 
 .modal-header {
   background-color: #00CCFF;
-  color: white;
+  color: #004759;
   font-size: 24px;
   font-weight: bold;
   padding: 10px 0;
@@ -107,9 +118,6 @@ export default {
   transition: background-color 0.2s ease;
 }
 
-.btn-cancel:hover {
-  background-color: #a97373;
-}
 
 .btn-confirm {
   background-color: #00CCFF;

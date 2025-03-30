@@ -2,52 +2,30 @@
   <div>
     <div class="table-container" ref="tableContainer">
       <table class="data-table">
-        <thead>
+        <thead style="background-color: #D9F7FF;">
           <tr>
-            <th>Loan Number</th>
-            <th>Mobile</th>
-            <th>Name</th>
-            
-            <th>Loan Order Number</th>
-            <th>Product Name</th>
-            <th>Loan Tenure</th>
-            <th>Loan Amount</th>
-            <th>App Version</th>
-            <th>Due Date</th>
-            <th>Loan Status</th>
-            <th>Tag</th>
-            <th>Is Repeated Borrowing</th>
-            <th>Loan Type</th>
-            <th>Collection Result</th>
-            <th>Proportion Without Penalty</th>
-            <th>Follow-up On Day</th>
-            <th>App Name</th>
-            <th>Collection Stage</th>
-            <th>Collector</th>
+            <!-- Dynamically generate table headers -->
+            <th v-for="(header, index) in headers" :key="index">{{ header }}</th>
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(item, index) in tableData" :key="index">
-                       <td style="color: #00CCFF;">{{ item.loanNumber }}</td>
-            <td>{{ item.mobile }}</td>
-            <td>{{ item.name }}</td>
+          <!-- Loop through overdueForm array to render each row -->
+          <tr v-for="(row, rowIndex) in overdueForm" :key="rowIndex">
+<td 
+  v-for="(header, index) in headers" 
+  :key="index"
+>
+  <template v-if="/time|date$/i.test(header)">
+    {{ row[header.toLowerCase().replace(/ /g, '').replace(/’/g, '')]?.split(' ')[0] }} 
+    <span style="color: #00CCFF;">
+      {{ row[header.toLowerCase().replace(/ /g, '').replace(/’/g, '')]?.split(' ')[1] || '' }}
+    </span>
+  </template>
+  <template v-else>
+    {{ row[header.toLowerCase().replace(/ /g, '').replace(/’/g, '')] || '-' }}
+  </template>
+</td>
 
-            <td>{{ item.loanOrderNumber }}</td>
-            <td>{{ item.productName }}</td>
-            <td>{{ item.loanTenure }}</td>
-            <td>{{ item.loanAmount }}</td>
-            <td>{{ item.appVersion }}</td>
-            <td>{{ item.dueDate }}</td>
-            <td>{{ item.loanStatus }}</td>
-            <td>{{ item.tag }}</td>
-            <td>{{ item.isRepeatedBorrowing }}</td>
-            <td>{{ item.loanType }}</td>
-            <td>{{ item.collectionResult }}</td>
-            <td>{{ item.proportionWithoutPenalty }}</td>
-            <td>{{ item.followUpOnDay }}</td>
-            <td>{{ item.appName }}</td>
-            <td>{{ item.collectionStage }}</td>
-            <td>{{ item.collector }}</td>
           </tr>
         </tbody>
       </table>
@@ -59,87 +37,229 @@
 export default {
   data() {
     return {
-      tableData: [
+      headers: [
+        "Loan Number",
+        "Loan Order Number",
+        "App Name",
+        "Name",
+        "Mobile",
+        "Due date",
+        "Product name",
+        "Collector’s Name",
+        "Collection Stage",
+        "Daily Collector Time",
+        "Collection Times",
+        "Collector Log",
+        "Collection Result",
+        "Log Update Time",
+        "Days overdue",
+        "Lending Time",
+        "Loan Amount",
+        "Total repayment",
+        "Loan tenure",
+        "Loan Type",
+        "Application Status",
+        "Capital",
+        "Intrest",
+        "Service Fee",
+        "Penalty",
+        "Amount Repaid",
+        "App Version",
+        "App Package",
+      ],
+      overdueForm: [
         {
-          loanNumber: "211024",
-          productName: "Crednow",
-          loanOrderNumber: "1001",
+          loannumber: "211024",
+          loanordernumber: "9098989898",
+          appname: "Crednow",
           mobile: "9098989898",
-          name: "Isaac Emmanuel",
-          loanTenure: "12 months",
-          loanAmount: "5000",
-          appVersion: "1.2.3",
-          dueDate: "2023-11-01",
-          loanStatus: "Active",
-          tag: "Urgent",
-          isRepeatedBorrowing: "Yes",
-          loanType: "Personal Loan",
-          collectionResult: "Pending",
-          proportionWithoutPenalty: "80%",
-          followUpOnDay: "2023-11-05",
-          appName: "LoanApp",
-          collectionStage: "Stage 2",
-          collector: "John Doe",
+          name:"Emmy",
+          productname: "Crednow",
+          duedate: "2025-02-01 22:33:08",
+          collectorsname: "Jane Smith",
+          collectionstage: "Stage 3",
+          dailycollectortime: "10:00 AM",
+          collectiontimes: "3",
+          collectorlog: "Logged",
+          collectionresult: "Pending",
+          logupdatetime: "2024-01-25 12:11:23",
+          daysoverdue: "10",
+          lendingtime: "2024-01-10 15:30:00",
+          loanamount: "10,000",
+          totalrepayment: "12,000",
+          loantenure: "24 months",
+          loantype: "Personal Loan",
+          applicationstatus: "Active",
+          capital: "8,000",
+          interest: "2,000",
+          servicefee: "200",
+          penalty: "100",
+          amountrepaid: "9,000",
+          appversion: "2.1.0",
+          apppackage: "com.Crednow.solutions.enterprise.monetaryservices.explorer.globalapp.mobile.app",
+          paymenttime: "2024-02-10 15:30:00",
+          updatetime: "2024-02-11 08:45:00",
         },
-         {
-          loanNumber: "211024",
-          productName: "Crednow",
-          loanOrderNumber: "1001",
+{
+          loannumber: "211024",
+          loanordernumber: "9098989898",
+          appname: "Crednow",
           mobile: "9098989898",
-          name: "Isaac Emmanuel",
-          loanTenure: "12 months",
-          loanAmount: "5000",
-          appVersion: "1.2.3",
-          dueDate: "2023-11-01",
-          loanStatus: "Active",
-          tag: "Urgent",
-          isRepeatedBorrowing: "Yes",
-          loanType: "Personal Loan",
-          collectionResult: "Pending",
-          proportionWithoutPenalty: "80%",
-          followUpOnDay: "2023-11-05",
-          appName: "LoanApp",
-          collectionStage: "Stage 2",
-          collector: "John Doe",
-        },
-         {
-          loanNumber: "211024",
-          productName: "Crednow",
-          loanOrderNumber: "1001",
+          name:"Emmy",
+          productname: "Crednow",
+          duedate: "2025-02-01 22:33:08",
+          collectorsname: "Jane Smith",
+          collectionstage: "Stage 3",
+          dailycollectortime: "10:00 AM",
+          collectiontimes: "3",
+          collectorlog: "Logged",
+          collectionresult: "Pending",
+          logupdatetime: "2024-01-25 12:11:23",
+          daysoverdue: "10",
+          lendingtime: "2024-01-10 15:30:00",
+          loanamount: "10,000",
+          totalrepayment: "12,000",
+          loantenure: "24 months",
+          loantype: "Personal Loan",
+          applicationstatus: "Active",
+          capital: "8,000",
+          interest: "2,000",
+          servicefee: "200",
+          penalty: "100",
+          amountrepaid: "9,000",
+          appversion: "2.1.0",
+          apppackage: "com.Crednow.solutions.enterprise.monetaryservices.explorer.globalapp.mobile.app",
+          paymenttime: "2024-02-10 15:30:00",
+          updatetime: "2024-02-11 08:45:00",
+        },{
+          loannumber: "211024",
+          loanordernumber: "9098989898",
+          appname: "Crednow",
           mobile: "9098989898",
-          name: "Isaac Emmanuel",
-          loanTenure: "12 months",
-          loanAmount: "5000",
-          appVersion: "1.2.3",
-          dueDate: "2023-11-01",
-          loanStatus: "Active",
-          tag: "Urgent",
-          isRepeatedBorrowing: "Yes",
-          loanType: "Personal Loan",
-          collectionResult: "Pending",
-          proportionWithoutPenalty: "80%",
-          followUpOnDay: "2023-11-05",
-          appName: "LoanApp",
-          collectionStage: "Stage 2",
-          collector: "John Doe",
+          name:"Emmy",
+          productname: "Crednow",
+          duedate: "2025-02-01 22:33:08",
+          collectorsname: "Jane Smith",
+          collectionstage: "Stage 3",
+          dailycollectortime: "10:00 AM",
+          collectiontimes: "3",
+          collectorlog: "Logged",
+          collectionresult: "Pending",
+          logupdatetime: "2024-01-25 12:11:23",
+          daysoverdue: "10",
+          lendingtime: "2024-01-10 15:30:00",
+          loanamount: "10,000",
+          totalrepayment: "12,000",
+          loantenure: "24 months",
+          loantype: "Personal Loan",
+          applicationstatus: "Active",
+          capital: "8,000",
+          interest: "2,000",
+          servicefee: "200",
+          penalty: "100",
+          amountrepaid: "9,000",
+          appversion: "2.1.0",
+          apppackage: "com.Crednow.solutions.enterprise.monetaryservices.explorer.globalapp.mobile.app",
+          paymenttime: "2024-02-10 15:30:00",
+          updatetime: "2024-02-11 08:45:00",
+        },{
+          loannumber: "211024",
+          loanordernumber: "9098989898",
+          appname: "Crednow",
+          mobile: "9098989898",
+          name:"Emmy",
+          productname: "Crednow",
+          duedate: "2025-02-01 22:33:08",
+          collectorsname: "Jane Smith",
+          collectionstage: "Stage 3",
+          dailycollectortime: "10:00 AM",
+          collectiontimes: "3",
+          collectorlog: "Logged",
+          collectionresult: "Pending",
+          logupdatetime: "2024-01-25 12:11:23",
+          daysoverdue: "10",
+          lendingtime: "2024-01-10 15:30:00",
+          loanamount: "10,000",
+          totalrepayment: "12,000",
+          loantenure: "24 months",
+          loantype: "Personal Loan",
+          applicationstatus: "Active",
+          capital: "8,000",
+          interest: "2,000",
+          servicefee: "200",
+          penalty: "100",
+          amountrepaid: "9,000",
+          appversion: "2.1.0",
+          apppackage: "com.Crednow.solutions.enterprise.monetaryservices.explorer.globalapp.mobile.app",
+          paymenttime: "2024-02-10 15:30:00",
+          updatetime: "2024-02-11 08:45:00",
+        },{
+          loannumber: "211024",
+          loanordernumber: "9098989898",
+          appname: "Crednow",
+          mobile: "9098989898",
+          name:"Emmy",
+          productname: "Crednow",
+          duedate: "2025-02-01 22:33:08",
+          collectorsname: "Jane Smith",
+          collectionstage: "Stage 3",
+          dailycollectortime: "10:00 AM",
+          collectiontimes: "3",
+          collectorlog: "Logged",
+          collectionresult: "Pending",
+          logupdatetime: "2024-01-25 12:11:23",
+          daysoverdue: "10",
+          lendingtime: "2024-01-10 15:30:00",
+          loanamount: "10,000",
+          totalrepayment: "12,000",
+          loantenure: "24 months",
+          loantype: "Personal Loan",
+          applicationstatus: "Active",
+          capital: "8,000",
+          interest: "2,000",
+          servicefee: "200",
+          penalty: "100",
+          amountrepaid: "9,000",
+          appversion: "2.1.0",
+          apppackage: "com.Crednow.solutions.enterprise.monetaryservices.explorer.globalapp.mobile.app",
+          paymenttime: "2024-02-10 15:30:00",
+          updatetime: "2024-02-11 08:45:00",
         },
       ],
     };
+  },
+  methods: {
+    // Ensure all fields are filled
+    fillMissingFields() {
+      this.overdueForm = this.overdueForm.map((row) => {
+        const filledRow = {};
+        this.headers.forEach((header) => {
+          const key = header.toLowerCase().replace(/ /g, "").replace(/’/g, "");
+          filledRow[key] = row[key] || "-"; // Fill missing fields with "-"
+        });
+        return filledRow;
+      });
+    },
+  },
+  mounted() {
+    // Call the method to fill missing fields when the component is mounted
+    this.fillMissingFields();
   },
 };
 </script>
 
 
 
+
 <style scoped>
 .table-container {
   overflow-x: auto;
-  width: 99.5%;
-  padding: 8px;
+  width: 100%;
+  
   white-space: nowrap;
   background-color: #fff;
   border: 1px solid #ddd;
-  border-radius: 10px;
+  
   margin-top: 22px;
 }
 
@@ -149,7 +269,26 @@ export default {
   margin: 0;
   text-align: left;
 }
-
+/* Sticky the Loan Number column */
+.data-table th:first-child,
+.data-table td:first-child {
+  position: sticky;
+  left: 0;
+  background-color: #fff; /* Ensure the background color matches the rest */
+  z-index: 1; /* Keep it on top of other elements */
+}
+.data-table td:first-child{
+  color: #00CCFF;
+}
+.data-table th:first-child {
+  
+  background-color: #F2F7F8; /* Ensure the background color matches the rest */
+  
+}
+/* Styling for header row to make sure sticky column header stays visible */
+.data-table th {
+  background-color: #F2F7F8;
+}
 tr th {
   font-size: 14px;
   line-height: 19.6px;
@@ -163,6 +302,7 @@ tr td {
   line-height: 16.8px;
   font-weight: 400;
   text-align: center;
+  color: #585865;
 }
 
 .data-table th,
@@ -195,7 +335,11 @@ tr td {
 
 
 
-
+ .data-table tbody tr:hover {
+  background-color: #ffff; /* Change background color on hover */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add shadow under the hovered row */
+  cursor: pointer; /* Change cursor to pointer on hover */
+}
 
 
 </style>

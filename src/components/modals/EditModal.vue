@@ -3,7 +3,7 @@
     <div class="modal">
       <div class="modal-header">
         <h2 class="text">{{ title }}</h2>
-        <button class="close-button" @click="closeModal">×</button>
+        
       </div>
       <div class="modal-content">
         <form @submit.prevent="handleSubmit" class="form-box">
@@ -45,9 +45,10 @@ props: {
   data() {
     return {
       formFields: [
-        { id: "field1", label: "Total Remaining Payment", type: "number", placeholder: "Enter Total Remaining Payment", value: "" },
-        { id: "field2", label: "Increase Principal", type: "number", placeholder: "Enter Increase Principal", value: "" },
-        { id: "field3", label: "Remarks", type: "text", placeholder: "Enter Remarks", value: "" },
+        { id: "field1", label: "Loan Number", type: "number", placeholder: "123456", value: "" },
+        { id: "field2", label: "Transaction Number", type: "number", placeholder: "1234566", value: "" },
+        { id: "field3", label: "Trade Number", type: "number", placeholder: "Please Enter", value: "" },
+        { id: "field3", label: "Transfer Code", type: "number", placeholder: "Please enter", value: "" },
       ],
     };
   },
@@ -67,6 +68,9 @@ props: {
 </script>
 
 <style scoped>
+.close-button{
+  width: 30px;
+}
 .text {
   flex-grow: 1;
   text-align: center;
@@ -110,6 +114,8 @@ props: {
   border-radius: 8px 8px 0 0;
   font-size: 24px;
   padding: 0 16px;
+  color:  #004759;
+;
 }
 
 .modal-content {
@@ -128,6 +134,8 @@ props: {
 
 .close-button {
   width: 20px;
+  background-color: #00CCFF;
+    border: none;
 }
 
 .form-group {
@@ -180,18 +188,18 @@ label {
 }
 
 .action-btn:hover {
-  background-color: #009fcc;
+  background-color: #00CCFF;
 }
 
 .cancel {
-  border: 1px solid #009fcc;
-  color: #009fcc;
+  border: 1px solid #00CCFF;
+  color: #00CCFF;
   background-color: #fff;
 }
 
 .submit {
-  border: 1px solid #009fcc;
+  border: 1px solid #00CCFF;
   color: #ecf1f2;
-  background-color: #009fcc;
+  background-color: #00CCFF;
 }
 </style>

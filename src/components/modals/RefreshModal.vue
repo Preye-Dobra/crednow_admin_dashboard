@@ -97,6 +97,7 @@ export default {
   align-items: center;
   margin-bottom: 20px;
   text-align: center;
+  color: #004759;
   background-color: #00CCFF;
   height: 46px;
   width: 100%;
@@ -112,7 +113,7 @@ export default {
   font-weight: 600;
   line-height: 16px;
   margin: 0;
-  color: white; /* Ensure the text color is white */
+  color:  #004759; /* Ensure the text color is white */
 }
 
 .close-button {
@@ -188,18 +189,18 @@ label {
 }
 
 .action-btn:hover {
-  background-color: #009fcc;
+  background-color:  #00CCFF;
 }
 
 .cancel {
-  border: 1px solid #009fcc;
-  color: #009fcc;
+  border: 1px solid  #00CCFF;
+  color:  #00CCFF;
   background-color: #fff;
 }
 
 .submit {
-  border: 1px solid #009fcc;
+  border: 1px solid  #00CCFF;
   color: #ecf1f2;
-  background-color: #009fcc;
+  background-color:  #00CCFF;
 }
 </style>

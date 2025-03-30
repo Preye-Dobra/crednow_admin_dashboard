@@ -116,6 +116,12 @@ export default {
         updateTime: "",
       },
       fields: [
+                {
+          name: "orderNumber",
+          label: "order Number",
+          type: "input",
+          props: { type: "number", placeholder: "Enter order number" },
+        },
         {
           name: "mobile",
           label: "Mobile",
@@ -123,12 +129,7 @@ export default {
           props: { type: "number", placeholder: "Enter mobile number" },
         },
 
-        {
-          name: "orderNumber",
-          label: "order Number",
-          type: "input",
-          props: { type: "number", placeholder: "Enter order number" },
-        },
+
       ],
     };
   },
@@ -161,8 +162,8 @@ export default {
   border-radius: 8px;
   border: 1px solid #ddd;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  width: 100%;
-  max-width: 1220px;
+  width: 85vw;
+  max-width: 85vw;
   font-family: 'Fira Sans', sans-serif;
 }
 
@@ -188,13 +189,16 @@ export default {
 }
 
 .form-group input,
-.form-group select {
-  width: 266px;
+.form-group select,
+.form-group option {
+  width: 286.5px;
   height: 40px;
   padding: 8px;
   border: 1px solid #ddd;
   border-radius: 20px;
   font-size: 14px;
+  color: #ACACB2;
+;
 }
 
 .action-buttons {
@@ -216,12 +220,12 @@ export default {
   cursor: pointer;
   font-size: 12px;
   font-weight: 400;
-  border: 1px solid #00ccff;
+  border: 1px solid #00CCFF;
   white-space: nowrap; /* Prevents text wrapping */
 }
 
 .btn-query {
-  background-color: #00ccff;
+  background-color: #00CCFF;
   color: white;
 }
 
@@ -229,7 +233,7 @@ export default {
 .btn-batch,
 .btn-modify {
   background-color: #ffffff;
-  color: #00ccff;
+  color: #00CCFF;
 }
 
 .btn-reset:hover,

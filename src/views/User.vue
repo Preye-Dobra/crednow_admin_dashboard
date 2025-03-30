@@ -1,20 +1,16 @@
 <template>
   <div class="dashboard-container">
     <userInfo class="dashboard" />
-    <!-- <dashboardTwo class="dashboard-two" />
-    <pagination class="pagination"/> -->
+
   </div>
 </template>
 
 <script>
 import userInfo from "../components/dashboard/userInfo.vue";
-// import dashboardTwo from "../components/dashboard/maintwo.vue";
-// import pagination from "../components/modals/pagination.vue";
 export default {
   components: {
     userInfo,
-    // dashboardTwo,
-    // pagination,
+
   },
 };
 </script>
