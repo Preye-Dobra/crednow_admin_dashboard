@@ -43,7 +43,7 @@
             <td>{{ getRepaymentValue(loan, 'paymentStatus', '-') }}</td>
             <td v-html="formatDateTime(getRepaymentValue(loan, 'dateOfPayment', null))"></td>
             <td v-html="formatDateTime(loan.repaymentDeadline)"></td>
-            <td>{{ formatCurrency(loan.loanBalance) }}</td>
+            <td>{{ formatCurrency(getRepaymentValue(loan, 'loanBalance', loan.loanBalance)) }}</td>
           </tr>
           <tr v-if="!tableData || tableData.length === 0">
             <td colspan="18" class="no-data">No repayment data found</td>
@@ -76,7 +76,8 @@ export default {
     // Helper method to get value from repayment or fallback
     getRepaymentValue(loan, field, fallback) {
       if (loan.loanRepayments && loan.loanRepayments.length > 0) {
-        return loan.loanRepayments[0][field]; // Get from first repayment
+        // Get the most recent repayment (assuming they're sorted with most recent first)
+        return loan.loanRepayments[0][field] !== undefined ? loan.loanRepayments[0][field] : fallback;
       }
       return fallback; // Fallback value
     },
@@ -100,27 +101,38 @@ export default {
     formatDateTime(datetime) {
       if (!datetime) return '-';
       
-      // Handle different date formats
-      let date;
-      if (datetime.includes('T')) {
-        // ISO format: 2025-03-18T15:26:40.643Z
-        date = new Date(datetime);
-      } else {
-        // Custom format: 2025-03-18 15:47:57.0
-        const [datePart, timePart] = datetime.split(' ');
-        const [year, month, day] = datePart.split('-');
-        const [hour, minute, second] = timePart.split(':');
-        date = new Date(year, month-1, day, hour, minute, parseInt(second));
+      try {
+        // Handle different date formats
+        let date;
+        if (typeof datetime === 'string' && datetime.includes('T')) {
+          // ISO format: 2025-03-18T15:26:40.643Z
+          date = new Date(datetime);
+        } else if (typeof datetime === 'string' && datetime.includes(' ')) {
+          // Custom format: 2025-03-18 15:47:57.0
+          const [datePart, timePart] = datetime.split(' ');
+          const [year, month, day] = datePart.split('-');
+          const [hour, minute, secondPart] = timePart.split(':');
+          const second = secondPart ? parseInt(secondPart.split('.')[0]) : 0;
+          date = new Date(year, month-1, day, hour, minute, second);
+        } else {
+          date = new Date(datetime);
+        }
+        
+        if (isNaN(date.getTime())) {
+          return '-';
+        }
+        
+        const formattedDate = date.toLocaleDateString();
+        const formattedTime = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        return `${formattedDate} <span style="color: #00CCFF;">${formattedTime}</span>`;
+      } catch (e) {
+        console.error('Date formatting error:', e);
+        return '-';
       }
-      
-      const formattedDate = date.toLocaleDateString();
-      const formattedTime = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-      return `${formattedDate} <span style="color: #00CCFF;">${formattedTime}</span>`;
     }
   }
 };
 </script>
-
 
 <style scoped>
 .table-container {
@@ -129,7 +141,8 @@ export default {
   white-space: nowrap;
   background-color: #fff;
   border: 1px solid #ddd;
-margin-top: 8px;
+  margin-top: 8px;
+  border-radius: 5px;
 }
 
 .data-table {
@@ -145,6 +158,10 @@ tr th {
   text-align: center;
   color: #004759;
   font-weight: 400;
+  position: sticky;
+  top: 0;
+  background-color: #F2F7F8;
+  z-index: 1;
 }
 
 tr td {
@@ -158,10 +175,9 @@ tr td {
 .data-table th,
 .data-table td {
   padding: 0.75rem;
-  
 }
 
-/* Sticky the Loan Number column */
+/* Sticky the Loan ID column */
 .data-table th:first-child,
 .data-table td:first-child {
   position: sticky;
@@ -169,75 +185,38 @@ tr td {
   background-color: #fff; /* Ensure the background color matches the rest */
   z-index: 1; /* Keep it on top of other elements */
 }
+
 .data-table th:first-child {
-  
   background-color: #F2F7F8; /* Ensure the background color matches the rest */
-  
-}
-/* Styling for header row to make sure sticky column header stays visible */
-.data-table th {
-  background-color: #F2F7F8;
+  z-index: 2; /* Higher z-index for header to appear above sticky cells */
 }
 
-.table-scroll-buttons {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 10px;
-}
-
-.scroll-button {
-  padding: 5px 15px;
-  margin: 0 10px;
-  font-size: 1rem;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.scroll-button:hover {
-  background-color: #0056b3;
-}
-
-.pass {
-  color: #00ccff;
-}
-
-.waiting {
-  color: orange;
-}
-
-button-container {
-  display: flex;
-  gap: 10px;
-}
-
-.approve-button {
-  color: #fff;
-  background-color: #00ccff;
-  border: none;
-  padding: 10px;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.reject-button {
-  color: red;
-  background-color: #fff;
-  border: 1px solid red;
-  padding: 10px;
-  border-radius: 5px;
-  cursor: pointer;
-}
 .data-table tbody tr:hover {
-  background-color: #ffff; /* Change background color on hover */
+  background-color: #f8f8f8; /* Subtle hover effect */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add shadow under the hovered row */
   cursor: pointer; /* Change cursor to pointer on hover */
 }
 
-/* Target the time part of the date */
-.blue-time {
-  color: #00CCFF; /* Apply light blue color to the time */
+.no-data {
+  text-align: center;
+  padding: 20px;
+  color: #777;
+  font-style: italic;
+}
+
+/* Status styling classes */
+.status-success {
+  color: #00CCFF;
+  font-weight: 500;
+}
+
+.status-pending {
+  color: #FFA500;
+  font-weight: 500;
+}
+
+.status-failed, .status-overdue {
+  color: #FF4444;
+  font-weight: 500;
 }
 </style>
