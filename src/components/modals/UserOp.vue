@@ -56,17 +56,17 @@
               <p>
                 <strong>User ID:</strong>
                 <div class="normal" style="color: #00CCFF; transform: translateY(0); display: flex; align-items: center;  margin-left: 100px;">
-                  {{ userData.userId.length > 10 ? userData.userId.substring(0, 10) + '...' : userData.userId }}
-                  <span v-if="userData.userId.length > 10" class="copy-icon" @click="copyToClipboard(userData.userId)" title="Copy User ID">
+                  {{ userData.userId && userData.userId.length > 10 ? userData.userId.substring(0, 10) + '...' : userData.userId || '-' }}
+                  <span v-if="userData.userId && userData.userId.length > 10" class="copy-icon" @click="copyToClipboard(userData.userId)" title="Copy User ID">
                     <img src="/public/icons8-copy-30.png" style="width: 14px; height: 14px; margin-left: 1px; cursor: pointer;" alt="copy" />
                   </span>
                 </div>
               </p>
-              <p><strong>Name:</strong><div class="normal" style="transform: translateY(0);">{{ userData.firstName }} {{ userData.lastName }}</div></p>
-              <p><strong>Mobile:</strong><div class="normal" style="transform: translateY(0);">{{ userData.phoneNumber }}</div></p>
-              <p><strong>Email:</strong><div class="normal" style="transform: translateY(0);">{{ userData.email }}</div></p>
+              <p><strong>Name:</strong><div class="normal" style="transform: translateY(0);">{{ userData.firstName || '-' }} {{ userData.lastName || '-' }}</div></p>
+              <p><strong>Mobile:</strong><div class="normal" style="transform: translateY(0);">{{ userData.phoneNumber || '-' }}</div></p>
+              <p><strong>Email:</strong><div class="normal" style="transform: translateY(0);">{{ userData.email || '-' }}</div></p>
               <p><strong>Registration Time:</strong><div class="normal" style="transform: translateY(0);"><span class="blue" style="font-size: 12px;">{{ formatDateDisplay(userData.createdAt) }} <span class="red">{{ formatTimeDisplay(userData.createdAt) }}</span></span></div></p>
-              <p><strong>User Level:</strong><div class="normal" style="transform: translateY(0);">Level {{ userData.level }}</div></p>
+              <p><strong>User Level:</strong><div class="normal" style="transform: translateY(0);">Level {{ userData.level || '-' }}</div></p>
               <p><strong>Loan Limit:</strong><div class="normal" style="transform: translateY(0);">{{ formatCurrency(userData.loanLimit) }}</div></p>
             </div>
 
@@ -83,15 +83,25 @@
                     }" 
                     style="font-size: 12px;"
                   >
-                    {{ isSuspended ? 'Suspend' : userData.accountStatus }}
+                    {{ isSuspended ? 'Suspend' : userData.accountStatus || '-' }}
                   </span>
                 </div>
               </p>
               <p><strong>BVN:</strong><div class="normal" style="transform: translateY(0);">{{ userData.bvnDetails ? userData.bvnDetails.bvn : '-' }}</div></p>
               <p><strong>Expired Date:</strong><div class="normal" style="transform: translateY(0);">{{ formatDateDisplay(userData.expirationDate) || '-' }}</div></p>
-              <p><strong>Verified:</strong><div class="normal" style="transform: translateY(0);"><span :class="userData.verified ? 'active' : 'inactive-status'" style="font-size: 12px;">{{ userData.verified ? 'Yes' : 'No' }}</span></div></p>
-              <p><strong>Number of Borrowing:</strong><div class="normal" style="transform: translateY(0);">{{ userData.numOfLoans }}</div></p>
-              <p><strong>Application Progress:</strong><div class="normal" style="transform: translateY(0);">{{ userData.loanStatus }}</div></p>
+              <p>
+                <strong>Verified:</strong>
+                <div class="normal" style="transform: translateY(0);">
+                  <span 
+                    :class="getVerificationClass(userData.verified)" 
+                    style="font-size: 12px;"
+                  >
+                    {{ userData.verified === true ? 'true' : (userData.verified === false ? 'false' : '-') }}
+                  </span>
+                </div>
+              </p>
+              <p><strong>Number of Borrowing:</strong><div class="normal" style="transform: translateY(0);">{{ userData.numOfLoans || 0 }}</div></p>
+              <p><strong>Application Progress:</strong><div class="normal" style="transform: translateY(0);">{{ userData.loanStatus || '-' }}</div></p>
             </div>
           </div>
           <div class="line" style="margin-top: -140px; width: 1px;"></div>
@@ -107,12 +117,12 @@
               <p>
                 <strong>Province:</strong><div class="normal" style="transform: translateY(0);">{{ userData.personalDetails ? userData.personalDetails.state : '-' }}</div>
               </p>
-              <p>
+              <!-- <p>
                 <strong>City:</strong><div class="normal" style="transform: translateY(0);">{{ userData.personalDetails ? userData.personalDetails.city : '-' }}</div>
               </p>
               <p>
                 <strong>Address:</strong><div class="normal" style="transform: translateY(0);">{{ userData.personalDetails ? userData.personalDetails.address : '-' }}</div>
-              </p>
+              </p> -->
               <p>
                 <strong>Mailbox:</strong><div class="normal" style="transform: translateY(0);">{{ userData.personalDetails ? userData.personalDetails.email : '-' }}</div>
               </p>
@@ -139,16 +149,16 @@
                 <strong>Work Phone:</strong><div class="normal" style="transform: translateY(0);">{{ userData.workHistory ? userData.workHistory.companyPhone : '-' }}</div>
               </p>
               <p>
-                <strong>Monthly Income :</strong><div class="normal" style="transform: translateY(0);">{{ userData.workHistory ? formatCurrency(userData.workHistory.monthlyIncome) : '-' }}</div>
+                <strong>Monthly Income:</strong><div class="normal" style="transform: translateY(0);">{{ userData.workHistory ? formatCurrency(userData.workHistory.monthlyIncome) : '-' }}</div>
               </p>
               <p>
-                <strong>Province/State:</strong><div class="normal" style="transform: translateY(0);">{{ userData.workHistory ? (userData.workHistory.state || '-') : '-' }}</div>
+                <strong>Province/State:</strong><div class="normal" style="transform: translateY(0);">{{ userData.workHistory && userData.workHistory.state ? userData.workHistory.state : '-' }}</div>
               </p>
               <p>
                 <strong>Company Address:</strong><div class="normal" style="transform: translateY(0);">{{ userData.workHistory ? userData.workHistory.companyAddress : '-' }}</div>
               </p>
               <p>
-                <strong>Occupation:</strong><div class="normal" style="transform: translateY(0);">{{ userData.workHistory ? userData.workHistory.professionType : userData.employmentStatus || '-' }}</div>
+                <strong>Occupation:</strong><div class="normal" style="transform: translateY(0);">{{ getOccupation() }}</div>
               </p>
             </div>
           </div>
@@ -233,24 +243,52 @@ export default {
         phoneNumber: '',
         createdAt: '',
         deviceId: '',
-        level: 0,
-        numOfLoans: 0,
+        level: '',
+        numOfLoans: '',
         accountStatus: '',
         expirationDate: '',
         loanStatus: '',
         state: '',
         city: '',
+        loanLimit:'',
         address: '',
-        incomeDetails: 0,
+        incomeDetails: '',
         email: '',
         dateOfBirth: '',
         personalDetails: null,
         workHistory: null,
-        profilePic: null // Added profile picture property
+        profilePic: null,
+        verified: null, // Explicitly initialized
+        bvnDetails: null
       }
     };
   },
   methods: {
+    /**
+     * Get verification status class based on verified value
+     * @param {boolean|null} verified - Verification status
+     * @returns {string} - CSS class name
+     */
+    getVerificationClass(verified) {
+      if (verified === true) {
+        return 'active';
+      } else if (verified === false) {
+        return 'inactive-status';
+      }
+      return '';
+    },
+    
+    /**
+     * Get occupation based on available data
+     * @returns {string} - Occupation or default placeholder
+     */
+    getOccupation() {
+      if (this.userData.workHistory && this.userData.workHistory.professionType) {
+        return this.userData.workHistory.professionType;
+      }
+      return this.userData.employmentStatus || '-';
+    },
+
     /**
      * Process and manage user data including profile image
      * @param {Object|null} userData - User data from API response
@@ -450,6 +488,14 @@ export default {
         );
         
         console.log('User API Response:', response.data);
+        
+        // Ensure we have valid data from API response
+        if (!response.data || !response.data.data) {
+          console.error('Invalid API response structure:', response.data);
+          this.isLoading = false;
+          return;
+        }
+        
         const userDataResponse = response.data.data;
 
         // Process all user data including profile image and contact details
@@ -461,7 +507,11 @@ export default {
           this.$emit('user-data-error', 'Failed to process user data');
         }
 
-        // Update userData
+        // Explicitly check for verified status and other fields
+        console.log('Verified status from API:', userDataResponse.verified);
+        console.log('Account status from API:', userDataResponse.accountStatus);
+
+        // Update userData with proper type checking
         this.userData = {
           userId: userDataResponse.userId || '',
           firstName: userDataResponse.firstName || '',
@@ -469,27 +519,30 @@ export default {
           phoneNumber: userDataResponse.phoneNumber || '',
           createdAt: userDataResponse.createdAt || '',
           deviceId: userDataResponse.deviceId || '',
-          level: userDataResponse.level || 0,
-          numOfLoans: userDataResponse.numOfLoans || 0,
+          level: typeof userDataResponse.level === 'number' ? userDataResponse.level : 0,
+          numOfLoans: typeof userDataResponse.numOfLoans === 'number' ? userDataResponse.numOfLoans : 0,
           accountStatus: userDataResponse.accountStatus || '',
           expirationDate: userDataResponse.expirationDate || '',
           loanStatus: userDataResponse.loanStatus || '',
+          loanLimit: typeof userDataResponse.loanLimit === 'number' ? userDataResponse.loanLimit : 0,
           state: userDataResponse.state || '',
           city: userDataResponse.city || '',
           address: userDataResponse.address || '',
-          incomeDetails: userDataResponse.incomeDetails || 0,
+          incomeDetails: typeof userDataResponse.incomeDetails === 'number' ? userDataResponse.incomeDetails : 0,
           email: userDataResponse.email || '',
           dateOfBirth: userDataResponse.dateOfBirth || '',
           personalDetails: userDataResponse.personalDetails || null,
           workHistory: userDataResponse.workHistory || null,
           bvnDetails: userDataResponse.bvnDetails || null,
-          profilePic: userDataResponse.profilePic || null // Include profile picture
+          profilePic: userDataResponse.profilePic || null,
+          verified: typeof userDataResponse.verified === 'boolean' ? userDataResponse.verified : null
         };
 
         // Save full user data to localStorage
         localStorage.setItem('userData', JSON.stringify(this.userData));
         
         console.log('Updated userData:', this.userData);
+        console.log('Verified status saved:', this.userData.verified);
         
         // Check suspension status
         await this.checkSuspensionStatus();
@@ -530,13 +583,14 @@ export default {
           this.suspensionStatus = response.data.data.suspensionStatus || '';
           this.isSuspended = this.suspensionStatus === 'open';
         } else {
-          this.isSuspended = false;
+          this.isSuspended = this.userData.accountStatus === 'suspended';
         }
         
         console.log('Suspension status:', this.suspensionStatus, 'Is suspended:', this.isSuspended);
       } catch (error) {
         console.error('Error checking suspension status:', error);
-        this.isSuspended = false;
+        // Fallback to account status for suspension status
+        this.isSuspended = this.userData.accountStatus === 'suspended';
       }
     },
     
@@ -550,7 +604,7 @@ export default {
           return;
         }
         
-        if (!this.suspensionReason.trim()) {
+        if (!this.isSuspended && !this.suspensionReason.trim()) {
           alert('Please provide a reason for suspension');
           return;
         }
@@ -673,6 +727,7 @@ export default {
   }
 };
 </script>
+
 
 <style lang="scss" scoped>
 .container {

@@ -147,6 +147,15 @@ export default {
       },
       deep: true,
       immediate: true
+    },
+    // Add this watcher to handle pagination changes correctly
+    currentPage: {
+      handler(newPage) {
+        // If we're not in query mode, fetch new page data when currentPage changes
+        if (!this.isQueryMode) {
+          this.fetchClients(newPage, this.itemsPerPage);
+        }
+      }
     }
   },
   mounted() {
@@ -161,24 +170,27 @@ export default {
       console.log("Table refreshFromQuery called with:", queryData);
       
       if (queryData && queryData.data) {
-        this.isQueryMode = true;
+        this.isQueryMode = false; // Set to false so we can fetch new data
         this.totalUsers = queryData.totalUsers || 0;
-        this.currentPage = 1;
         
         // Force computed property to re-evaluate
         this.$forceUpdate();
+        
+        // Fetch first page data
+        this.currentPage = 1;
+        this.fetchClients(1, this.itemsPerPage);
       }
     },
     
     handlePageChange(page, itemsPerPage) {
       console.log(`Pagination changed: Page ${page}, Items per page: ${itemsPerPage}`);
+      
+      // Always update local state
       this.currentPage = page;
       this.itemsPerPage = itemsPerPage;
       
-      // If we're in query mode, don't fetch new data (query is already complete)
-      if (!this.isQueryMode) {
-        this.fetchClients(page, itemsPerPage);
-      }
+      // Always fetch new data on page change, regardless of mode
+      this.fetchClients(page, itemsPerPage);
     },
 
     async fetchClients(page, itemsPerPage) {
@@ -190,8 +202,11 @@ export default {
           throw new Error('No authentication token found in cookies');
         }
 
+        const apiUrl = `https://crednow-app-t4vnc.ondigitalocean.app/api/v1/admin/client/all-client?page=${page}&limit=${itemsPerPage}`;
+        console.log(`Fetching clients from: ${apiUrl}`);
+        
         const response = await axios.post(
-          `https://crednow-app-t4vnc.ondigitalocean.app/api/v1/admin/client/all-client?page=${page}&limit=${itemsPerPage}`,
+          apiUrl,
           {}, // Empty body for POST request
           {
             headers: {
@@ -202,8 +217,16 @@ export default {
         
         console.log("Data fetched from API:", response.data);
         
-        this.fetchedData = response.data.data || [];
-        this.totalUsers = response.data.totalUsers || 0;
+        if (response.data && response.data.data) {
+          this.fetchedData = response.data.data || [];
+          this.totalUsers = response.data.totalUsers || 0;
+          
+          // Reset query mode since we're now showing API data
+          this.isQueryMode = false;
+        } else {
+          console.error("API response did not contain expected data structure:", response.data);
+          this.fetchedData = [];
+        }
         
         // Handle case where current page might no longer be valid
         if (this.fetchedData.length === 0 && page > 1) {
