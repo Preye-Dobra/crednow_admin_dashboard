@@ -429,7 +429,7 @@ export default {
 }
 /* Date Input */
 .form-group input[type="date"] {
-  background-image: url("/public/calendar-icon.png");
+  background-image: url("/assets/calendar-icon.png");
   background-repeat: no-repeat;
   background-position: right 10px center;
   background-size: 16px 16px;

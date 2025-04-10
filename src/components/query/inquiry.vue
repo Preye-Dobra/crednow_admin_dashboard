@@ -38,7 +38,6 @@
 
               <!-- Input with Icon -->
               <div v-else-if="field.props && field.props.icon" class="input-with-icon">
-                <img :src="field.props.icon" alt="Calendar Icon" class="calendar-icon" />
                 <input
                   :type="field.props.type || 'text'"
                   :id="field.name"
@@ -81,8 +80,8 @@
           </div>
 
           <div class="action-buttons">
-            <button type="submit" class="btn btn-query"><img src="/public/pp.png" class="okay"> Query</button>
-            <button type="button" class="btn btn-reset" @click="handleReset"><img class="okay" src="/public/pa.png"> Reset</button>
+            <button type="submit" class="btn btn-query"><img src="../../../assets/pp.png" class="okay"> Query</button>
+            <button type="button" class="btn btn-reset" @click="handleReset"><img class="okay" src="../../../assets/pa.png"> Reset</button>
           </div>
         </form>
       </div>
@@ -358,17 +357,6 @@ export default {
   padding-left: 35px !important;
 }
 
-.calendar-icon {
-  position: absolute;
-  left: 12px;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 13px;
-  height: 13px;
-  pointer-events: none;
-  z-index: 1;
-}
-
 /* Hidden Fields */
 .hidden-field {
   display: none;
@@ -425,7 +413,6 @@ export default {
 }
 /* Date Input */
 .form-group input[type="date"] {
-  background-image: url("/public/calendar-icon.png");
   background-repeat: no-repeat;
   background-position: right 10px center;
   background-size: 16px 16px;
