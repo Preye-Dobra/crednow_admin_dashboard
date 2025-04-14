@@ -4,71 +4,137 @@
 
     <div class="nav-list">
       <ul>
-        <!-- All applications - visible to super-admin, admin, financial-admin -->
-        <li v-if="hasAccess('all-applications')" :class="{ 'active': isActivePage('/dashboard') }">
-          <a href="/dashboard"><img src="/public/all.svg" alt="All applications" class="nav-icon" /> All applications</a>
+        <!-- All applications -->
+        <li
+          v-if="hasAccess('all-applications')"
+          :class="{ active: isActivePage('/dashboard') }"
+        >
+          <a href="/dashboard">
+            <img src="/public/all.svg" alt="All applications" class="nav-icon" />
+            All applications
+          </a>
         </li>
-        
-        <!-- All client - visible to super-admin, admin, support-admin, financial-admin, collection-admin -->
-        <li v-if="hasAccess('all-client')" :class="{ 'active': isActivePage('/all-client') }">
-          <a href="/all-client"><img src="/public/pp.png" alt="All client" class="nav-icon" /> All client</a>
+
+        <!-- All client -->
+        <li
+          v-if="hasAccess('all-client')"
+          :class="{ active: isActivePage('/all-client') }"
+        >
+          <a href="/all-client">
+            <img src="/public/pp.png" alt="All client" class="nav-icon" />
+            All client
+          </a>
         </li>
-        
-        <!-- Financial dropdown - show if user has access to any financial items -->
-        <li v-if="hasFinancialAccess()" :class="{ 'active': isActiveSection('financial') }">
-          <div class="dropdown-header" @click="toggleDropdown('financial')">
-            <a href="#"><img src="/public/money-recive.png" alt="Financial" class="nav-icon" /> Financial</a>
-            <span class="dropdown-icon" :class="{ 'rotate': activeDropdown === 'financial' }">
-              <img src="/public/arrow-down.png" alt="" class="arrow-icon">
+
+        <!-- Financial dropdown -->
+        <li
+          v-if="hasFinancialAccess()"
+          :class="{ active: isActiveSection('financial') }"
+        >
+          <div
+            class="dropdown-header"
+            @click="toggleDropdown('financial')"
+          >
+            <a href="javascript:void(0)">
+              <img src="/public/money-recive.png" alt="Financial" class="nav-icon" />
+              Financial
+            </a>
+            <span
+              class="dropdown-icon"
+              :class="{ rotate: activeDropdown === 'financial' }"
+            >
+              <img src="/public/arrow-down.png" alt="Arrow" class="arrow-icon" />
             </span>
           </div>
-          <ul class="dropdown" v-if="activeDropdown === 'financial'">
-            <!-- Repayment Inquiries -->
-            <li v-if="hasAccess('repayment-inquiries')" :class="{ 'active': isActivePage('/repay') }">
-              <a href="/repay" @click.stop>Repayment Inquiries</a>
+          <ul
+            class="dropdown"
+            v-if="activeDropdown === 'financial'"
+          >
+            <li
+              v-if="hasAccess('repayment-inquiries')"
+              :class="{ active: isActivePage('/repay') }"
+            >
+              <a href="/repay">Repayment Inquiries</a>
             </li>
-            
-            <!-- Loan Inquiry -->
-            <li v-if="hasAccess('loan-inquiries')" :class="{ 'active': isActivePage('/loan-inquiry') }">
-              <a href="/loan-inquiry" @click.stop>Loan Inquiry</a>
+            <li
+              v-if="hasAccess('loan-inquiries')"
+              :class="{ active: isActivePage('/loan-inquiry') }"
+            >
+              <a href="/loan-inquiry">Loan Inquiry</a>
             </li>
-            
-            <!-- Reconciliation -->
-            <li v-if="hasAccess('reconciliation')" :class="{ 'active': isActivePage('/reconcilliation') }">
-              <a href="/reconcilliation" @click.stop>Reconcilliation</a>
+            <li
+              v-if="hasAccess('reconciliation')"
+              :class="{ active: isActivePage('/reconciliation') }"
+            >
+              <a href="/reconciliation">Reconciliation</a>
             </li>
           </ul>
         </li>
 
         <!-- Collection case -->
-        <li v-if="hasAccess('collection-case')" :class="{ 'active': isActivePage('/collection-case') }">
-          <a href="/collection-case"><img src="/public/suit.png" alt="Collection case" class="nav-icon" /> Collection case</a>
+        <li
+          v-if="hasAccess('collection-case')"
+          :class="{ active: isActivePage('/collection-case') }"
+        >
+          <a href="/collection-case">
+            <img src="/public/suit.png" alt="Collection case" class="nav-icon" />
+            Collection case
+          </a>
         </li>
-        
-        <!-- Operation dropdown - show if user has access to any operation items -->
-        <li v-if="hasOperationAccess()" :class="{ 'active': isActiveSection('operation') }">
-          <div class="dropdown-header" @click="toggleDropdown('operation')">
-            <a href="#"><img src="/public/operat.png" alt="Operation" class="nav-icon" /> Operation</a>
-            <span class="dropdown-icon" :class="{ 'rotate': activeDropdown === 'operation' }">
-              <img src="/public/arrow-down.png" alt="" class="arrow-icon">
+
+        <!-- Operation dropdown -->
+        <li
+          v-if="hasOperationAccess()"
+          :class="{ active: isActiveSection('operation') }"
+        >
+          <div
+            class="dropdown-header"
+            @click="toggleDropdown('operation')"
+          >
+            <a href="javascript:void(0)">
+              <img src="/public/operat.png" alt="Operation" class="nav-icon" />
+              Operation
+            </a>
+            <span
+              class="dropdown-icon"
+              :class="{ rotate: activeDropdown === 'operation' }"
+            >
+              <img src="/public/arrow-down.png" alt="Arrow" class="arrow-icon" />
             </span>
           </div>
-          <ul class="dropdown" v-if="activeDropdown === 'operation'">
-            <!-- Failed Order -->
-            <li v-if="hasAccess('failed-order')" :class="{ 'active': isActivePage('/failed-order') }">
-              <a href="/failed-order" @click.stop>Failed Order</a>
+          <ul
+            class="dropdown"
+            v-if="activeDropdown === 'operation'"
+          >
+            <li
+              v-if="hasAccess('failed-order')"
+              :class="{ active: isActivePage('/failed-order') }"
+            >
+              <a href="/failed-order">Failed Order</a>
             </li>
           </ul>
         </li>
 
-        <!-- Admin - visible to super-admin and admin only -->
-        <li v-if="hasAccess('admin')" :class="{ 'active': isActivePage('/admin') }">
-          <a href="/admin"><img src="/public/admin.png" alt="Admin" class="nav-icon" /> Admin</a>
+        <!-- Admin -->
+        <li
+          v-if="hasAccess('admin')"
+          :class="{ active: isActivePage('/admin') }"
+        >
+          <a href="/admin">
+            <img src="/public/admin.png" alt="Admin" class="nav-icon" />
+            Admin
+          </a>
         </li>
-        
-        <!-- Broadcast - visible to super-admin, admin, and support-admin -->
-        <li v-if="hasAccess('broadcast')" :class="{ 'active': isActivePage('/broadcast') }">
-          <a href="/broadcast"><img src="/public/broad.png" alt="Broadcast" class="nav-icon" /> Broadcast</a>
+
+        <!-- Broadcast -->
+        <li
+          v-if="hasAccess('broadcast')"
+          :class="{ active: isActivePage('/broadcast') }"
+        >
+          <a href="/broadcast">
+            <img src="/public/broad.png" alt="Broadcast" class="nav-icon" />
+            Broadcast
+          </a>
         </li>
       </ul>
     </div>
@@ -77,117 +143,190 @@
 
 <script>
 export default {
-  name: 'Sidebar',
+  name: "Sidebar",
   data() {
     return {
       activeDropdown: null,
-      userRole: null
+      userRole: null,
+      rolePermissions: {
+        "super-admin": [
+          "all-applications",
+          "all-client",
+          "repayment-inquiries",
+          "loan-inquiries",
+          "reconciliation",
+          "collection-case",
+          "failed-order",
+          "admin",
+          "broadcast"
+        ],
+        admin: [
+          "all-applications",
+          "all-client",
+          "repayment-inquiries",
+          "loan-inquiries",
+          "reconciliation",
+          "collection-case",
+          "failed-order",
+          "admin",
+          "broadcast"
+        ],
+        "support-admin": [
+          "all-client",
+          "repayment-inquiries",
+          "loan-inquiries",
+          "failed-order",
+          "broadcast"
+        ],
+        "financial-admin": [
+          "all-applications",
+          "all-client",
+          "repayment-inquiries",
+          "loan-inquiries",
+          "reconciliation",
+          "collection-case"
+        ],
+        "collection-admin": [
+          "all-client",
+          "repayment-inquiries",
+          "loan-inquiries",
+          "collection-case",
+          "failed-order"
+        ],
+        "support-agent": ["collection-case"],
+        "recovery-agent": [
+          "repayment-inquiries",
+          "loan-inquiries",
+          "reconciliation",
+          "collection-case"
+        ]
+      },
+      // Map menu items to route paths for consistency
+      routePaths: {
+        "all-applications": "/dashboard",
+        "all-client": "/all-client",
+        "repayment-inquiries": "/repay",
+        "loan-inquiries": "/loan-inquiry",
+        "reconciliation": "/reconciliation",
+        "collection-case": "/collection-case",
+        "failed-order": "/failed-order",
+        "admin": "/admin",
+        "broadcast": "/broadcast"
+      }
     };
   },
   created() {
-    // Get user role from localStorage when component is created
     this.getUserRole();
+    this.checkInitialAccess();
   },
   methods: {
     getUserRole() {
       try {
-        const userProfileStr = localStorage.getItem('UserProfile');
+        const userProfileStr = localStorage.getItem("UserProfile");
         if (userProfileStr) {
           const userProfile = JSON.parse(userProfileStr);
-          this.userRole = userProfile.role;
-          console.log('Current user role:', this.userRole);
-          
-          // Enforce access restrictions based on role
-          this.enforceAccessRestrictions();
+          this.userRole = userProfile.role || null;
+          console.log("UserProfile from localStorage:", userProfile);
+          console.log("Current user role:", this.userRole);
+        } else {
+          this.userRole = null;
+          console.warn("No UserProfile found in localStorage");
         }
       } catch (error) {
-        console.error('Error getting user role:', error);
+        this.userRole = null;
+        console.error("Error parsing UserProfile:", error);
       }
     },
     
-    enforceAccessRestrictions() {
-      const currentPath = this.$route.path;
-      
-      // Define allowed pages for each role exactly as specified
-      const allowedPages = {
-        'super-admin': ['/dashboard', '/all-client', '/repay', '/loan-inquiry', '/reconcilliation', 
-                        '/collection-case', '/failed-order', '/admin', '/broadcast'],
-                        
-        'admin': ['/dashboard', '/all-client', '/repay', '/loan-inquiry', '/reconcilliation', 
-                 '/collection-case', '/failed-order', '/admin', '/broadcast'],
-                 
-        'support-admin': ['/all-client', '/repay', '/loan-inquiry', '/failed-order', '/broadcast'],
-        
-        'financial-admin': ['/dashboard', '/all-client', '/repay', '/loan-inquiry', 
-                           '/reconcilliation', '/collection-case'],
-                           
-        'collection-admin': ['/all-client', '/repay', '/loan-inquiry', '/collection-case', '/failed-order'],
-        
-        'support-agent': ['/collection-case'],
-        
-        'recovery-agent': ['/repay', '/loan-inquiry', '/reconcilliation', '/collection-case']
-      };
-      
-      // If user tries to access a page they don't have permission for, redirect to a default page
-      const userAllowedPages = allowedPages[this.userRole] || ['/collection-case'];
-      
-      if (!userAllowedPages.includes(currentPath)) {
-        // Redirect to the first allowed page for this role
-        this.$router.push(userAllowedPages[0] || '/collection-case');
+    checkInitialAccess() {
+      // Skip if no user role found
+      if (!this.userRole) {
+        console.log("No role found, redirecting to /collection-case");
+        this.$router.push("/collection-case");
+        return;
       }
+
+      // Super admin and admin can access all pages
+      if (this.userRole === "super-admin" || this.userRole === "admin") {
+        console.log(`${this.userRole} detected, all pages accessible`);
+        return;
+      }
+      
+      // Skip redirection for financial-admin
+      if (this.userRole === "financial-admin") {
+        console.log("Financial admin detected, skipping redirection");
+        return;
+      }
+
+      // Handle root path redirect for other roles
+      if (this.$route.path === "/" && this.userRole !== "financial-admin") {
+        const defaultRedirect = this.getDefaultPageForRole();
+        console.log(`Root path detected for non-financial admin, redirecting to ${defaultRedirect}`);
+        this.$router.push(defaultRedirect);
+        return;
+      }
+
+      // Check if current path is allowed (only for non-financial-admin roles)
+      if (this.userRole !== "financial-admin") {
+        const currentPath = this.$route.path;
+        const allowedPaths = this.getAllowedPaths();
+        
+        if (!allowedPaths.includes(currentPath)) {
+          const defaultRedirect = this.getDefaultPageForRole();
+          console.log(
+            `Unauthorized access by ${this.userRole} to ${currentPath}, redirecting to ${defaultRedirect}`
+          );
+          this.$router.push(defaultRedirect);
+        } else {
+          console.log(`${this.userRole} accessing allowed page: ${currentPath}`);
+        }
+      }
+    },
+    
+    getAllowedPaths() {
+      // For super-admin and admin, all paths are allowed
+      if (this.userRole === "super-admin" || this.userRole === "admin") {
+        return Object.values(this.routePaths);
+      }
+      
+      // For other roles, get allowed paths from role permissions
+      const permissions = this.rolePermissions[this.userRole] || [];
+      return permissions.map(item => this.routePaths[item] || `/unknown-${item}`);
+    },
+    
+    getDefaultPageForRole() {
+      const allowedPaths = this.getAllowedPaths();
+      
+      // Special case for financial-admin to redirect to dashboard
+      if (this.userRole === "financial-admin" && allowedPaths.includes("/dashboard")) {
+        return "/dashboard";
+      }
+      
+      // For others, use first allowed path or collection-case as fallback
+      return allowedPaths[0] || "/collection-case";
     },
     
     hasFinancialAccess() {
-      // Check if user has access to any financial menu items
-      return this.hasAccess('repayment-inquiries') || 
-             this.hasAccess('loan-inquiries') || 
-             this.hasAccess('reconciliation');
+      return (
+        this.hasAccess("repayment-inquiries") ||
+        this.hasAccess("loan-inquiries") ||
+        this.hasAccess("reconciliation")
+      );
     },
     
     hasOperationAccess() {
-      // Check if user has access to any operation menu items
-      return this.hasAccess('failed-order');
+      return this.hasAccess("failed-order");
     },
     
     hasAccess(menuItem) {
-      // Define exact permissions for each menu item according to requirements
-      const rolePermissions = {
-        'super-admin': [
-          'all-applications', 'all-client', 'repayment-inquiries', 'loan-inquiries', 
-          'reconciliation', 'collection-case', 'failed-order', 'admin', 'broadcast'
-        ],
-        'admin': [
-          'all-applications', 'all-client', 'repayment-inquiries', 'loan-inquiries', 
-          'reconciliation', 'collection-case', 'failed-order', 'admin', 'broadcast'
-        ],
-        'support-admin': [
-          'all-client', 'repayment-inquiries', 'loan-inquiries', 'failed-order', 'broadcast'
-        ],
-        'financial-admin': [
-          'all-applications', 'all-client', 'repayment-inquiries', 'loan-inquiries', 
-          'reconciliation', 'collection-case'
-        ],
-        'collection-admin': [
-          'all-client', 'repayment-inquiries', 'loan-inquiries', 'collection-case', 'failed-order'
-        ],
-        'support-agent': [
-          'collection-case'
-        ],
-        'recovery-agent': [
-          'repayment-inquiries', 'loan-inquiries', 'reconciliation', 'collection-case'
-        ]
-      };
-      
-      // Return true if the user's role has access to the requested menu item
-      return rolePermissions[this.userRole]?.includes(menuItem) || false;
+      if (this.userRole === "super-admin" || this.userRole === "admin") {
+        return true;
+      }
+      return this.rolePermissions[this.userRole]?.includes(menuItem) || false;
     },
     
     toggleDropdown(dropdown) {
-      if (this.activeDropdown === dropdown) {
-        this.activeDropdown = null;
-      } else {
-        this.activeDropdown = dropdown;
-      }
+      this.activeDropdown = this.activeDropdown === dropdown ? null : dropdown;
     },
     
     isActivePage(path) {
@@ -196,28 +335,26 @@ export default {
     
     isActiveSection(section) {
       const sectionPaths = {
-        financial: ['/repay', '/loan-inquiry', '/reconcilliation'],
-        operation: ['/failed-order', '/loan-management', '/loan-status'],
+        financial: ["/repay", "/loan-inquiry", "/reconciliation"],
+        operation: ["/failed-order"]
       };
       return sectionPaths[section]?.includes(this.$route.path) || false;
-    },
-  },
+    }
+  }
 };
 </script>
 
 <style scoped>
-@import url('https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
 
-/* Apply white background only to the selected <li> */
 .nav-list li.active > a {
-  background-color: #ffff;
+  background-color: #fff;
   color: #004759;
-  border-radius: 8px; /* Maintain rounded corners for the active link */
-  width: 160px; /* Ensure it fills the <li> */
-  padding: 25px 8px; /* Add padding to the <a> for better appearance */
+  border-radius: 8px;
+  width: 160px;
+  padding: 25px 8px;
 }
 
-/* Updated: Use CSS filter to change icon color to #004759 when active */
 .nav-list li.active .nav-icon {
   filter: invert(22%) sepia(88%) saturate(592%) hue-rotate(157deg) brightness(94%) contrast(102%);
 }
@@ -277,11 +414,11 @@ export default {
 
 .nav-list a {
   text-decoration: none;
-  color: #ffff;
+  color: #fff;
   font-size: 16px;
   font-weight: 350;
   display: flex;
-  font-family: 'Fira Sans', sans-serif;
+  font-family: "Fira Sans", sans-serif;
   align-items: center;
   width: 139px;
   height: 22px;
@@ -344,7 +481,6 @@ export default {
   }
 }
 
-/* Updated: Change icon color on hover using the same filter */
 .nav-list li:hover .nav-icon {
   filter: invert(22%) sepia(88%) saturate(592%) hue-rotate(157deg) brightness(94%) contrast(88%);
 }
